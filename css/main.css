@@ -1,0 +1,40 @@
+a {
+    text-decoration: underline;
+}
+
+.container {
+    margin: 0px;
+    padding: 40px;
+    max-width: 400px;
+}
+
+    @media (max-width: 400px) {
+        .container {
+            padding: 20px;
+        }
+    }
+
+#avatar {
+    margin-bottom: 25px;
+}
+
+#header {
+    margin-bottom: 25px;
+}
+
+    #header p {
+        color: rgba(0, 0, 0, 0.6);
+        font-size: 18px;
+    }
+
+#bio {
+    margin-bottom: 25px;
+}
+
+#navigation {
+    margin-bottom: 25px;
+}
+
+#contact {
+    margin-top: 35px;
+}
