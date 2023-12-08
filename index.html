@@ -1,38 +1,608 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<!--[if IE 8 ]><html class="no-js oldie ie8" lang="en"> <![endif]-->
+<!--[if IE 9 ]><html class="no-js oldie ie9" lang="en"> <![endif]-->
+<!--[if (gte IE 9)|!(IE)]><!--><html class="no-js" lang="en"> <!--<![endif]-->
 <head>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+   <!--- basic page needs
+   ================================================== -->
+   <meta charset="utf-8">
+	<title>Sumit Jha</title>
+	<meta name="description" content="">  
+	<meta name="author" content="">
 
-    <title>Sumit Jha</title>
+   <!-- mobile specific metas
+   ================================================== -->
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <meta name="description" content="Hello, World!" />
+ 	<!-- CSS
+   ================================================== -->
+   <link rel="stylesheet" href="css/base.css">  
+   <link rel="stylesheet" href="css/main.css">
+   <link rel="stylesheet" href="css/vendor.css">     
 
-    <link href="/css/bootstrap.css" rel="stylesheet">
-    <link href="/css/main.css" rel="stylesheet">
+   <!-- script
+   ================================================== -->   
+	<script src="js/modernizr.js"></script>
+	<script src="js/pace.min.js"></script>
+
+   <!-- favicons
+	================================================== -->
+	<link rel="icon" type="image/png" href="favicon.png">
 
 </head>
 
-<body>
+<body id="top">
 
-    <div class="container">
+	<!-- header 
+   ================================================== -->
+   <header>   	
+	<div class="row">
 
-        <div id="header">
-            <h1>Sumit Jha</h1>
-            <p>@isumitjha</p>
-        </div>
+		<div class="top-bar">
+			<a class="menu-toggle" href="#"><span>Click</span></a>
 
-        <div id="navigation">
-            <p><a href="https://github.com/isumitjha"
-                target="_blank">github.com/isumitjha</a></p>
-            <p><a
-                href="https://www.linkedin.com/in/7sumitjha/"
-                target="_blank">https://linkedin.com/in/7sumitjha/</a></p>
-        </div>
+			<div class="logo">
+				<a href="index.html" style="color: aliceblue;">Menu</a>
+			 </div>		      
 
-    </div>
+			<nav id="main-nav-wrap">
+				 <ul class="main-navigation">
+					 <li class="current"><a class="smoothscroll"  href="#intro" title="">Home</a></li>
+					 <li><a class="smoothscroll"  href="#about" title="">About</a></li>
+					 <li><a class="smoothscroll"  href="#resume" title="">Resume</a></li>
+					 <li><a class="smoothscroll"  href="#services" title="">Projects</a></li>					
+					 <li><a class="smoothscroll"  href="#contact" title="">Contact</a></li>				
+				 </ul>
+			 </nav>    		
+		</div> <!-- /top-bar --> 
+		
+	</div> <!-- /row --> 		
+   </header> <!-- /header -->
+
+	<!-- intro section
+   ================================================== -->
+   <section id="intro">   
+
+   	<div class="intro-overlay"></div>	
+
+   	<div class="intro-content">
+   		<div class="row">
+
+   			<div class="col-twelve">
+
+	   			<h5>Hello, World.</h5>
+	   			<h1>I'm Sumit Jha.</h1>
+
+	   			<p class="intro-position">
+	   				<span>Software Developer</span>
+	   			</p>
+
+	   			<a class="button stroke smoothscroll" href="#about" title="">More About Me</a>
+
+	   		</div>  
+   			
+   		</div>   		 		
+   	</div> <!-- /intro-content --> 
+
+   	<ul class="intro-social">        
+         <li><a href="https://twitter.com/7sumitjha"><i class="fa fa-twitter"></i></a></li>
+         <li><a href="https://www.instagram.com/7sumitjha/"><i class="fa fa-instagram"></i></a></li>
+      </ul> <!-- /intro-social -->      	
+
+   </section> <!-- /intro -->
+
+
+   <!-- about section
+   ================================================== -->
+   <section id="about">  
+
+   	<div class="row section-intro">
+   		<div class="col-twelve">
+
+   			<h5>About</h5>
+   			<h1>Let me introduce myself.</h1>
+
+   			<div class="intro-info">
+
+   				<img src="images/profile-pic.jpg" alt="Profile Picture">
+
+   				<p class="lead">Hello, I'm Sumit Jha, currently residing in Delhi. Regarding my educational background, I hold a Bachelor's degree in Computer Application, which sparked my interest in coding. To deepen my expertise, I pursued a Master's in Computer Application.
+
+					My professional journey commenced at TruAct as a Software Seveloper Trainee progressing to independently managing projects, leading teams, and handling client interactions. This experience honed my skills in project and team management, nurturing leadership qualities. Additionally, I developed proficiency in technical aspects such as problem-solving, logical thinking, and handling various API integrations, including one with Hackerearth.
+					
+					To further expand my expertise and explore new opportunities, I chose to resign from TruAct. I'm eager to continue learning and broaden my horizons in this field. My short-term goal is to deepen my knowledge in various software development skills and contribute to the growth of a dynamic team. I'm genuinely enthusiastic about continuous learning and personal growth within this domain.
+					
+					My hobbies encompass playing and watching cricket, as well as indulging in web series and documentaries.</p>
+   			</div>   			
+
+   		</div>   		
+   	</div> <!-- /section-intro -->
+
+   	<div class="row about-content">
+
+   		<div class="col-six tab-full">
+
+   			<h3>Profile</h3>
+
+   			<ul class="info-list">
+   				<li>
+   					<strong>Fullname:</strong>
+   					<span>Sumit Jha</span>
+   				</li>
+   				<li>
+   					<strong>Birth Date:</strong>
+   					<span>May 22, 1999</span>
+   				</li>
+   				<li>
+   					<strong>Job:</strong>
+   					<span>Sofware Developer</span>
+   				</li>
+   				<li>
+   					<strong>Website:</strong>
+   					<span><a>isumitjha.github.io</a></span>
+   				</li>
+   				<li>
+   					<strong>Email:</strong>
+   					<span>7sumitjha@gmail.com</span>
+   				</li>
+
+   			</ul> <!-- /info-list -->
+
+   		</div>
+
+   		<div class="col-six tab-full">
+
+   			<h3>Skills</h3>
+
+				<ul class="skill-bars">
+				   <li>
+				   	<div class="progress percent90"><span>90%</span></div>
+				   	<strong>Python</strong>
+				   </li>
+				   <li>
+				   	<div class="progress percent85"><span>85%</span></div>
+				   	<strong>Flask</strong>
+				   </li>
+				   <li>
+				   	<div class="progress percent70"><span>70%</span></div>
+				   	<strong>AWS</strong>
+				   </li>
+				   <li>
+				   	<div class="progress percent70"><span>70%</span></div>
+				   	<strong>Javascript</strong>
+				   </li>
+				   <li>
+
+				   	<div class="progress percent95"><span>95%</span></div>
+				   	<strong>HTML/CSS</strong>
+				   </li>
+      
+				</ul> <!-- /skill-bars -->		
+
+   		</div>
+
+   	</div>
+
+   	<div class="row button-section">
+   		<div class="col-twelve">
+   			<a href="#contact" title="Hire Me" class="button stroke smoothscroll">Hire Me</a>
+   			<a href="Sumit_Jha_Resume.pdf" title="Download CV" class="button button-primary">Download CV</a>
+   		</div>   		
+   	</div>
+
+   </section> <!-- /process-->    
+
+
+   <!-- resume Section
+   ================================================== -->
+	<section id="resume" class="grey-section">
+
+		<div class="row section-intro">
+   		<div class="col-twelve">
+
+   			<h5>Resume</h5>
+   			<h1>More of my credentials.</h1>
+
+   		</div>   		
+   	</div> <!-- /section-intro--> 
+
+   	<div class="row resume-timeline">
+
+   		<div class="col-twelve resume-header">
+
+   			<h2>Work Experience</h2>
+
+   		</div> <!-- /resume-header -->
+
+   		<div class="col-twelve">
+
+   			<div class="timeline-wrap">
+
+	   			<div class="timeline-block">
+
+	   				<div class="timeline-ico">
+	   					<i class="fa fa-graduation-cap"></i>
+	   				</div>
+
+	   				<div class="timeline-header">
+	   					<h3>Software Developer - Trainee</h3>
+	   					<p>Apr 2023 - Nov 2023</p>
+	   				</div>
+
+	   				<div class="timeline-content">
+	   					<h4>TruAct</h4>
+	   					<p>Developed Applications on the Zoho Platform using Creator.
+							Developed various models including -<br>
+							1)Hiring Model<br>
+							2)Farming Model<br>
+							3)Approval Chain<br>
+							-> Implemented multiple API integrations<br>
+							-> Lead a team and handled multiple Clients.</p>
+	   				</div>
+
+	   			</div> <!-- /timeline-block -->
+
+	   			<div class="timeline-block">
+
+	   				<div class="timeline-ico">
+	   					<i class="fa fa-graduation-cap"></i>
+	   				</div>
+
+	   				<div class="timeline-header">
+	   					<h3>Internship</h3>
+	   					<p>Jun 2019 - July 2019</p>
+	   				</div>
+
+	   				<div class="timeline-content">
+	   					<h4>3G Systems Private Limited</h4>
+	   					<p>Completed a 6 weeks internship in JAVA.</p>
+	   				</div>
+
+	   			</div> <!-- /timeline-block -->
+
+   			</div> <!-- /timeline-wrap -->   			
+
+   		</div> <!-- /col-twelve -->
+   		
+   	</div> <!-- /resume-timeline -->
+   	
+   	<div class="row resume-timeline">
+
+   		<div class="col-twelve resume-header">
+
+   			<h2>Education</h2>
+
+   		</div> <!-- /resume-header -->
+
+   		<div class="col-twelve">
+
+   			<div class="timeline-wrap">
+
+   				<div class="timeline-block">
+
+	   				<div class="timeline-ico">
+	   					<i class="fa fa-briefcase"></i>
+	   				</div>
+
+	   				<div class="timeline-header">
+	   					<h3>Master in Computer Applications</h3>
+	   					<p>Dec 2021 - Aug 2023</p>
+	   				</div>
+
+	   				<div class="timeline-content">
+	   					<h4>Vivekananda Institute of Professional Studies</h4>
+	   					<p>New Delhi, India</p>
+	   				</div>
+
+	   			</div> <!-- /timeline-block -->
+
+	   			<div class="timeline-block">
+
+	   				<div class="timeline-ico">
+	   					<i class="fa fa-briefcase"></i>
+	   				</div>
+
+	   				<div class="timeline-header">
+	   					<h3>Bachelor in Computer Applications</h3>
+	   					<p>Aug 2017 - Mar 2021</p>
+	   				</div>
+
+	   				<div class="timeline-content">
+	   					<h4>Integrated Institute of Technology</h4>
+	   					<p>New Delhi, India</p>
+	   				</div>
+
+	   			</div> <!-- /timeline-block -->
+
+				   <div class="timeline-block">
+
+					<div class="timeline-ico">
+						<i class="fa fa-briefcase"></i>
+					</div>
+
+					<div class="timeline-header">
+						<h3>Intermediate</h3>
+						<p>Apr 2016 - May 2017</p>
+					</div>
+
+					<div class="timeline-content">
+						<h4>Mother Divine Public School</h4>
+						<p>New Delhi, India</p>
+					</div>
+
+	   			</div> <!-- /timeline-block -->
+
+				   <div class="timeline-block">
+
+					<div class="timeline-ico">
+						<i class="fa fa-briefcase"></i>
+					</div>
+
+					<div class="timeline-header">
+						<h3>Matriculation</h3>
+						<p>Apr 2015 - May 2015</p>
+					</div>
+
+					<div class="timeline-content">
+						<h4>St Giri Sr Sec School</h4>
+						<p>New Delhi, India</p>
+					</div>
+
+				</div> <!-- /timeline-block -->
+
+   			</div> <!-- /timeline-wrap -->   			
+
+   		</div> <!-- /col-twelve -->
+   		
+   	</div> <!-- /resume-timeline -->
+		
+	</section> <!-- /features -->
+
+	<!-- CTA Section
+   ================================================== -->
+	
+	<!-- services Section
+   ================================================== -->
+	<section id="services">
+
+		<div class="overlay"></div>
+
+		<div class="row section-intro">
+   		<div class="col-twelve">
+
+   			<h5>Projects</h5>
+   			<h1>What I have created?</h1>
+
+   			<p class="lead"></p>
+
+   		</div>   		
+   	</div> <!-- /section-intro -->
+
+   	<div class="row services-content">
+
+   		<div id="owl-slider" class="owl-carousel services-list">
+
+	      	<div class="service">	
+
+	      		<span class="icon"><i class="icon-earth"></i></span>            
+
+	            <div class="service-content">	
+
+	            	 <h3>
+						P2P</h3>
+
+		            <p class="desc">Procurement to Purchase - Created a project for a client where the people in an organisation could raise a purchase requisition, which can be approved by the levels above the employee who raised PR and afterwards required action can be performed on it like making contracts, making payments etc.
+	         		</p>
+	         		
+	         	</div> 	         	 
+
+				</div> <!-- /service -->
+
+				<div class="service">	
+
+					<span class="icon"><i class="icon-window"></i></span>                          
+
+	            <div class="service-content">	
+
+	            	<h3>
+						Gitstats</h3>  
+
+		            <p class="desc">A simple app to know the contributors in your public repositories. Created this by just using HTML, CSS & Javascript.
+	         		</p>
+
+	            </div>	                          
+
+			   </div> <!-- /service -->
+
+			   <div class="service">
+
+			   	<span class="icon"><i class="icon-paint-brush"></i></span>		            
+
+	            <div class="service-content">
+
+	            	<h3>
+						Farmers E-Aarthiya</h3>
+
+		            <p class="desc">Motive was to assist farmers to sell end products directly to the customers removing
+						middleman. Created a platform where farmers could register themselves and had the option to sell their crops directly to consumers. Farmers also had the required resources on the platform like help book, government guidelines ,weather and news report etc.
+						Technologies Used - PHP, Javascript, HTML, CSS and also used APIs for Live Weather and news
+						updates.
+	        			</p> 
+
+	            </div> 	            	               
+
+			   </div> <!-- /service -->
+
+				<div class="service">
+
+					<span class="icon"><i class="icon-toggles"></i></span>	              
+
+	            <div class="service-content">
+
+	            	<h3>Cybernetic Protector</h3>
+
+		            <p class="desc">Motive was to ease the work of Secret Intelligence Agency’s task. Created a platform where a Secret agency could carry out all their procedures or tasks in a systematic way.
+	         		</p> 
+	         		
+	            </div>                
+
+				</div> <!-- /service -->
+
+	      </div> <!-- /services-list -->
+   		
+   	</div> <!-- /services-content -->
+		
+	</section> <!-- /services -->	
+
+
+	<!-- stats Section
+   ================================================== -->
+	<section id="stats" class="count-up">
+
+		<div class="row">
+			<div class="col-twelve">
+
+				<div class="block-1-6 block-s-1-3 block-tab-1-2 block-mob-full stats-list">
+						<p style="font-size: 50px; color: black; margin-top: 1cm;">How to connect with me?</p>
+				</div> <!-- /stats-list -->
+
+			</div> <!-- /twelve -->
+		</div> <!-- /row -->
+
+	</section> <!-- /stats -->
+
+	
+   <!-- contact
+   ================================================== -->
+	<section id="contact">
+
+		<div class="row section-intro">
+   		<div class="col-twelve">
+
+   			<h5>Contact</h5>
+   			<h1>I'd Love To Hear From You.</h1>
+
+   		</div> 
+   	</div> <!-- /section-intro -->
+
+   	<div class="row contact-form">
+
+   		<div class="col-twelve">
+
+            <!-- form -->
+            <form name="contactForm" id="contactForm" method="post" action="">
+      			<fieldset>
+
+                  <div class="form-field">
+ 						   <input name="contactName" type="text" id="contactName" placeholder="Name" value="" minlength="2" required="">
+                  </div>
+                  <div class="form-field">
+	      			   <input name="contactEmail" type="email" id="contactEmail" placeholder="Email" value="" required="">
+	               </div>
+                  <div class="form-field">
+	     				   <input name="contactSubject" type="text" id="contactSubject" placeholder="Subject" value="">
+	               </div>                       
+                  <div class="form-field">
+	                 	<textarea name="contactMessage" id="contactMessage" placeholder="message" rows="10" cols="50" required=""></textarea>
+	               </div>                      
+                 <div class="form-field">
+                     <button class="submitform">Submit</button>
+                     <div id="submit-loader">
+                        <div class="text-loader">Sending...</div>                             
+       				      <div class="s-loader">
+								  	<div class="bounce1"></div>
+								  	<div class="bounce2"></div>
+								  	<div class="bounce3"></div>
+								</div>
+							</div>
+                  </div>
+
+      			</fieldset>
+      		</form> <!-- Form End -->
+
+            <!-- contact-warning -->
+            <div id="message-warning">            	
+            </div>            
+            <!-- contact-success -->
+      		<div id="message-success">
+               <i class="fa fa-check"></i>Your message was sent, thank you!<br>
+      		</div>
+
+         </div> <!-- /col-twelve -->
+   		
+   	</div> <!-- /contact-form -->
+
+   	<div class="row contact-info">
+
+   		<div class="col-four tab-full">
+
+   			<div class="icon">
+   				<i class="icon-pin"></i>
+   			</div>
+
+   			<h5>Where to find me</h5>
+
+   			<p>
+            New Delhi, India
+            </p>
+
+   		</div>
+
+   		<div class="col-four tab-full collapse">
+
+   			<div class="icon">
+   				<i class="icon-mail"></i>
+   			</div>
+
+   			<h5>Email Me At</h5>
+
+   			<p>7sumitjha@gmail.com			     
+			   </p>
+
+   		</div>
+
+   		<div class="col-four tab-full">
+
+   			<div class="icon">
+   				<i class="icon-phone"></i>
+   			</div>
+
+   			<h5>Call Me At</h5>
+
+   			<p>Phone: (+91) 9971774238<br>
+			   </p>
+
+   		</div>
+   		
+   	</div> <!-- /contact-info -->
+		
+	</section> <!-- /contact -->
+
+
+   <!-- footer
+   ================================================== -->
+
+   <footer>
+
+      	
+
+	      	<div id="go-top">
+		         <a class="smoothscroll" title="Back to Top" href="#top"><i class="fa fa-long-arrow-up"></i></a>
+		      </div>
+
+      	</div> <!-- /row -->     	
+   </footer>  
+
+   <div id="preloader"> 
+    	<div id="loader"></div>
+   </div> 
+
+   <!-- Java Script
+   ================================================== --> 
+   <script src="js/jquery-2.1.3.min.js"></script>
+   <script src="js/plugins.js"></script>
+   <script src="js/main.js"></script>
 
 </body>
 
