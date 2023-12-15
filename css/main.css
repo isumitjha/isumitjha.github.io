@@ -24,6 +24,7 @@
  *  16. stats
  *  17. contact
  *  18. footer
+ *  19. Blog
  *
  * =================================================================== 
  */
@@ -524,7 +525,7 @@ select {
 	padding: 1.5rem 0;
 	border: 0;
 	outline: none;
-	vertical-align: middle;
+	/* vertical-align: middle; */
 	color: #313131;
 	font-family: "poppins-regular", sans-serif;
 	font-size: 1.5rem;
@@ -1704,6 +1705,14 @@ header .logo a {
 	left: 0;
 	bottom: 0;
 }
+#resume .timeline-content h4 p {
+	color: #888888;
+	margin-bottom: 0%; 
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 15px;
+	font-weight: normal;
+	font-style: italic;	
+}
 
 /**
  * responsive:
@@ -2595,4 +2604,55 @@ footer .copyright span:last-child::after {
 	background: #000000;
 }
 
+/** 
+ * ===================================================================
+ * 19. Blog CSS
+ *
+ * ------------------------------------------------------------------- 
+ */
+ #blog {
+	background: #000;
+	padding-top: 10rem;
+	padding-bottom: 12rem;
+}
+#blog .section-intro {
+	margin-bottom: 2rem;
+}
+
+@media only screen and (max-width:1024px) {
+	.intro-info {
+		margin-right: 0;
+		margin-left: 0;
+	}
+}
+@media only screen and (max-width:768px) {
+	.intro-info img {
+		height: 7.8rem;
+		width: 7.8rem;
+	}
+	.intro-info .lead {
+		padding-left: 11rem;
+	}
+}
+@media only screen and (max-width:600px) {
+	.intro-info {
+		text-align: center;
+		margin-top: 3rem;
+	}
+	.intro-info img {
+		height: 6.6rem;
+		width: 6.6rem;
+		float: none;
+		display: inline-block;
+	}
+	.intro-info .lead {
+		padding-left: 0;
+		text-align: center;
+	}
+}
+
+#blog .section-intro h1 {
+	color: #FF0077;
+	font: size 30px;;
+}
 /*# sourceMappingURL=main.css.map */
