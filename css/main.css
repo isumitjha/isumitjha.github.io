@@ -1622,7 +1622,7 @@ header .logo a {
  */
 #resume {
 	padding-top: 12rem;
-	padding-bottom: 12rem;
+	padding-bottom: 2rem;
 }
 
 #resume .resume-header {
@@ -2655,4 +2655,93 @@ footer .copyright span:last-child::after {
 	color: #FF0077;
 	font: size 30px;;
 }
-/*# sourceMappingURL=main.css.map */
+
+/* Certificates ---------------' */
+
+.certificates-section {
+    background-color: #930045 ;
+	-webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover; /* Changed from 'fixed' */
+    padding-top: 6rem;
+    padding-bottom: 12rem;
+    color: white;
+    position: relative;
+	margin-bottom: 2%;
+}
+
+.certificates-section .section-title {
+    text-align: center;
+    margin-bottom: 40px;
+    color: white;
+	
+}
+
+.certificates-section .section-title h2{
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-size: 26px;
+    color: #ffffff;
+    margin-bottom: 5px
+}
+
+.certificates-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: normal; /* Aligns items horizontally */
+	margin: 0%;
+
+}
+
+.certificates-item {
+    margin: 0px; /* Adjust spacing between items */
+}
+
+.certificates-wrap {
+    width: 150px; /* Set a fixed width for each logo */
+    height: 100px; /* Set a fixed height for each logo */
+    overflow: visible;
+    background: rgba(0, 0, 0, 0.7);
+    transition: 0.3s;
+    border-radius: 0px;
+}
+
+.certificates-wrap img {
+    width: 150%; /* Ensures the image fills its container */
+    height: 100%; /* Ensures the image fills its container */
+    transition: 0.3s;
+    border-radius: 5px;
+}
+
+.certificates-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 10px;
+    text-align: center;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.certificates-info h4 {
+    font-size: 20px;
+    color: white;
+    margin-bottom: 1px;
+}
+
+.certificate-date {
+    font-size: 16px;
+    font-style: italic;
+    color: #ddd;
+	margin-bottom: 1px;
+}
+
+.certificates-item:hover .certificates-wrap img {
+    transform: scale(1.4);
+}
+
+.certificates-item:hover .certificates-info {
+    opacity: 1;
+}
