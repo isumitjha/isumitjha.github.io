@@ -7,9 +7,9 @@
    <!--- basic page needs
    ================================================== -->
    <meta charset="utf-8">
-	<title>Sumit Jha</title>
-	<meta name="description" content=""> 
-	<meta name="author" content="">
+	<title>Sumit Jha — Software Engineer</title>
+	<meta name="description" content="Sumit Jha — Software Engineer II at OpenTeams. Full-stack developer and open-source contributor working with Python, TypeScript, FastAPI, Next.js, and cloud infrastructure.">
+	<meta name="author" content="Sumit Jha">
 
    <!-- mobile specific metas
    ================================================== -->
@@ -29,6 +29,43 @@
    <!-- favicons
 	================================================== -->
 	<link rel="icon" type="image/png" href="favicon.png">
+
+	<!-- inline styles: project link titles + open-source contributions list -->
+	<style>
+		/* Project card titles that are links should match the other (white) titles, pink on hover */
+		.services-list h3 a { color: #FFFFFF; transition: color 0.3s ease-in-out; }
+		.services-list h3 a:hover,
+		.services-list h3 a:focus { color: #FF0077; }
+
+		/* Open-source contributions: keep all tags on a single line */
+		.oss-intro { font-size: 1.6rem; margin-bottom: 1.8rem; }
+		.oss-list {
+			list-style: none;
+			margin: 0 0 2rem 0;
+			padding: 0;
+			display: flex;
+			flex-wrap: nowrap;
+			gap: 0.8rem;
+		}
+		.oss-list li { margin: 0; }
+		.oss-list li a {
+			display: inline-block;
+			padding: 0.6rem 1.1rem;
+			border: 1px solid #FF0077;
+			border-radius: 3px;
+			font-size: 1.25rem;
+			line-height: 1.2;
+			white-space: nowrap;
+			color: #313131;
+			transition: all 0.3s ease-in-out;
+		}
+		.oss-list li a:hover,
+		.oss-list li a:focus { background: #FF0077; color: #fff; }
+
+		@media only screen and (max-width: 600px) {
+			.oss-list { flex-wrap: wrap; }
+		}
+	</style>
 
 </head>
 
@@ -50,10 +87,13 @@
 				 <ul class="main-navigation">
 					 <li class="current"><a class="smoothscroll"  href="#intro" title="">Home</a></li>
 					 <li><a class="smoothscroll"  href="#about" title="">About</a></li>
-					 <li><a class="smoothscroll"  href="#blog" title="">Blog</a></li>	
-					 <li><a class="smoothscroll"  href="#resume" title="">Resume</a></li>
-					 <li><a class="smoothscroll"  href="#services" title="">Projects</a></li>					
-					 <li><a class="smoothscroll"  href="#contact" title="">Contact</a></li>				
+					 <li><a class="smoothscroll"  href="#resume" title="">Experience</a></li>
+					 <li><a class="smoothscroll"  href="#certificates" title="">Certificates</a></li>
+					 <li><a class="smoothscroll"  href="#education" title="">Education</a></li>
+					 <li><a class="smoothscroll"  href="#opensource" title="">Open Source</a></li>
+					 <li><a class="smoothscroll"  href="#talks" title="">Talks</a></li>
+					 <li><a class="smoothscroll"  href="#services" title="">Projects</a></li>
+					 <li><a class="smoothscroll"  href="#contact" title="">Contact</a></li>
 				 </ul>
 			 </nav>    		
 		</div> <!-- /top-bar --> 
@@ -76,7 +116,7 @@
 	   			<h1>I'm Sumit Jha.</h1>
 
 	   			<p class="intro-position">
-	   				<span>Software Developer</span>
+	   				<span>Software Engineer</span>
 	   			</p>
 
 	   			<a class="button stroke smoothscroll" href="#about" title="">More About Me</a>
@@ -89,8 +129,6 @@
    	<ul class="intro-social">        
 		<li><a href="https://www.github.com/isumitjha/"><i class="fa fa-github"></i></a></li>
 		<li><a href="https://www.linkedin.com/in/7sumitjha/"><i class="fa fa-linkedin"></i></a></li>
-		<li><a href="https://twitter.com/7sumitjha"><i class="fa fa-twitter"></i></a></li>
-		<li><a href="https://www.instagram.com/7sumitjha/"><i class="fa fa-instagram"></i></a></li>
 
 
 	 </ul> <!-- /intro-social -->      	
@@ -112,13 +150,13 @@
 
    				<img src="images/profile-pic.png" alt="Profile Picture">
 
-   				<p class="lead">Hello, I'm Sumit Jha, currently residing in Delhi. Regarding my educational background, I hold a Bachelor's degree in Computer Application, which sparked my interest in coding. To deepen my expertise, I pursued a Master's in Computer Application.
+   				<p class="lead">Hello, I'm Sumit Jha, a Software Engineer based in New Delhi, India. I hold a Master's in Computer Applications and have spent the last several years building production software across the stack — from AI-driven medical imaging applications and secure enterprise systems to open-source developer tools.
 
-					My professional journey commenced at TruAct as a Software Seveloper Trainee progressing to independently managing projects, leading teams, and handling client interactions. This experience honed my skills in project and team management, nurturing leadership qualities. Additionally, I developed proficiency in technical aspects such as problem-solving, logical thinking, and handling various API integrations, including one with Hackerearth.
-					
-					To further expand my expertise and explore new opportunities, I chose to resign from TruAct. I'm eager to continue learning and broaden my horizons in this field. My short-term goal is to deepen my knowledge in various software development skills and contribute to the growth of a dynamic team. I'm genuinely enthusiastic about continuous learning and personal growth within this domain.
-					
-					My hobbies encompass playing and watching cricket, as well as indulging in web series and documentaries.</p>
+					I'm currently a Software Engineer II at <a href="https://openteams.com/" target="_blank">OpenTeams</a>. Before that, at PiHex Labs / Python AI Solutions, I built full-stack applications with FastAPI, Next.js, and TypeScript, contributed to open-source projects like NiiVue, and managed cloud infrastructure with OpenTofu/Terraform on AWS. I care about clean architecture, solid developer experience, and shipping reliable software.
+
+					I'm an active open-source contributor — to projects including NiiVue, SymPy, Panel, Nebari, and jupyterlab-conda-store — and I gave a lightning talk at PyCon India 2024 on Panel, Python's powerful data-exploration and web-app framework.
+
+					Outside of work, my hobbies include playing and watching cricket, along with web series and documentaries.</p>
    			</div>   			
 
    		</div>   		
@@ -137,7 +175,7 @@
    				</li>
    				<li>
    					<strong>Job:</strong>
-   					<span>Sofware Developer</span>
+   					<span>Software Engineer II @ OpenTeams</span>
    				</li>
 				   <li>
 					<strong>Email:</strong>
@@ -160,30 +198,36 @@
 
    			<h3>Skills</h3>
 
-				<ul class="skill-bars">
+				<ul class="info-list">
 				   <li>
-				   	<div class="progress percent90"><span>90%</span></div>
-				   	<strong>Python</strong>
+				   	<strong>Languages:</strong>
+				   	<span>Python, TypeScript, JavaScript, HTML/CSS, SQL (PostgreSQL), Deluge</span>
 				   </li>
 				   <li>
-				   	<div class="progress percent85"><span>85%</span></div>
-				   	<strong>Flask</strong>
+				   	<strong>Backend &amp; APIs:</strong>
+				   	<span>Django, Flask, FastAPI, SQLAlchemy, Alembic, Pydantic, REST APIs, OAuth2, Microsoft Entra, LDAP</span>
 				   </li>
 				   <li>
-				   	<div class="progress percent70"><span>70%</span></div>
-				   	<strong>Django</strong>
+				   	<strong>Data Libraries &amp; Practices:</strong>
+				   	<span>Pandas, NumPy, data cleaning, data validation, exploratory analysis</span>
 				   </li>
 				   <li>
-				   	<div class="progress percent70"><span>70%</span></div>
-				   	<strong>Javascript</strong>
+				   	<strong>Frontend:</strong>
+				   	<span>React, Next.js, Tailwind CSS, Bootstrap, jQuery, DOM, WebGL, NiiVue</span>
 				   </li>
 				   <li>
-
-				   	<div class="progress percent95"><span>95%</span></div>
-				   	<strong>HTML/CSS</strong>
+				   	<strong>DevOps &amp; Infrastructure:</strong>
+				   	<span>Docker, Docker Compose, GitHub Actions, CI/CD, AWS, GCP, Nginx, Terraform / OpenTofu</span>
 				   </li>
-      
-				</ul> <!-- /skill-bars -->		
+				   <li>
+				   	<strong>Databases:</strong>
+				   	<span>PostgreSQL, MongoDB, SQLite</span>
+				   </li>
+				   <li>
+				   	<strong>Architecture &amp; Tooling:</strong>
+				   	<span>Spec, SpecKit, System Design, Monorepos, Git, Postman, npm, Yarn</span>
+				   </li>
+				</ul> <!-- /skills-list -->		
 
    		</div>
 
@@ -241,22 +285,65 @@
 				<div class="timeline-block">
 
 					<div class="timeline-ico">
-						<i class="fa fa-graduation-cap"></i>
+						<i class="fa fa-briefcase"></i>
 					</div>
 
 					<div class="timeline-header">
-						<h3>Software Developer Intern</h3>
-						<p>Dec 2023 - Till Date</p>
+						<h3>Software Engineer II</h3>
+						<p>Mar 2026 - Present</p>
 					</div>
 
 					<div class="timeline-content">
-						<h4>Essentia.dev<br><p>New Delhi</p></h4>
-						<p><b>■ Project: openbharatocr</b></p>
+						<h4><a href="https://openteams.com/" target="_blank">OpenTeams</a><br><p>Remote · Austin, Texas, United States</p></h4>
+						<p>Working as a Software Engineer II, building and maintaining software at OpenTeams. More details coming soon.</p>
+					</div>
+
+				</div> <!-- /timeline-block -->
+
+				<div class="timeline-block">
+
+					<div class="timeline-ico">
+						<i class="fa fa-briefcase"></i>
+					</div>
+
+					<div class="timeline-header">
+						<h3>Software Engineer</h3>
+						<p>Dec 2024 - Mar 2026</p>
+					</div>
+
+					<div class="timeline-content">
+						<h4><a href="https://pihexlabs.com/" target="_blank">PiHex Labs</a> / <a href="https://pythonaisolutions.com/" target="_blank">Python AI Solutions</a><br><p>Remote · Dublin, Ireland</p></h4>
+						<ul>
+							<li>Built an AI-driven medical imaging web application ("Agentic Cervical Screener") for real-time cervical cytology analysis, combining a FastAPI backend and a TypeScript/Vite frontend. Integrated a YOLO-based deep learning model for classification with an interactive <a href="https://github.com/niivue/niivue" target="_blank">NiiVue</a> WebGL viewer for slide navigation and overlayed results.</li>
+							<li>Contributed extensively to <a href="https://github.com/niivue/niivue/pulls?q=is:pr+author:isumitjha+is:closed" target="_blank">NiiVue</a> (open-source WebGL2 neuroimaging viewer): developed a reusable UI component kit (controls for brightness, contrast, slice navigation, toggles) and implemented a unified canvas overlay system to improve rendering performance and fix layering issues (PRs 1334, 1356).</li>
+							<li>Architected a secure scheduling web app for a research facility with enterprise SSO via Microsoft Entra ID (Azure AD), replacing legacy LDAP authentication. Built robust CI/CD pipelines (GitHub Actions with automated testing) and containerized deployment (Docker Compose), with modular configuration management (Pydantic) for reliability and scalability.</li>
+							<li>Implemented Infrastructure-as-Code (OpenTofu/Terraform) to manage AWS cloud infrastructure (bastion host, site-to-site VPN, Kubernetes cluster), enabling repeatable deployments and a smooth migration of multiple websites from legacy hosting.</li>
+							<li>Developed internal tools including the corporate website (<a href="https://pythonaisolutions.com/" target="_blank">pythonaisolutions.com</a> — Next.js, TypeScript, Tailwind CSS, MDX with Framer Motion) and "Project Foundry" (a monorepo for project specs with standardized templates), enhancing the company's web presence and streamlining project planning.</li>
+							<li>Worked with structured datasets in Python, performing data cleaning &amp; transformation to support analysis &amp; visualization.</li>
+						</ul>
+					</div>
+
+				</div> <!-- /timeline-block -->
+
+				<div class="timeline-block">
+
+					<div class="timeline-ico">
+						<i class="fa fa-briefcase"></i>
+					</div>
+
+					<div class="timeline-header">
+						<h3>Software Developer</h3>
+						<p>Dec 2023 - Dec 2024</p>
+					</div>
+
+					<div class="timeline-content">
+						<h4><a href="https://essentia.dev/" target="_blank">Essentia.dev</a><br><p>Remote · New Delhi, India</p></h4>
+						<p><b>■ Project: <a href="https://github.com/essentiasoftserv/openbharatocr" target="_blank">OpenBharatOCR</a></b></p>
 						<ul >
-							<li>Developing and contributing to building an open-source Python library to OCR Indian Government documents.</li>
-							<li>Collaborated with a team of developers to design and implement core features of the OCR system, enhancing its accuracy and performance.</li>
-							<li>Utilized technologies such as Python, TensorFlow, and OpenCV to build and train machine-learning models for text recognition.</li>
+							<li>Contributed to building an open-source Python library (<a href="https://github.com/essentiasoftserv/openbharatocr" target="_blank">OpenBharatOCR</a>) for OCR of government documents.</li>
+							<li>Collaborated with a team of developers to design and implement core features of the OCR system, enhancing its accuracy and performance. Utilized technologies such as Python, TensorFlow, and OpenCV to build and train machine learning models for text recognition.</li>
 							<li>Implemented pre-processing techniques for image correction, noise reduction, and text segmentation to improve OCR accuracy.</li>
+							<li>Built Python-based preprocessing pipelines to clean &amp; normalize document datasets prior to downstream analysis.</li>
 						</ul>
 
 					</div>
@@ -266,22 +353,22 @@
 	   			<div class="timeline-block">
 
 	   				<div class="timeline-ico">
-	   					<i class="fa fa-graduation-cap"></i>
+	   					<i class="fa fa-briefcase"></i>
 	   				</div>
 
 	   				<div class="timeline-header">
-	   					<h3>Software Developer - Trainee</h3>
+	   					<h3>Software Developer</h3>
 	   					<p>Apr 2023 - Nov 2023</p>
 	   				</div>
 
 	   				<div class="timeline-content">
-	   					<h4>TruAct<br><p>New Delhi</p></h4>
+	   					<h4><a href="https://www.truact.in/" target="_blank">TruAct</a><br><p>New Delhi, India</p></h4>
 						<ul >
-							<li>Developed custom applications on the Zoho Platform using Creator, which is a powerful low-code application development platform that helps in building custom web and mobile apps faster.</li>
-							<li>Developed and contributed to building P2P (Procurement to Purchase) application for recording and processing purchase requisitions within an organization.</li>
-							<li>Developed various software models including: Approval chain, Hiring Model, Farming Model, and Inventory Management.</li>
-							<li>Implemented multiple API integration of Zoho Creator with other platforms.</li>
-							<li>Developed an monitoring and training program for interns to enhance their performance and improve skills.</li>
+							<li>Developed custom applications on the Zoho Creator low-code platform.</li>
+							<li>Developed a Procurement-to-Purchase (P2P) application for recording &amp; processing purchase requisitions.</li>
+							<li>Developed various business workflow models (Approval Chain, Hiring, Farming, Inventory Management).</li>
+							<li>Implemented multiple API integrations between Zoho Creator and external platforms.</li>
+							<li>Developed a monitoring and training program for interns to improve performance and skills.</li>
 						</ul>
 	   				</div>
 
@@ -290,7 +377,7 @@
 	   			<div class="timeline-block">
 
 	   				<div class="timeline-ico">
-	   					<i class="fa fa-graduation-cap"></i>
+	   					<i class="fa fa-briefcase"></i>
 	   				</div>
 
 	   				<div class="timeline-header">
@@ -390,7 +477,7 @@
 
   <!-- ////////////////////////////// -->
    	
-   	<div class="row resume-timeline">
+   	<div class="row resume-timeline" id="education">
 
    		<div class="col-twelve resume-header">
 
@@ -405,7 +492,7 @@
    				<div class="timeline-block">
 
 	   				<div class="timeline-ico">
-	   					<i class="fa fa-briefcase"></i>
+	   					<i class="fa fa-graduation-cap"></i>
 	   				</div>
 
 	   				<div class="timeline-header">
@@ -423,7 +510,7 @@
 	   			<div class="timeline-block">
 
 	   				<div class="timeline-ico">
-	   					<i class="fa fa-briefcase"></i>
+	   					<i class="fa fa-graduation-cap"></i>
 	   				</div>
 
 	   				<div class="timeline-header">
@@ -441,7 +528,7 @@
 				   <div class="timeline-block">
 
 					<div class="timeline-ico">
-						<i class="fa fa-briefcase"></i>
+						<i class="fa fa-graduation-cap"></i>
 					</div>
 
 					<div class="timeline-header">
@@ -459,7 +546,7 @@
 				   <div class="timeline-block">
 
 					<div class="timeline-ico">
-						<i class="fa fa-briefcase"></i>
+						<i class="fa fa-graduation-cap"></i>
 					</div>
 
 					<div class="timeline-header">
@@ -477,9 +564,74 @@
    			</div> <!-- /timeline-wrap -->   			
 
    		</div> <!-- /col-twelve -->
-   		
+
    	</div> <!-- /resume-timeline -->
-		
+
+   	<!-- Open Source Contributions -->
+   	<div class="row resume-timeline" id="opensource">
+
+   		<div class="col-twelve resume-header">
+
+   			<h2>Open Source Contributions</h2>
+
+   		</div> <!-- /resume-header -->
+
+   		<div class="col-twelve">
+
+   			<p class="oss-intro">I actively contribute to open-source software. A selection of projects I've sent merged pull requests to:</p>
+
+   			<ul class="oss-list">
+   				<li><a href="https://github.com/conda-incubator/jupyterlab-conda-store/pulls?q=is:pr+author:isumitjha+is:closed" target="_blank">jupyterlab-conda-store</a></li>
+   				<li><a href="https://github.com/sympy/sympy.github.com/pulls?q=is:pr+author:isumitjha+is:closed" target="_blank">SymPy</a></li>
+   				<li><a href="https://github.com/educational-technology-collective/jupyterlab-pioneer/pulls?q=is:pr+author:isumitjha+is:closed" target="_blank">jupyterlab-pioneer</a></li>
+   				<li><a href="https://github.com/nebari-dev/nebari/pulls?q=is:pr+author:isumitjha+is:closed" target="_blank">Nebari</a></li>
+   				<li><a href="https://github.com/nebari-dev/nebari-docs/pulls?q=is:pr+author:isumitjha+is:closed" target="_blank">Nebari Docs</a></li>
+   				<li><a href="https://github.com/holoviz/panel/pulls?q=is:pr+author:isumitjha+is:closed" target="_blank">Panel</a></li>
+   				<li><a href="https://github.com/niivue/niivue/pulls?q=is:pr+author:isumitjha+is:closed" target="_blank">NiiVue</a></li>
+   				<li><a href="https://github.com/essentiasoftserv/openbharatocr/pulls?q=is:pr+author:isumitjha+is:closed" target="_blank">OpenBharatOCR</a></li>
+   			</ul>
+
+   		</div> <!-- /col-twelve -->
+
+   	</div> <!-- /resume-timeline -->
+
+   	<!-- Talks & Presentations -->
+   	<div class="row resume-timeline" id="talks">
+
+   		<div class="col-twelve resume-header">
+
+   			<h2>Talks &amp; Presentations</h2>
+
+   		</div> <!-- /resume-header -->
+
+   		<div class="col-twelve">
+
+   			<div class="timeline-wrap">
+
+   				<div class="timeline-block">
+
+   					<div class="timeline-ico">
+   						<i class="fa fa-bullhorn"></i>
+   					</div>
+
+   					<div class="timeline-header">
+   						<h3>Lightning Talk — PyCon India 2024</h3>
+   						<p>2024</p>
+   					</div>
+
+   					<div class="timeline-content">
+   						<h4>Bengaluru, India</h4>
+   						<p>"Panel – The Powerful Data Exploration &amp; Web App Framework for Python" — <a href="https://www.canva.com/design/DAGRIKvKUWU/29WK-uTDzW5FTtKLfHRI0g/edit" target="_blank">View slides</a></p>
+   					</div>
+
+   				</div> <!-- /timeline-block -->
+
+   			</div> <!-- /timeline-wrap -->
+
+   		</div> <!-- /col-twelve -->
+
+   	</div> <!-- /resume-timeline -->
+
 	</section> <!-- /features -->
 
 	<!-- CTA Section
@@ -506,68 +658,157 @@
 
    		<div id="owl-slider" class="owl-carousel services-list">
 
-	      	<div class="service">	
+	      	<div class="service">
 
-	      		<span class="icon"><i class="icon-earth"></i></span>            
+	      		<span class="icon"><i class="icon-calendar"></i></span>
 
-	            <div class="service-content">	
+	            <div class="service-content">
 
-	            	 <h3>
-						P2P</h3>
+	            	<h3>Scheduler</h3>
 
-		            <p class="desc">Procurement to Purchase - Application used to record and process a purchase requisition within an org.
-	         		</p>
-	         		
-	         	</div> 	         	 
+		            <p class="desc">Built a secure, scalable scheduler with enterprise SSO (Azure AD) authentication, Alembic migrations (PostgreSQL), and modular config management using Pydantic.</p>
+
+	            </div>
 
 				</div> <!-- /service -->
 
-				<div class="service">	
+	      	<div class="service">
 
-					<span class="icon"><i class="icon-window"></i></span>                          
-
-	            <div class="service-content">	
-
-	            	<h3>
-						Gitstats</h3>  
-
-		            <p class="desc">
-						A simple app to know the contributors in your public repositories.
-	         		</p>
-
-	            </div>	                          
-
-			   </div> <!-- /service -->
-
-			   <div class="service">
-
-			   	<span class="icon"><i class="icon-paint-brush"></i></span>		            
+	      		<span class="icon"><i class="icon-first-aid"></i></span>
 
 	            <div class="service-content">
 
-	            	<h3>
-						Farmers E-Aarthiya</h3>
+	            	<h3>Agentic Cervical Screener</h3>
 
-		            <p class="desc">Web app used to assist farmers to sell end products directly to the customers removing
-						middleman.
-	        			</p> 
+		            <p class="desc">AI-driven cervical screening web app (FastAPI + YOLO model) for analyzing cytology images, with an interactive NiiVue viewer for visualization.</p>
 
-	            </div> 	            	               
+	            </div>
 
-			   </div> <!-- /service -->
+				</div> <!-- /service -->
 
-				<div class="service">
+	      	<div class="service">
 
-					<span class="icon"><i class="icon-toggles"></i></span>	              
+	      		<span class="icon"><i class="icon-shield"></i></span>
 
 	            <div class="service-content">
 
-	            	<h3>Cybernetic Protector</h3>
+	            	<h3>Entra Credentials Validator</h3>
 
-		            <p class="desc">A simple app to ease the work of Secret Intelligence Agency’s task.
-	         		</p> 
-	         		
-	            </div>                
+		            <p class="desc">CLI and browser tool to verify OAuth2/OIDC flows with Microsoft Entra ID (Azure AD), used to test and debug enterprise SSO configurations.</p>
+
+	            </div>
+
+				</div> <!-- /service -->
+
+	      	<div class="service">
+
+	      		<span class="icon"><i class="icon-earth"></i></span>
+
+	            <div class="service-content">
+
+	            	<h3><a href="https://pythonaisolutions.com/" target="_blank">Python AI Solutions Website</a></h3>
+
+		            <p class="desc">Corporate website built from scratch using Next.js, TypeScript, Tailwind CSS, MDX, and Framer Motion, optimized for static deployment and performance.</p>
+
+	            </div>
+
+				</div> <!-- /service -->
+
+	      	<div class="service">
+
+	      		<span class="icon"><i class="icon-cloud"></i></span>
+
+	            <div class="service-content">
+
+	            	<h3>Website Management Platform</h3>
+
+		            <p class="desc">Infrastructure and deployment management system for hosting and maintaining multiple production websites using Docker, cloud storage, and CI-driven workflows.</p>
+
+	            </div>
+
+				</div> <!-- /service -->
+
+	      	<div class="service">
+
+	      		<span class="icon"><i class="icon-lego-block"></i></span>
+
+	            <div class="service-content">
+
+	            	<h3>Project Foundry</h3>
+
+		            <p class="desc">Internal project specification and planning system used to standardize architecture documents, technical proposals, and implementation workflows across teams.</p>
+
+	            </div>
+
+				</div> <!-- /service -->
+
+	      	<div class="service">
+
+	      		<span class="icon"><i class="icon-bar-chart"></i></span>
+
+	            <div class="service-content">
+
+	            	<h3>Gitstats</h3>
+
+		            <p class="desc">Calculates the contributors in your public repositories.</p>
+
+	            </div>
+
+				</div> <!-- /service -->
+
+	      	<div class="service">
+
+	      		<span class="icon"><i class="icon-id"></i></span>
+
+	            <div class="service-content">
+
+	            	<h3><a href="https://github.com/essentiasoftserv/openbharatocr" target="_blank">OpenBharatOCR</a></h3>
+
+		            <p class="desc">Open-source Python library for OCR of Indian government documents.</p>
+
+	            </div>
+
+				</div> <!-- /service -->
+
+	      	<div class="service">
+
+	      		<span class="icon"><i class="icon-shopping-cart"></i></span>
+
+	            <div class="service-content">
+
+	            	<h3>P2P</h3>
+
+		            <p class="desc">Procurement-to-Purchase (P2P) application for recording and processing internal purchase requisitions.</p>
+
+	            </div>
+
+				</div> <!-- /service -->
+
+	      	<div class="service">
+
+	      		<span class="icon"><i class="icon-grid"></i></span>
+
+	            <div class="service-content">
+
+	            	<h3><a href="https://github.com/isumitjha/Calendar-App" target="_blank">Calendar App</a></h3>
+
+		            <p class="desc">A full-stack calendar app using Django (backend) and React (frontend), enabling users to create, update, delete, and view events in monthly and weekly views.</p>
+
+	            </div>
+
+				</div> <!-- /service -->
+
+	      	<div class="service">
+
+	      		<span class="icon"><i class="icon-pie-chart"></i></span>
+
+	            <div class="service-content">
+
+	            	<h3><a href="https://github.com/isumitjha/COVID-19-Dashboard-using-Panel" target="_blank">COVID-19 Dashboard</a></h3>
+
+		            <p class="desc">An interactive COVID-19 dashboard built with Panel, showcasing Python's ability to create dynamic web apps without HTML, CSS, or JavaScript.</p>
+
+	            </div>
 
 				</div> <!-- /service -->
 
@@ -708,7 +949,6 @@
    <footer>
 
 	<footer>
-		<p style="text-align: center;font-size: larger;">Source code at <a href="https://github.com/isumitjha/isumitjha.github.io" target=”_blank”>Github <i class="fa fa-github"></i></a></p>
 
 	      	<div id="go-top">
 		         <a class="smoothscroll" title="Back to Top" href="#top"><i class="fa fa-long-arrow-up"></i></a>
