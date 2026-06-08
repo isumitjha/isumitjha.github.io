@@ -64,6 +64,20 @@
       window.scrollTo({ top: y, behavior: reduceMotion ? 'auto' : 'smooth' });
     }
   }
+  // Page-transition wipe for deliberate navigation (nav + spy rail)
+  var wipe = document.createElement('div'); wipe.className = 'pagewipe'; document.body.appendChild(wipe);
+  var wiping = false;
+  function wipeTo(target) {
+    if (reduceMotion) { scrollToTarget(target); return; }
+    if (wiping) return; wiping = true;
+    wipe.classList.remove('out'); wipe.classList.add('in');
+    window.setTimeout(function () {
+      if (lenis) lenis.scrollTo(target, { offset: -68, immediate: true });
+      else window.scrollTo(0, target.getBoundingClientRect().top + window.pageYOffset - 68);
+      wipe.classList.remove('in'); wipe.classList.add('out');
+      window.setTimeout(function () { wipe.classList.remove('out'); wiping = false; }, 440);
+    }, 430);
+  }
   document.querySelectorAll('a[href^="#"]').forEach(function (a) {
     a.addEventListener('click', function (e) {
       var id = a.getAttribute('href');
@@ -72,7 +86,7 @@
       if (!target) return;
       e.preventDefault();
       closeMenu();
-      scrollToTarget(target);
+      if (a.closest('.nav__links')) wipeTo(target); else scrollToTarget(target);
     });
   });
 
@@ -341,9 +355,9 @@
     })();
   }
 
-  /* ---------- Hero parallax on scroll ---------- */
+  /* ---------- Scroll-reactive hero (laptop drifts, shrinks & fades away) ---------- */
   if (hasGSAP && !reduceMotion) {
-    window.gsap.to('.laptop--hero', { yPercent: -8, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+    window.gsap.to('.laptop--hero', { yPercent: -6, scale: 0.9, autoAlpha: 0.55, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
   }
 
   /* ---------- Hero orbs follow the cursor (parallax) ---------- */
@@ -484,9 +498,14 @@
     var n = cards.length; if (!n) return;
     var radius = 250, step = 360 / n;
     cards.forEach(function (c, i) { c.style.transform = 'rotateY(' + (i * step) + 'deg) translateZ(' + radius + 'px)'; });
-    var rot = 0, vel = 0, dragging = false, lastX = 0;
-    function render() { stage.style.transform = 'translateZ(-' + radius + 'px) rotateY(' + rot + 'deg)'; }
-    function loop() { if (!dragging) { rot += vel; vel *= 0.94; if (Math.abs(vel) < 0.015) vel = 0; rot += 0.12; } render(); requestAnimationFrame(loop); }
+    var rot = 0, vel = 0, dragging = false, lastX = 0, tilt = 0, tiltTarget = 0;
+    var pring = document.getElementById('pring');
+    function render() { stage.style.transform = 'translateZ(-' + radius + 'px) rotateX(' + tilt.toFixed(2) + 'deg) rotateY(' + rot + 'deg)'; }
+    function loop() { if (!dragging) { rot += vel; vel *= 0.94; if (Math.abs(vel) < 0.015) vel = 0; rot += 0.12; } tilt += (tiltTarget - tilt) * 0.08; render(); requestAnimationFrame(loop); }
+    if (pring) {
+      pring.addEventListener('mousemove', function (e) { if (dragging) return; var r = pring.getBoundingClientRect(); tiltTarget = ((e.clientY - r.top) / r.height - 0.5) * -18; });
+      pring.addEventListener('mouseleave', function () { tiltTarget = 0; });
+    }
     stage.addEventListener('pointerdown', function (e) { dragging = true; lastX = e.clientX; vel = 0; stage.classList.add('is-grab'); try { stage.setPointerCapture(e.pointerId); } catch (_) {} });
     stage.addEventListener('pointermove', function (e) { if (!dragging) return; var dx = e.clientX - lastX; lastX = e.clientX; rot += dx * 0.45; vel = dx * 0.45; });
     function up() { dragging = false; stage.classList.remove('is-grab'); }
@@ -569,15 +588,23 @@
     });
   }
 
-  /* ---------- Live local (IST) clock ---------- */
+  /* ---------- Live local (IST) clock + time-of-day greeting ---------- */
   (function () {
     var el = document.getElementById('localTime');
-    if (!el) return;
+    var greet = document.getElementById('greet');
+    if (!el && !greet) return;
     function tick() {
       var now = new Date();
       var ist = new Date(now.getTime() + now.getTimezoneOffset() * 60000 + 5.5 * 3600000);
       var h = ist.getHours(), m = ist.getMinutes();
-      el.textContent = (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
+      if (el) el.textContent = (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
+      if (greet) {
+        greet.textContent = h < 5 ? 'Burning the midnight oil 🌙'
+          : h < 12 ? 'Good morning ☀️'
+          : h < 17 ? 'Good afternoon 👋'
+          : h < 21 ? 'Good evening 🌆'
+          : 'Working late 🌙';
+      }
     }
     tick();
     window.setInterval(tick, 20000);
@@ -697,7 +724,7 @@
       d.className = 'spy__dot'; d.type = 'button';
       d.setAttribute('aria-label', a.textContent);
       var lbl = document.createElement('span'); lbl.textContent = a.textContent; d.appendChild(lbl);
-      d.addEventListener('click', function () { scrollToTarget(secs[i]); });
+      d.addEventListener('click', function () { wipeTo(secs[i]); });
       rail.appendChild(d); dots.push({ el: d, sec: secs[i] });
     });
     document.body.appendChild(rail);

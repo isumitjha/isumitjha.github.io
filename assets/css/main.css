@@ -717,6 +717,14 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 /* ---------- Mouse-following 3D laptop ---------- */
 .laptop__lid { transition: transform 0.4s var(--ease); }
 
+/* ---------- Status greeting ---------- */
+.statuscard__greet { font-family: var(--font-head); font-weight: 600; font-size: 1.25rem; color: var(--text); letter-spacing: -0.01em; }
+
+/* ---------- Page-transition wipe ---------- */
+.pagewipe { position: fixed; inset: 0; z-index: 1500; background: var(--accent, var(--orange)); pointer-events: none; transform: scaleY(0); transform-origin: bottom; }
+.pagewipe.in { transform: scaleY(1); transform-origin: bottom; transition: transform 0.42s cubic-bezier(0.7, 0, 0.3, 1); }
+.pagewipe.out { transform: scaleY(0); transform-origin: top; transition: transform 0.42s cubic-bezier(0.7, 0, 0.3, 1); }
+
 /* ---------- Project detail modal ---------- */
 .pmodal { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 1.5rem; background: color-mix(in srgb, #000 50%, transparent); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
 .pmodal[hidden] { display: none; }
