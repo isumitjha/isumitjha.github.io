@@ -59,7 +59,7 @@
   <!-- Fonts: Poppins (Styrene-substitute) + Lora (Tiempos-substitute) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&family=Caveat:wght@600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
@@ -95,6 +95,7 @@
         <a href="#talks">Talks</a>
         <a href="#certificates">Certificates</a>
         <a href="#education">Education</a>
+        <a href="#uses">Uses</a>
         <a href="#contact">Contact</a>
       </nav>
 
@@ -119,6 +120,7 @@
         <span class="orb orb--blue"></span>
         <span class="orb orb--green"></span>
       </div>
+      <span class="hero__spot" id="heroSpot" aria-hidden="true"></span>
       <canvas class="constellation" id="constellation" aria-hidden="true"></canvas>
       <canvas class="webgl-hero" id="webglHero" aria-hidden="true"></canvas>
       <div class="container hero__inner">
@@ -186,6 +188,23 @@
         <div class="stat"><span class="stat__num" data-count="11">0</span><span class="stat__label">Projects shipped</span></div>
         <div class="stat"><span class="stat__num" data-count="8">0</span><span class="stat__label">Open-source projects</span></div>
         <div class="stat"><span class="stat__num" data-count="6">0</span><span class="stat__label">Certifications</span></div>
+      </div>
+    </section>
+
+    <!-- ============ HIGHLIGHTS REEL ============ -->
+    <section class="reel-sec" aria-label="Career highlights">
+      <div class="container">
+        <div class="reel__head"><span class="spark" aria-hidden="true"></span> Career highlights <span class="reel__hint">drag / scroll →</span></div>
+      </div>
+      <div class="reel" id="reel">
+        <div class="reel__track" id="reelTrack">
+          <article class="hl" style="--c:var(--orange)"><span class="hl__yr">2024–26</span><h3 class="hl__t">AI medical-imaging app</h3><p>Built the <em>Agentic Cervical Screener</em> — FastAPI + a YOLO model + an interactive NiiVue WebGL viewer for real-time cytology analysis.</p><span class="hl__tag">PiHex / Python AI Solutions</span></article>
+          <article class="hl" style="--c:var(--blue)"><span class="hl__yr">2024</span><h3 class="hl__t">NiiVue contributor</h3><p>Shipped a reusable UI component kit and a unified canvas-overlay system to the open-source WebGL2 neuroimaging viewer (PRs #1334, #1356).</p><span class="hl__tag">Open source</span></article>
+          <article class="hl" style="--c:var(--green)"><span class="hl__yr">2025</span><h3 class="hl__t">Infra as Code on AWS</h3><p>Provisioned bastion, site-to-site VPN and a Kubernetes cluster with OpenTofu/Terraform — repeatable deploys and a clean migration off legacy hosting.</p><span class="hl__tag">DevOps</span></article>
+          <article class="hl" style="--c:var(--orange)"><span class="hl__yr">2024</span><h3 class="hl__t">PyCon India speaker</h3><p>Gave a lightning talk on Panel — the data-exploration &amp; web-app framework for Python.</p><span class="hl__tag">Bengaluru</span></article>
+          <article class="hl" style="--c:var(--blue)"><span class="hl__yr">2025</span><h3 class="hl__t">Enterprise SSO</h3><p>Architected a secure scheduling app with Microsoft Entra ID (Azure AD), replacing legacy LDAP, with CI/CD and containerized deploys.</p><span class="hl__tag">Security</span></article>
+          <article class="hl" style="--c:var(--green)"><span class="hl__yr">2023–24</span><h3 class="hl__t">OpenBharatOCR</h3><p>Helped build an open-source Python library for OCR of Indian government documents with TensorFlow &amp; OpenCV.</p><span class="hl__tag">Open source</span></article>
+        </div>
       </div>
     </section>
 
@@ -401,6 +420,13 @@
           </div>
           <p class="pring__hint">drag to spin ·  full list below</p>
         </div>
+        <div class="pfilter" data-reveal aria-label="Filter projects">
+          <button class="pchip is-active" type="button" data-filter="all">All <span class="pchip__n">11</span></button>
+          <button class="pchip" type="button" data-filter="web">Web</button>
+          <button class="pchip" type="button" data-filter="ai">AI / ML</button>
+          <button class="pchip" type="button" data-filter="oss">Open Source</button>
+          <button class="pchip" type="button" data-filter="infra">Infra</button>
+        </div>
         <div class="browser" data-reveal>
           <div class="browser__bar">
             <span class="dot dot--r"></span><span class="dot dot--y"></span><span class="dot dot--g"></span>
@@ -408,77 +434,77 @@
           </div>
           <div class="projects__grid">
 
-          <article class="proj" data-reveal>
+          <article class="proj" data-cat="web infra" data-reveal>
             <span class="proj__no">01</span>
             <h3 class="proj__title">Scheduler</h3>
             <p class="proj__desc">A secure, scalable scheduler with enterprise SSO (Azure AD), Alembic migrations (PostgreSQL), and modular config management using Pydantic.</p>
             <ul class="tags"><li>Azure AD</li><li>PostgreSQL</li><li>Alembic</li><li>Pydantic</li></ul>
           </article>
 
-          <article class="proj" data-reveal>
+          <article class="proj" data-cat="ai" data-reveal>
             <span class="proj__no">02</span>
             <h3 class="proj__title">Agentic Cervical Screener</h3>
             <p class="proj__desc">AI-driven cervical screening web app (FastAPI + YOLO model) for analyzing cytology images, with an interactive NiiVue viewer for visualization.</p>
             <ul class="tags"><li>FastAPI</li><li>YOLO</li><li>NiiVue</li><li>TypeScript</li></ul>
           </article>
 
-          <article class="proj" data-reveal>
+          <article class="proj" data-cat="infra" data-reveal>
             <span class="proj__no">03</span>
             <h3 class="proj__title">Entra Credentials Validator</h3>
             <p class="proj__desc">A CLI and browser tool to verify OAuth2/OIDC flows with Microsoft Entra ID (Azure AD), used to test and debug enterprise SSO configurations.</p>
             <ul class="tags"><li>OAuth2</li><li>OIDC</li><li>Entra ID</li></ul>
           </article>
 
-          <article class="proj" data-reveal>
+          <article class="proj" data-cat="web" data-reveal>
             <span class="proj__no">04</span>
             <h3 class="proj__title"><a href="https://pythonaisolutions.com/" target="_blank" rel="noopener">Python AI Solutions Website<span class="proj__ext" aria-hidden="true">↗</span></a></h3>
             <p class="proj__desc">Corporate website built from scratch with Next.js, TypeScript, Tailwind CSS, MDX, and Framer Motion — optimized for static deployment and performance.</p>
             <ul class="tags"><li>Next.js</li><li>TypeScript</li><li>Tailwind</li><li>MDX</li></ul>
           </article>
 
-          <article class="proj" data-reveal>
+          <article class="proj" data-cat="infra" data-reveal>
             <span class="proj__no">05</span>
             <h3 class="proj__title">Website Management Platform</h3>
             <p class="proj__desc">Infrastructure and deployment management system for hosting and maintaining multiple production websites using Docker, cloud storage, and CI-driven workflows.</p>
             <ul class="tags"><li>Docker</li><li>CI/CD</li><li>Cloud</li></ul>
           </article>
 
-          <article class="proj" data-reveal>
+          <article class="proj" data-cat="infra" data-reveal>
             <span class="proj__no">06</span>
             <h3 class="proj__title">Project Foundry</h3>
             <p class="proj__desc">Internal project specification and planning system to standardize architecture documents, technical proposals, and implementation workflows across teams.</p>
             <ul class="tags"><li>Monorepo</li><li>Specs</li><li>Tooling</li></ul>
           </article>
 
-          <article class="proj" data-reveal>
+          <article class="proj" data-cat="oss" data-reveal>
             <span class="proj__no">07</span>
             <h3 class="proj__title">Gitstats</h3>
             <p class="proj__desc">A tool that calculates the contributors in your public repositories.</p>
             <ul class="tags"><li>Python</li><li>GitHub API</li></ul>
           </article>
 
-          <article class="proj" data-reveal>
+          <article class="proj" data-cat="ai oss" data-reveal>
             <span class="proj__no">08</span>
             <h3 class="proj__title"><a href="https://github.com/essentiasoftserv/openbharatocr" target="_blank" rel="noopener">OpenBharatOCR<span class="proj__ext" aria-hidden="true">↗</span></a></h3>
             <p class="proj__desc">Open-source Python library for OCR of Indian government documents, built with TensorFlow and OpenCV.</p>
             <ul class="tags"><li>Python</li><li>TensorFlow</li><li>OpenCV</li></ul>
           </article>
 
-          <article class="proj" data-reveal>
+          <article class="proj" data-cat="web" data-reveal>
             <span class="proj__no">09</span>
             <h3 class="proj__title">P2P</h3>
             <p class="proj__desc">Procurement-to-Purchase application for recording and processing internal purchase requisitions.</p>
             <ul class="tags"><li>Zoho Creator</li><li>Deluge</li></ul>
           </article>
 
-          <article class="proj" data-reveal>
+          <article class="proj" data-cat="web oss" data-reveal>
             <span class="proj__no">10</span>
             <h3 class="proj__title"><a href="https://github.com/isumitjha/Calendar-App" target="_blank" rel="noopener">Calendar App<span class="proj__ext" aria-hidden="true">↗</span></a></h3>
             <p class="proj__desc">A full-stack calendar app using Django and React — create, update, delete, and view events in monthly and weekly views.</p>
             <ul class="tags"><li>Django</li><li>React</li></ul>
           </article>
 
-          <article class="proj" data-reveal>
+          <article class="proj" data-cat="oss" data-reveal>
             <span class="proj__no">11</span>
             <h3 class="proj__title"><a href="https://github.com/isumitjha/COVID-19-Dashboard-using-Panel" target="_blank" rel="noopener">COVID-19 Dashboard<span class="proj__ext" aria-hidden="true">↗</span></a></h3>
             <p class="proj__desc">An interactive COVID-19 dashboard built with Panel, showcasing Python's ability to create dynamic web apps without HTML, CSS, or JavaScript.</p>
@@ -679,6 +705,28 @@
       </div>
     </section>
 
+    <!-- ============ USES ============ -->
+    <section class="section section--alt" id="uses">
+      <div class="container">
+        <div class="section__head" data-reveal>
+          <span class="spark" aria-hidden="true"></span>
+          <h2 class="section__title">Uses</h2>
+        </div>
+        <p class="section__lead" data-reveal>The gear and tools I reach for every day.</p>
+        <div class="uses__grid">
+          <div class="usecard" data-reveal style="--c:var(--orange)"><span class="usecard__k">Editor</span><b class="usecard__v">Cursor</b><p>AI-first VS Code fork — fast multi-file edits and refactors.</p></div>
+          <div class="usecard" data-reveal style="--c:var(--blue)"><span class="usecard__k">Machine</span><b class="usecard__v">MacBook · macOS</b><p>My daily driver for everything from FastAPI to WebGL.</p></div>
+          <div class="usecard" data-reveal style="--c:var(--green)"><span class="usecard__k">Terminal</span><b class="usecard__v">iTerm2 + zsh</b><p>Where most of the real work happens.</p></div>
+          <div class="usecard" data-reveal style="--c:var(--orange)"><span class="usecard__k">Version control</span><b class="usecard__v">Git + GitHub</b><p>Branch, PR, review, ship — every day.</p></div>
+          <div class="usecard" data-reveal style="--c:var(--blue)"><span class="usecard__k">Containers</span><b class="usecard__v">Docker</b><p>Reproducible local dev and deployments via Compose.</p></div>
+          <div class="usecard" data-reveal style="--c:var(--green)"><span class="usecard__k">API testing</span><b class="usecard__v">Postman</b><p>Poking, debugging and documenting REST APIs.</p></div>
+          <div class="usecard" data-reveal style="--c:var(--orange)"><span class="usecard__k">CI / CD</span><b class="usecard__v">GitHub Actions</b><p>Automated tests, builds and deploys on every push.</p></div>
+          <div class="usecard" data-reveal style="--c:var(--blue)"><span class="usecard__k">Notes</span><b class="usecard__v">Notion</b><p>Specs, planning and a second brain.</p></div>
+          <div class="usecard" data-reveal style="--c:var(--green)"><span class="usecard__k">Soundtrack</span><b class="usecard__v">Spotify</b><p>Focus playlists fuelling the deep-work hours.</p></div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ CONSOLE (interactive terminal + tech wall) ============ -->
     <section class="section" id="console">
       <div class="container">
@@ -747,7 +795,11 @@
   <!-- ============ FOOTER ============ -->
   <footer class="footer">
     <div class="container footer__inner">
-      <span>© <span id="year">2026</span> Sumit Jha</span>
+      <span class="footer__copy">© <span id="year">2026</span> Sumit Jha
+        <span class="sig" id="sig" aria-hidden="true">
+          <svg viewBox="0 0 220 86"><text x="6" y="62" class="sig__text">Sumit</text></svg>
+        </span>
+      </span>
       <ul class="footer__social">
         <li><a href="mailto:7sumitjha@gmail.com" aria-label="Email">
           <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 6L2 7"/></svg>
