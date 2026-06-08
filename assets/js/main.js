@@ -686,10 +686,59 @@
       bar.hidden = false; leg.hidden = false;
     }
     function render(d) {
-      num('ghCommits', d.commits); num('ghPRs', d.prs); num('ghMerged', d.merged);
-      num('ghReviews', d.reviews); num('ghIssues', d.issues); num('ghYears', d.years); num('ghLangs', d.langCount);
+      num('ghContributions', d.contributions); num('ghCommits', d.commits); num('ghPRs', d.prs); num('ghMerged', d.merged);
+      num('ghContribRepos', d.reposContributedTo); num('ghIssues', d.issues); num('ghLangs', d.langCount);
       locTile(typeof d.loc === 'number' ? d.loc : null);
       renderLangs(d.langs);
+      if (d.oss) { window.__ossData = d.oss; initOSSCards(); }
+    }
+
+    // ----- Open-source hover tooltip (mini chart) + click modal -----
+    var ossInit = false;
+    function initOSSCards() {
+      if (ossInit) return; ossInit = true;
+      var data = window.__ossData || {};
+      var tip = document.getElementById('ossTip'), modal = document.getElementById('ossModal'), panel = document.getElementById('ossModalPanel');
+      if (!tip || !modal) return;
+      function row(label, val, max, color) {
+        var pct = max > 0 && val != null ? Math.round((val / max) * 100) : 0;
+        return '<div class="ot-row"><span class="ot-label">' + label + '</span><span class="ot-bar"><i style="width:' + pct + '%;background:' + color + '"></i></span><span class="ot-val">' + (val != null ? val.toLocaleString() : '—') + '</span></div>';
+      }
+      function tipHTML(o) {
+        var lines = o.additions != null ? o.additions + o.deletions : null;
+        var max = Math.max(o.commits || 0, o.prs || 0, o.merged || 0, lines || 0, 1);
+        return '<div class="ot-name">' + esc(o.name) + (o.language ? ' · <span class="ot-lang">' + esc(o.language) + '</span>' : '') + '</div>' +
+          row('commits', o.commits, max, 'var(--orange)') + row('PRs', o.prs, max, 'var(--blue)') +
+          row('merged', o.merged, max, 'var(--green)') + (lines != null ? row('lines', lines, max, 'var(--orange)') : '') +
+          '<div class="ot-hint">click for details</div>';
+      }
+      function box(v, l) { return '<div class="osb"><b>' + (v != null ? v.toLocaleString() : '—') + '</b><span>' + l + '</span></div>'; }
+      function openModal(o, href) {
+        panel.innerHTML = '<button class="pmodal__close" id="ossClose" type="button" aria-label="Close">×</button>' +
+          '<span class="pmodal__no">open source</span><h3 class="pmodal__title">' + esc(o.name) + '</h3>' +
+          '<p class="pmodal__desc">My contributions to <strong>' + esc(o.repo) + '</strong>' + (o.language ? ' · ' + esc(o.language) : '') + (o.stars != null ? ' · ★ ' + o.stars.toLocaleString() : '') + '</p>' +
+          '<div class="ossmodal__stats">' + box(o.commits, 'commits') + box(o.prs, 'PRs') + box(o.merged, 'merged') + box(o.additions, 'lines added') + box(o.deletions, 'lines removed') + '</div>' +
+          '<a class="btn btn--solid magnetic" href="' + href + '" target="_blank" rel="noopener">View my PRs ↗</a>';
+        modal.hidden = false;
+        var c = document.getElementById('ossClose'); if (c) c.addEventListener('click', function () { modal.hidden = true; });
+      }
+      modal.addEventListener('click', function (e) { if (e.target === modal) modal.hidden = true; });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) modal.hidden = true; });
+      document.querySelectorAll('.oss a[data-repo]').forEach(function (a) {
+        var o = data[a.getAttribute('data-repo')];
+        if (!o) return;
+        a.classList.add('has-data');
+        if (window.matchMedia('(pointer: fine)').matches) {
+          a.addEventListener('mouseenter', function () { tip.innerHTML = tipHTML(o); tip.classList.add('show'); });
+          a.addEventListener('mousemove', function (e) {
+            var x = Math.min(e.clientX + 14, window.innerWidth - tip.offsetWidth - 12);
+            var y = e.clientY + 16; if (y + tip.offsetHeight > window.innerHeight) y = e.clientY - tip.offsetHeight - 12;
+            tip.style.left = x + 'px'; tip.style.top = y + 'px';
+          });
+          a.addEventListener('mouseleave', function () { tip.classList.remove('show'); });
+        }
+        a.addEventListener('click', function (e) { e.preventDefault(); tip.classList.remove('show'); openModal(o, a.href); });
+      });
     }
 
     // 1) Prefer the CI-built JSON (includes private data + LOC + languages)
@@ -711,9 +760,7 @@
         count('issues?q=type:pr+author:' + USER + '+is:merged'),
         count('issues?q=type:issue+author:' + USER)
       ]).then(function (res) {
-        var u = res[0] || {};
-        var years = u.created_at ? Math.max(1, new Date().getFullYear() - new Date(u.created_at).getFullYear()) : null;
-        var d = { commits: res[1], prs: res[2], merged: res[3], issues: res[4], reviews: null, years: years, langCount: null, loc: null, langs: null };
+        var d = { contributions: null, commits: res[1], prs: res[2], merged: res[3], issues: res[4], reposContributedTo: null, langCount: null, loc: null, langs: null };
         try { localStorage.setItem(KEY, JSON.stringify({ t: Date.now(), d: d })); } catch (e) {}
         render(d);
       }).catch(function () { render({ commits: null, prs: null, merged: null }); });

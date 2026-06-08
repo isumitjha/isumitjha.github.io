@@ -37,6 +37,12 @@ async function rest(path) {
   return r.json();
 }
 const issueCount = (q) => gql(`query($q:String!){search(query:$q,type:ISSUE){issueCount}}`, { q }).then(d => d.search.issueCount);
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+function searchCount(kind, q) {
+  return fetch(`https://api.github.com/search/${kind}?q=${encodeURIComponent(q)}&per_page=1`, {
+    headers: { ...H, Accept: kind === 'commits' ? 'application/vnd.github.cloak-preview+json' : 'application/vnd.github+json' }
+  }).then(r => { if (!r.ok) throw 0; return r.json(); }).then(j => j.total_count).catch(() => null);
+}
 
 // --- account info ---
 const u = (await gql(`query($l:String!){user(login:$l){createdAt followers{totalCount}}}`, { l: USER })).user;
@@ -44,17 +50,22 @@ const startYear = new Date(u.createdAt).getFullYear();
 const thisYear = new Date().getUTCFullYear();
 
 // --- lifetime contributions incl. private (sum per-year contribution windows) ---
-let commits = 0, reviews = 0;
+let commits = 0, contributions = 0;
 for (let y = startYear; y <= thisYear; y++) {
   const d = await gql(
-    `query($l:String!,$f:DateTime!,$t:DateTime!){user(login:$l){contributionsCollection(from:$f,to:$t){totalCommitContributions restrictedContributionsCount totalPullRequestReviewContributions}}}`,
+    `query($l:String!,$f:DateTime!,$t:DateTime!){user(login:$l){contributionsCollection(from:$f,to:$t){totalCommitContributions restrictedContributionsCount contributionCalendar{totalContributions}}}}`,
     { l: USER, f: `${y}-01-01T00:00:00Z`, t: `${y}-12-31T23:59:59Z` }
   );
   const c = d.user.contributionsCollection;
   commits += c.totalCommitContributions + c.restrictedContributionsCount;
-  reviews += c.totalPullRequestReviewContributions;
+  contributions += c.contributionCalendar.totalContributions;
 }
-const years = Math.max(1, thisYear - startYear);
+
+// --- repos contributed to (incl. others' repos) ---
+const reposContributedTo = (await gql(
+  `query($l:String!){user(login:$l){repositoriesContributedTo(contributionTypes:[COMMIT,PULL_REQUEST,ISSUE,PULL_REQUEST_REVIEW]){totalCount}}}`,
+  { l: USER }
+)).user.repositoriesContributedTo.totalCount;
 
 // --- PRs / merged / issues (search sees private repos the token can access) ---
 const prs = await issueCount(`author:${USER} type:pr`);
@@ -111,10 +122,47 @@ if (hasCloc) try {
   loc = total;
 } catch { loc = null; }
 
+// --- per-repo open-source contribution data (for hover/click cards) ---
+const OSS_REPOS = [
+  'conda-incubator/jupyterlab-conda-store',
+  'sympy/sympy.github.com',
+  'educational-technology-collective/jupyterlab-pioneer',
+  'nebari-dev/nebari',
+  'nebari-dev/nebari-docs',
+  'holoviz/panel',
+  'niivue/niivue',
+  'essentiasoftserv/openbharatocr'
+];
+const oss = {};
+for (const full of OSS_REPOS) {
+  try {
+    const info = await rest(`/repos/${full}`);
+    const commitsR = await searchCount('commits', `repo:${full} author:${USER}`); await sleep(1500);
+    const prsR = await searchCount('issues', `repo:${full} author:${USER} type:pr`); await sleep(1500);
+    const mergedR = await searchCount('issues', `repo:${full} author:${USER} type:pr is:merged`); await sleep(1500);
+    // lines changed by me (best-effort; the endpoint may return 202 while computing)
+    let additions = null, deletions = null;
+    try {
+      let stats = null;
+      for (let a = 0; a < 3; a++) {
+        const r = await fetch(`https://api.github.com/repos/${full}/stats/contributors`, { headers: { ...H, Accept: 'application/vnd.github+json' } });
+        if (r.status === 202) { await sleep(3000); continue; }
+        if (r.ok) { stats = await r.json(); }
+        break;
+      }
+      if (Array.isArray(stats)) {
+        const mine = stats.find(s => s.author && s.author.login && s.author.login.toLowerCase() === USER.toLowerCase());
+        if (mine) { additions = 0; deletions = 0; mine.weeks.forEach(w => { additions += w.a; deletions += w.d; }); }
+      }
+    } catch {}
+    oss[full] = { repo: full, name: full.split('/')[1], commits: commitsR, prs: prsR, merged: mergedR, additions, deletions, language: info.language, stars: info.stargazers_count };
+  } catch {}
+}
+
 const data = {
   generatedAt: new Date().toISOString(),
-  commits, prs, merged, reviews, issues, loc, years, langCount, topLang, langs
+  commits, contributions, prs, merged, issues, loc, reposContributedTo, langCount, topLang, langs, oss
 };
 mkdirSync('assets/data', { recursive: true });
 writeFileSync('assets/data/stats.json', JSON.stringify(data, null, 2) + '\n');
-console.log('Wrote assets/data/stats.json:', data);
+console.log('Wrote assets/data/stats.json:', JSON.stringify({ ...data, oss: Object.keys(oss).length + ' repos', langs: data.langs.length + ' langs' }));

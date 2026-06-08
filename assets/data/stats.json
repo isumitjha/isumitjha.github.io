@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-06-08T13:19:52.116Z",
+  "generatedAt": "2026-06-08T14:33:43.361Z",
   "commits": 1036,
+  "contributions": 1195,
   "prs": 90,
   "merged": 76,
-  "reviews": 4,
-  "issues": 29,
+  "issues": 30,
   "loc": 2152637,
-  "years": 9,
+  "reposContributedTo": 19,
   "langCount": 12,
   "topLang": "Python",
   "langs": [
@@ -34,5 +34,84 @@
       "name": "TypeScript",
       "pct": 2.2
     }
-  ]
+  ],
+  "oss": {
+    "sympy/sympy.github.com": {
+      "repo": "sympy/sympy.github.com",
+      "name": "sympy.github.com",
+      "commits": 1,
+      "prs": 1,
+      "merged": 1,
+      "additions": 1,
+      "deletions": 1,
+      "language": "HTML",
+      "stars": 215
+    },
+    "educational-technology-collective/jupyterlab-pioneer": {
+      "repo": "educational-technology-collective/jupyterlab-pioneer",
+      "name": "jupyterlab-pioneer",
+      "commits": 2,
+      "prs": 1,
+      "merged": 1,
+      "additions": null,
+      "deletions": null,
+      "language": "TypeScript",
+      "stars": 14
+    },
+    "nebari-dev/nebari": {
+      "repo": "nebari-dev/nebari",
+      "name": "nebari",
+      "commits": 5,
+      "prs": 1,
+      "merged": 1,
+      "additions": 257,
+      "deletions": 117,
+      "language": "Python",
+      "stars": 328
+    },
+    "nebari-dev/nebari-docs": {
+      "repo": "nebari-dev/nebari-docs",
+      "name": "nebari-docs",
+      "commits": 2,
+      "prs": 2,
+      "merged": 2,
+      "additions": 2,
+      "deletions": 2,
+      "language": null,
+      "stars": 21
+    },
+    "holoviz/panel": {
+      "repo": "holoviz/panel",
+      "name": "panel",
+      "commits": 1,
+      "prs": 1,
+      "merged": 1,
+      "additions": null,
+      "deletions": null,
+      "language": "Python",
+      "stars": 5689
+    },
+    "niivue/niivue": {
+      "repo": "niivue/niivue",
+      "name": "niivue",
+      "commits": 1,
+      "prs": 2,
+      "merged": 1,
+      "additions": 4617,
+      "deletions": 230,
+      "language": "TypeScript",
+      "stars": 455
+    },
+    "essentiasoftserv/openbharatocr": {
+      "repo": "essentiasoftserv/openbharatocr",
+      "name": "openbharatocr",
+      "commits": 10,
+      "prs": 6,
+      "merged": 5,
+      "additions": null,
+      "deletions": null,
+      "language": "Python",
+      "stars": 17
+    }
+  }
 }
