@@ -724,29 +724,6 @@
     if (hintEl) hintEl.addEventListener('click', open);
   })();
 
-  /* ---------- Text scramble / decode on nav links ---------- */
-  if (!reduceMotion) {
-    var GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&*<>/{}[]=';
-    document.querySelectorAll('.nav__links a').forEach(function (link) {
-      var orig = link.textContent, raf2 = 0;
-      link.addEventListener('mouseenter', function () {
-        var len = orig.length, frame = 0;
-        cancelAnimationFrame(raf2);
-        (function run() {
-          var out = '';
-          for (var i = 0; i < len; i++) {
-            if (i < frame / 2) out += orig.charAt(i);
-            else out += GLYPHS.charAt(Math.floor(Math.random() * GLYPHS.length));
-          }
-          link.textContent = out; frame++;
-          if (frame / 2 < len) raf2 = requestAnimationFrame(run);
-          else link.textContent = orig;
-        })();
-      });
-      link.addEventListener('mouseleave', function () { cancelAnimationFrame(raf2); link.textContent = orig; });
-    });
-  }
-
   /* ---------- Live local (IST) flip clock + time-of-day greeting ---------- */
   (function () {
     var el = document.getElementById('localTime');
@@ -1429,20 +1406,6 @@
         });
       });
       card.addEventListener('mouseleave', function () { chips.forEach(function (chip) { chip.style.transform = ''; }); });
-    });
-  })();
-
-  /* ---------- Section curtain: a light bar sweeps down on first view ---------- */
-  (function () {
-    if (reduceMotion || !hasGSAP) return;
-    document.querySelectorAll('main .section').forEach(function (sec) {
-      if (getComputedStyle(sec).position === 'static') sec.style.position = 'relative';
-      var line = document.createElement('span'); line.className = 'scanline'; sec.appendChild(line);
-      window.gsap.timeline({ scrollTrigger: { trigger: sec, start: 'top 78%', once: true } })
-        .fromTo(line, { top: '0%', autoAlpha: 0 }, { autoAlpha: 1, duration: 0.15 })
-        .to(line, { top: '100%', duration: 0.7, ease: 'power2.inOut' })
-        .to(line, { autoAlpha: 0, duration: 0.2 }, '-=0.22')
-        .add(function () { line.remove(); });
     });
   })();
 

@@ -940,9 +940,6 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .odo-reel span { display: block; height: 1em; line-height: 1; text-align: center; }
 .odo-suffix { display: inline-block; }
 
-/* ---------- Section curtain sweep (light bar passes on entry) ---------- */
-.scanline { position: absolute; left: 0; right: 0; top: 0; height: 3px; z-index: 4; pointer-events: none; opacity: 0; background: linear-gradient(90deg, transparent, var(--accent), transparent); box-shadow: 0 0 18px 1px color-mix(in srgb, var(--accent) 70%, transparent); }
-
 /* ---------- Split-flap flip clock (IST time) ---------- */
 .flipclock { display: inline-flex; align-items: center; gap: 1px; perspective: 220px; font-variant-numeric: tabular-nums; }
 .fc-d { display: inline-block; min-width: 0.62em; text-align: center; backface-visibility: hidden; }
@@ -957,9 +954,6 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .tl { transform-style: preserve-3d; }
 
 /* ---------- More micro-interactions + 3D ---------- */
-/* nav link hover lift */
-.nav__links a { transition: color 0.25s var(--ease), transform 0.25s var(--ease); }
-.nav__links.has-ink a:hover { transform: translateY(-2px); }
 /* theme toggle: hover rotate + 360° spin on switch */
 .theme-toggle svg { transition: transform 0.45s var(--ease); }
 .theme-toggle.spin { animation: ttSpin 0.55s var(--ease); }
