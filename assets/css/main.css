@@ -395,6 +395,8 @@ html:not(.has-gsap) [data-reveal].is-in { opacity: 1; transform: none; }
   .skills__grid, .projects__grid, .certs__grid, .edu__grid { grid-template-columns: 1fr; }
   .skill-card--wide { grid-column: span 1; }
   .about__facts { grid-template-columns: 1fr; }
+  .ghstats__tiles { grid-template-columns: repeat(2, 1fr); }
+  .ghrepos { grid-template-columns: 1fr; }
   .contact__meta { gap: 1.4rem; }
   .nav__cv { display: none; }
   .orbit { display: none; }
@@ -533,6 +535,23 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .gg-node[data-c="orange"] { fill: var(--orange); }
 .gg-node[data-c="blue"] { fill: var(--blue); }
 .gg-node[data-c="green"] { fill: var(--green); }
+
+/* ---------- Live GitHub stats ---------- */
+.ghstats { margin-top: 2.4rem; border-top: 1px solid var(--border); padding-top: 1.8rem; }
+.ghstats__head { display: flex; align-items: center; gap: 0.55rem; font-family: var(--font-head); font-size: 0.82rem; color: var(--text-faint); margin-bottom: 1.1rem; }
+.ghstats__head a { color: var(--text-soft); }
+.ghstats__tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.4rem; }
+.ghtile { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1.1rem 0.8rem; text-align: center; transition: transform 0.3s var(--ease), border-color 0.3s var(--ease); }
+.ghtile:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); }
+.ghtile b { display: block; font-family: var(--font-head); font-size: clamp(1.5rem, 3.5vw, 2.1rem); font-weight: 600; color: var(--accent); letter-spacing: -0.02em; }
+.ghtile span { font-size: 0.78rem; color: var(--text-soft); }
+.ghtile:nth-child(2) b { color: var(--blue); } .ghtile:nth-child(3) b { color: var(--green); } .ghtile:nth-child(4) b { color: var(--text); font-size: clamp(1.1rem, 2.4vw, 1.4rem); }
+.ghrepos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.7rem; }
+.ghrepos li a { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; padding: 0.8rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font-family: var(--font-head); font-size: 0.9rem; transition: transform 0.25s var(--ease), border-color 0.25s var(--ease); }
+.ghrepos li a:hover { transform: translateY(-3px); border-color: var(--accent); }
+.gr-name { font-weight: 500; }
+.gr-meta { font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-faint); white-space: nowrap; }
+.gh-note { color: var(--text-faint); font-size: 0.9rem; grid-column: 1 / -1; }
 
 /* ---------- Talks: soundwave ---------- */
 .soundwave { display: inline-flex; align-items: flex-end; gap: 3px; height: 22px; margin: 0.4rem 0 1rem; }

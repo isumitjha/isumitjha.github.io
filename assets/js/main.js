@@ -630,6 +630,49 @@
     });
   })();
 
+  /* ---------- Live GitHub stats (client-side, cached) ---------- */
+  (function () {
+    var box = document.getElementById('ghStats');
+    if (!box) return;
+    var USER = 'isumitjha', KEY = 'gh_' + USER + '_v1', TTL = 3600000; // 1h
+    function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+    function num(id, v) { var el = document.getElementById(id); if (!el) return; if (reduceMotion || typeof v !== 'number') { el.textContent = v; return; }
+      var start = null; (function step(t) { if (!start) start = t; var p = Math.min((t - start) / 900, 1); el.textContent = Math.round((1 - Math.pow(1 - p, 3)) * v); if (p < 1) requestAnimationFrame(step); })(performance.now()); }
+    function render(d) {
+      num('ghRepos', d.public_repos); num('ghStars', d.stars); num('ghFollowers', d.followers);
+      var lang = document.getElementById('ghLang'); if (lang) lang.textContent = d.lang || '—';
+      var ul = document.getElementById('ghReposList');
+      if (ul) {
+        if (d.top && d.top.length) {
+          ul.innerHTML = '';
+          d.top.forEach(function (r) {
+            var li = document.createElement('li');
+            li.innerHTML = '<a href="' + r.html_url + '" target="_blank" rel="noopener"><span class="gr-name">' + esc(r.name) + '</span><span class="gr-meta">★ ' + r.stargazers_count + (r.language ? ' · ' + esc(r.language) : '') + '</span></a>';
+            ul.appendChild(li);
+          });
+        } else { ul.innerHTML = '<li class="gh-note">See all my work on <a href="https://github.com/' + USER + '" target="_blank" rel="noopener">GitHub →</a></li>'; }
+      }
+    }
+    try { var c = JSON.parse(localStorage.getItem(KEY)); if (c && Date.now() - c.t < TTL) { render(c.d); return; } } catch (e) {}
+    Promise.all([
+      fetch('https://api.github.com/users/' + USER).then(function (r) { if (!r.ok) throw 0; return r.json(); }),
+      fetch('https://api.github.com/users/' + USER + '/repos?per_page=100&sort=updated').then(function (r) { if (!r.ok) throw 0; return r.json(); })
+    ]).then(function (res) {
+      var u = res[0], repos = Array.isArray(res[1]) ? res[1] : [];
+      var stars = repos.reduce(function (s, r) { return s + (r.stargazers_count || 0); }, 0);
+      var langs = {}; repos.forEach(function (r) { if (r.language) langs[r.language] = (langs[r.language] || 0) + 1; });
+      var lang = Object.keys(langs).sort(function (a, b) { return langs[b] - langs[a]; })[0] || '—';
+      var top = repos.filter(function (r) { return !r.fork; }).sort(function (a, b) { return b.stargazers_count - a.stargazers_count; }).slice(0, 4)
+        .map(function (r) { return { name: r.name, html_url: r.html_url, stargazers_count: r.stargazers_count, language: r.language }; });
+      var d = { public_repos: u.public_repos, followers: u.followers, stars: stars, lang: lang, top: top };
+      try { localStorage.setItem(KEY, JSON.stringify({ t: Date.now(), d: d })); } catch (e) {}
+      render(d);
+    }).catch(function () {
+      var ul = document.getElementById('ghReposList');
+      if (ul) ul.innerHTML = '<li class="gh-note">Couldn\'t load live data right now — see <a href="https://github.com/' + USER + '" target="_blank" rel="noopener">GitHub →</a></li>';
+    });
+  })();
+
   /* ---------- Konami easter egg ---------- */
   (function () {
     var seq = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
