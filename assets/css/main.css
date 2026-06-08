@@ -288,9 +288,8 @@ h1, h2, h3, h4, .nav__brand, .btn, .section__index, .stat__num, .proj__no, .tags
   position: relative; background: var(--surface); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 1.6rem; display: flex; flex-direction: column; gap: 0.7rem;
   transition: transform 0.35s var(--ease), border-color 0.35s var(--ease), box-shadow 0.35s var(--ease);
-  overflow: hidden;
 }
-.proj::before { content: ""; position: absolute; left: 0; top: 0; height: 100%; width: 3px; background: var(--accent); transform: scaleY(0); transform-origin: top; transition: transform 0.35s var(--ease); }
+.proj::before { content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 0 3px 3px 0; background: var(--accent); transform: scaleY(0); transform-origin: top; transition: transform 0.35s var(--ease); }
 .proj:hover { transform: translateY(-6px); border-color: color-mix(in srgb, var(--accent) 35%, var(--border)); box-shadow: 0 18px 40px -28px rgba(20,20,19,0.45); }
 .proj:hover::before { transform: scaleY(1); }
 .proj__no { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-faint); }
@@ -641,7 +640,7 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .talk:hover .soundwave i:nth-child(odd) { background: var(--orange); }
 
 /* ---------- Cursor spotlight glow on cards ---------- */
-.skill-card { position: relative; overflow: hidden; }
+.skill-card { position: relative; }
 .proj::after, .skill-card::after {
   content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 0;
   opacity: 0; transition: opacity 0.35s var(--ease);
@@ -933,6 +932,26 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .section__head.is-drawn .section__title::after { transform: scaleX(1); }
 .section__head--center .section__title::after { left: 50%; transform-origin: center; transform: translateX(-50%) scaleX(0); }
 .section__head--center.is-drawn .section__title::after { transform: translateX(-50%) scaleX(1); }
+
+/* ---------- More micro-interactions + 3D ---------- */
+/* nav link hover lift */
+.nav__links a { transition: color 0.25s var(--ease), transform 0.25s var(--ease); }
+.nav__links.has-ink a:hover { transform: translateY(-2px); }
+/* theme toggle: hover rotate + 360° spin on switch */
+.theme-toggle svg { transition: transform 0.45s var(--ease); }
+.theme-toggle.spin { animation: ttSpin 0.55s var(--ease); }
+@keyframes ttSpin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+/* button 3D press */
+.btn:active { transform: translateY(1px) scale(0.985); }
+/* brand spark spins on hover */
+.brand-spark { transition: transform 0.5s var(--ease); }
+.nav__brand:hover .brand-spark { transform: rotate(180deg) scale(1.18); }
+/* social icons flip on hover */
+.hero__social a svg, .footer__social a svg { transition: transform 0.55s var(--ease); }
+.hero__social a:hover svg, .footer__social a:hover svg { transform: rotateY(360deg); }
+/* about portrait: 3D tilt toward the cursor */
+.about__media { perspective: 1000px; }
+.about__stage { transform-style: preserve-3d; transition: transform 0.4s var(--ease); will-change: transform; }
 
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {

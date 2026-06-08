@@ -50,6 +50,7 @@
     toggle.addEventListener('click', function (e) {
       var r = toggle.getBoundingClientRect();
       var x = e.clientX || (r.left + r.width / 2), y = e.clientY || (r.top + r.height / 2);
+      if (!reduceMotion) { toggle.classList.remove('spin'); void toggle.offsetWidth; toggle.classList.add('spin'); }
       setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark', x, y);
     });
   }
@@ -1199,6 +1200,18 @@
       if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(email).then(done, fallback);
       else fallback();
     });
+  })();
+
+  /* ---------- About portrait: 3D tilt toward cursor ---------- */
+  (function () {
+    var media = document.querySelector('.about__media'), stage = document.querySelector('.about__stage');
+    if (!media || !stage || reduceMotion || !finePointer) return;
+    media.addEventListener('mousemove', function (e) {
+      var r = media.getBoundingClientRect();
+      var px = (e.clientX - r.left) / r.width - 0.5, py = (e.clientY - r.top) / r.height - 0.5;
+      stage.style.transform = 'rotateY(' + (px * 12).toFixed(2) + 'deg) rotateX(' + (-py * 12).toFixed(2) + 'deg)';
+    });
+    media.addEventListener('mouseleave', function () { stage.style.transform = ''; });
   })();
 
   /* ---------- Hero spotlight glow (follows cursor) ---------- */
