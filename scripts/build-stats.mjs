@@ -44,15 +44,17 @@ const startYear = new Date(u.createdAt).getFullYear();
 const thisYear = new Date().getUTCFullYear();
 
 // --- lifetime contributions incl. private (sum per-year contribution windows) ---
-let commits = 0;
+let commits = 0, reviews = 0;
 for (let y = startYear; y <= thisYear; y++) {
   const d = await gql(
-    `query($l:String!,$f:DateTime!,$t:DateTime!){user(login:$l){contributionsCollection(from:$f,to:$t){totalCommitContributions restrictedContributionsCount}}}`,
+    `query($l:String!,$f:DateTime!,$t:DateTime!){user(login:$l){contributionsCollection(from:$f,to:$t){totalCommitContributions restrictedContributionsCount totalPullRequestReviewContributions}}}`,
     { l: USER, f: `${y}-01-01T00:00:00Z`, t: `${y}-12-31T23:59:59Z` }
   );
   const c = d.user.contributionsCollection;
   commits += c.totalCommitContributions + c.restrictedContributionsCount;
+  reviews += c.totalPullRequestReviewContributions;
 }
+const years = Math.max(1, thisYear - startYear);
 
 // --- PRs / merged / issues (search sees private repos the token can access) ---
 const prs = await issueCount(`author:${USER} type:pr`);
@@ -80,6 +82,7 @@ for (const r of repos) {
   } catch {}
 }
 const totalBytes = Object.values(langBytes).reduce((a, b) => a + b, 0) || 1;
+const langCount = Object.keys(langBytes).length;
 const langs = Object.entries(langBytes).sort((a, b) => b[1] - a[1]).slice(0, 6)
   .map(([name, bytes]) => ({ name, pct: +(bytes / totalBytes * 100).toFixed(1) }));
 const topLang = langs[0]?.name || '—';
@@ -110,9 +113,7 @@ if (hasCloc) try {
 
 const data = {
   generatedAt: new Date().toISOString(),
-  commits, prs, merged, issues,
-  public_repos: publicRepos, repos: repos.length, stars,
-  followers: u.followers.totalCount, topLang, loc, langs, top
+  commits, prs, merged, reviews, issues, loc, years, langCount, topLang, langs
 };
 mkdirSync('assets/data', { recursive: true });
 writeFileSync('assets/data/stats.json', JSON.stringify(data, null, 2) + '\n');

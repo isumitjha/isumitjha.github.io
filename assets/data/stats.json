@@ -1,15 +1,14 @@
 {
-  "generatedAt": "2026-06-08T13:11:31.178Z",
+  "generatedAt": "2026-06-08T13:19:52.116Z",
   "commits": 1036,
   "prs": 90,
   "merged": 76,
+  "reviews": 4,
   "issues": 29,
-  "public_repos": 23,
-  "repos": 31,
-  "stars": 0,
-  "followers": 6,
-  "topLang": "Python",
   "loc": 2152637,
+  "years": 9,
+  "langCount": 12,
+  "topLang": "Python",
   "langs": [
     {
       "name": "Python",
@@ -34,32 +33,6 @@
     {
       "name": "TypeScript",
       "pct": 2.2
-    }
-  ],
-  "top": [
-    {
-      "name": "basic-python-exercises",
-      "html_url": "https://github.com/isumitjha/basic-python-exercises",
-      "stargazers_count": 0,
-      "language": "Python"
-    },
-    {
-      "name": "Calendar-App",
-      "html_url": "https://github.com/isumitjha/Calendar-App",
-      "stargazers_count": 0,
-      "language": "JavaScript"
-    },
-    {
-      "name": "COVID-19-Dashboard-using-Panel",
-      "html_url": "https://github.com/isumitjha/COVID-19-Dashboard-using-Panel",
-      "stargazers_count": 0,
-      "language": "Python"
-    },
-    {
-      "name": "isumitjha",
-      "html_url": "https://github.com/isumitjha/isumitjha",
-      "stargazers_count": 0,
-      "language": null
     }
   ]
 }

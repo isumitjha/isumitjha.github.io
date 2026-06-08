@@ -297,7 +297,7 @@
 
   /* ---------- 3D tilt cards ---------- */
   if (!reduceMotion && finePointer) {
-    document.querySelectorAll('.proj, .skill-card, .edu, .tl__card').forEach(function (card) {
+    document.querySelectorAll('.proj, .skill-card, .edu, .tl__card, .ghtile').forEach(function (card) {
       card.addEventListener('mousemove', function (e) {
         var r = card.getBoundingClientRect();
         var px = (e.clientX - r.left) / r.width - 0.5;
@@ -665,59 +665,38 @@
       });
       bar.hidden = false; leg.hidden = false;
     }
-    function renderRepos(top) {
-      var ul = document.getElementById('ghReposList'); if (!ul) return;
-      if (top && top.length) {
-        ul.innerHTML = '';
-        top.forEach(function (r) {
-          var li = document.createElement('li');
-          li.innerHTML = '<a href="' + r.html_url + '" target="_blank" rel="noopener"><span class="gr-name">' + esc(r.name) + '</span><span class="gr-meta">★ ' + r.stargazers_count + (r.language ? ' · ' + esc(r.language) : '') + '</span></a>';
-          ul.appendChild(li);
-        });
-      } else { ul.innerHTML = '<li class="gh-note">See all my work on <a href="https://github.com/' + USER + '" target="_blank" rel="noopener">GitHub →</a></li>'; }
-    }
-    function render(d, isFull) {
+    function render(d) {
       num('ghCommits', d.commits); num('ghPRs', d.prs); num('ghMerged', d.merged);
-      num('ghRepos', d.public_repos != null ? d.public_repos : d.repos); num('ghStars', d.stars); num('ghFollowers', d.followers);
-      var lang = document.getElementById('ghLang'); if (lang) lang.textContent = d.topLang || d.lang || '—';
+      num('ghReviews', d.reviews); num('ghIssues', d.issues); num('ghYears', d.years); num('ghLangs', d.langCount);
       locTile(typeof d.loc === 'number' ? d.loc : null);
       renderLangs(d.langs);
-      renderRepos(d.top);
-      if (isFull) { var head = document.getElementById('ghHead'); if (head) head.innerHTML = 'Live from <a href="https://github.com/' + USER + '" target="_blank" rel="noopener">@' + USER + '</a> · public + private'; }
     }
 
     // 1) Prefer the CI-built JSON (includes private data + LOC + languages)
     fetch('assets/data/stats.json', { cache: 'no-cache' })
       .then(function (r) { if (!r.ok) throw 0; return r.json(); })
-      .then(function (d) { if (!d || d.commits == null) throw 0; render(d, true); })
+      .then(function (d) { if (!d || d.commits == null) throw 0; render(d); })
       .catch(publicFallback);
 
-    // 2) Public-only fallback (no private data, no LOC)
+    // 2) Public-only fallback (no private data, no LOC / reviews / language bar)
     function publicFallback() {
       locTile(null); // hide LOC tile (needs the CI build)
-      var KEY = 'gh_' + USER + '_pub_v1', TTL = 3600000;
-      try { var c = JSON.parse(localStorage.getItem(KEY)); if (c && Date.now() - c.t < TTL) { render(c.d, false); return; } } catch (e) {}
+      var KEY = 'gh_' + USER + '_pub_v2', TTL = 3600000;
+      try { var c = JSON.parse(localStorage.getItem(KEY)); if (c && Date.now() - c.t < TTL) { render(c.d); return; } } catch (e) {}
       function count(q) { return fetch('https://api.github.com/search/' + q + '&per_page=1').then(function (r) { if (!r.ok) throw 0; return r.json(); }).then(function (j) { return j.total_count; }).catch(function () { return null; }); }
       Promise.all([
-        fetch('https://api.github.com/users/' + USER).then(function (r) { if (!r.ok) throw 0; return r.json(); }),
-        fetch('https://api.github.com/users/' + USER + '/repos?per_page=100&sort=updated').then(function (r) { if (!r.ok) throw 0; return r.json(); }),
+        fetch('https://api.github.com/users/' + USER).then(function (r) { if (!r.ok) throw 0; return r.json(); }).catch(function () { return null; }),
         count('commits?q=author:' + USER),
         count('issues?q=type:pr+author:' + USER),
-        count('issues?q=type:pr+author:' + USER + '+is:merged')
+        count('issues?q=type:pr+author:' + USER + '+is:merged'),
+        count('issues?q=type:issue+author:' + USER)
       ]).then(function (res) {
-        var u = res[0], repos = Array.isArray(res[1]) ? res[1] : [];
-        var stars = repos.reduce(function (s, r) { return s + (r.stargazers_count || 0); }, 0);
-        var counts = {}; repos.forEach(function (r) { if (r.language) counts[r.language] = (counts[r.language] || 0) + 1; });
-        var lang = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; })[0] || '—';
-        var top = repos.filter(function (r) { return !r.fork; }).sort(function (a, b) { return b.stargazers_count - a.stargazers_count; }).slice(0, 4)
-          .map(function (r) { return { name: r.name, html_url: r.html_url, stargazers_count: r.stargazers_count, language: r.language }; });
-        var d = { public_repos: u.public_repos, followers: u.followers, stars: stars, topLang: lang, top: top, commits: res[2], prs: res[3], merged: res[4] };
+        var u = res[0] || {};
+        var years = u.created_at ? Math.max(1, new Date().getFullYear() - new Date(u.created_at).getFullYear()) : null;
+        var d = { commits: res[1], prs: res[2], merged: res[3], issues: res[4], reviews: null, years: years, langCount: null, loc: null, langs: null };
         try { localStorage.setItem(KEY, JSON.stringify({ t: Date.now(), d: d })); } catch (e) {}
-        render(d, false);
-      }).catch(function () {
-        var ul = document.getElementById('ghReposList');
-        if (ul) ul.innerHTML = '<li class="gh-note">Couldn\'t load live data right now — see <a href="https://github.com/' + USER + '" target="_blank" rel="noopener">GitHub →</a></li>';
-      });
+        render(d);
+      }).catch(function () { render({ commits: null, prs: null, merged: null }); });
     }
   })();
 
