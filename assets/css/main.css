@@ -306,12 +306,18 @@ h1, h2, h3, h4, .nav__brand, .btn, .section__index, .stat__num, .proj__no, .tags
 
 /* ---------- Certificates ---------- */
 .certs__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
-.cert { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.6rem; display: flex; flex-direction: column; gap: 0.6rem; transition: transform 0.3s var(--ease), border-color 0.3s var(--ease); }
-.cert:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--orange) 40%, var(--border)); }
-.cert img { height: 30px; width: auto; object-fit: contain; align-self: flex-start; filter: saturate(0); opacity: 0.85; transition: filter 0.3s var(--ease), opacity 0.3s var(--ease); }
-.cert:hover img { filter: none; opacity: 1; }
-.cert h3 { font-size: 1.02rem; font-weight: 600; line-height: 1.35; color: var(--text); }
-.cert__by { font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-faint); margin-top: auto; }
+/* 3D flip cards */
+.cert { display: block; perspective: 1100px; min-height: 188px; }
+.cert__inner { position: relative; width: 100%; height: 100%; min-height: 188px; transform-style: preserve-3d; transition: transform 0.75s var(--ease); }
+.cert:hover .cert__inner, .cert:focus-visible .cert__inner { transform: rotateY(180deg); }
+.cert__face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.6rem; display: flex; flex-direction: column; gap: 0.7rem; }
+.cert__front img { height: 30px; width: auto; object-fit: contain; align-self: flex-start; filter: saturate(0); opacity: 0.85; }
+.cert__front h3 { font-size: 1.02rem; font-weight: 600; line-height: 1.35; color: var(--text); }
+.cert__back { transform: rotateY(180deg); justify-content: center; align-items: flex-start; gap: 0.5rem; border-color: color-mix(in srgb, var(--orange) 45%, var(--border)); background: linear-gradient(160deg, var(--surface), color-mix(in srgb, var(--orange) 7%, var(--surface))); }
+.cert__prov { font-family: var(--font-head); font-weight: 600; font-size: 1.1rem; color: var(--text); }
+.cert__date { font-family: var(--font-mono); font-size: 0.78rem; color: var(--text-faint); }
+.cert__view { margin-top: 0.6rem; font-family: var(--font-head); font-size: 0.9rem; font-weight: 500; color: var(--accent); }
+.cert__view b { font-weight: 500; }
 
 /* ---------- Education ---------- */
 .edu__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
@@ -390,6 +396,7 @@ html:not(.has-gsap) [data-reveal].is-in { opacity: 1; transform: none; }
   .contact__meta { gap: 1.4rem; }
   .nav__cv { display: none; }
   .orbit { display: none; }
+  .cube { display: none; }
   .laptop__deck { width: 112%; margin-left: -6%; }
   .laptop__lid { padding: 8px; }
   .laptop__view { min-height: 0; }
@@ -522,11 +529,29 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .soundwave i:nth-child(9) { animation-delay: -0.8s; }
 @keyframes wave { 0%, 100% { transform: scaleY(0.2); } 50% { transform: scaleY(1); } }
 
-/* ---------- Certificates: shine sweep ---------- */
-.cert { position: relative; overflow: hidden; }
-.cert::after { content: ''; position: absolute; top: 0; left: -60%; width: 45%; height: 100%; background: linear-gradient(100deg, transparent, color-mix(in srgb, var(--orange) 22%, transparent), transparent); transform: skewX(-18deg); pointer-events: none; }
-.cert:hover::after { animation: shine 0.85s ease; }
-@keyframes shine { to { left: 130%; } }
+/* ---------- About: rotating 3D tech cube ---------- */
+.about__stage { --cube: 56px; }
+.cube { position: absolute; top: -13%; right: -3%; width: calc(var(--cube) * 2); height: calc(var(--cube) * 2); z-index: 3; transform-style: preserve-3d; animation: cubeSpin 16s linear infinite; }
+.cube__face { position: absolute; top: 0; left: 0; width: calc(var(--cube) * 2); height: calc(var(--cube) * 2); display: grid; place-items: center; font-family: var(--font-mono); font-size: 1.4rem; font-weight: 500; color: var(--orange); background: color-mix(in srgb, var(--surface) 86%, transparent); border: 1px solid color-mix(in srgb, var(--orange) 45%, var(--border)); border-radius: 8px; backface-visibility: visible; box-shadow: inset 0 0 22px -8px color-mix(in srgb, var(--orange) 40%, transparent); }
+.cube__face--front { transform: translateZ(var(--cube)); }
+.cube__face--back { transform: rotateY(180deg) translateZ(var(--cube)); }
+.cube__face--right { transform: rotateY(90deg) translateZ(var(--cube)); }
+.cube__face--left { transform: rotateY(-90deg) translateZ(var(--cube)); }
+.cube__face--top { transform: rotateX(90deg) translateZ(var(--cube)); }
+.cube__face--bottom { transform: rotateX(-90deg) translateZ(var(--cube)); }
+@keyframes cubeSpin { from { transform: rotateX(-20deg) rotateY(0deg); } to { transform: rotateX(-20deg) rotateY(360deg); } }
+
+/* ---------- Experience: traveling marker ---------- */
+.timeline { position: relative; }
+.tl-marker { position: absolute; left: 5px; top: 0; width: 12px; height: 12px; margin-left: -5px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 0 5px color-mix(in srgb, var(--orange) 20%, transparent), 0 0 16px 2px color-mix(in srgb, var(--orange) 60%, transparent); z-index: 2; }
+
+/* ---------- Stats: pulsing accent rings ---------- */
+.stat { position: relative; }
+.stat::before { content: ''; position: absolute; top: -8px; left: 50%; width: 56px; height: 56px; margin-left: -28px; border: 1px solid color-mix(in srgb, var(--orange) 35%, transparent); border-radius: 50%; opacity: 0; animation: statRing 3.4s ease-out infinite; }
+.stat:nth-child(2)::before { animation-delay: 0.6s; border-color: color-mix(in srgb, var(--blue) 38%, transparent); }
+.stat:nth-child(3)::before { animation-delay: 1.2s; border-color: color-mix(in srgb, var(--green) 38%, transparent); }
+.stat:nth-child(4)::before { animation-delay: 1.8s; }
+@keyframes statRing { 0% { transform: scale(0.7); opacity: 0.6; } 70% { opacity: 0; } 100% { transform: scale(1.5); opacity: 0; } }
 
 /* ---------- Contact: paper plane ---------- */
 .contact__inner { position: relative; }

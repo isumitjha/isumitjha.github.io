@@ -132,7 +132,7 @@
     revealEls.forEach(function (el) { el.classList.add('is-in'); });
   }
 
-  /* ---------- Timeline line draw on scroll ---------- */
+  /* ---------- Timeline line draw + traveling marker on scroll ---------- */
   if (hasGSAP && !reduceMotion) {
     var tlWrap = document.querySelector('.timeline');
     if (tlWrap) {
@@ -140,6 +140,13 @@
         '--draw': 1, ease: 'none',
         scrollTrigger: { trigger: tlWrap, start: 'top 75%', end: 'bottom 80%', scrub: true }
       });
+      var marker = tlWrap.querySelector('.tl-marker');
+      if (marker) {
+        window.gsap.fromTo(marker, { top: '0%' }, {
+          top: '100%', ease: 'none',
+          scrollTrigger: { trigger: tlWrap, start: 'top 70%', end: 'bottom 78%', scrub: true }
+        });
+      }
     }
   }
 
@@ -276,7 +283,7 @@
 
   /* ---------- 3D tilt cards ---------- */
   if (!reduceMotion && finePointer) {
-    document.querySelectorAll('.proj, .skill-card, .cert, .edu').forEach(function (card) {
+    document.querySelectorAll('.proj, .skill-card, .edu, .tl__card').forEach(function (card) {
       card.addEventListener('mousemove', function (e) {
         var r = card.getBoundingClientRect();
         var px = (e.clientX - r.left) / r.width - 0.5;
