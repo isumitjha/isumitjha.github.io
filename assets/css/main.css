@@ -701,6 +701,34 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .glyph-rain { position: fixed; top: -42px; z-index: 1001; font-family: var(--font-mono); color: var(--orange); pointer-events: none; will-change: transform; }
 @keyframes fall { to { transform: translateY(112vh) rotate(40deg); opacity: 0.12; } }
 
+/* ---------- Copy-email confirmation ---------- */
+#copyEmail.copied { border-color: var(--green); color: var(--green); }
+
+/* ---------- 3D depth tilt (layered card content) ---------- */
+.proj__no, .proj__title, .proj__desc, .proj .tags { transition: transform 0.35s var(--ease); }
+.proj:hover .proj__no { transform: translateZ(16px); }
+.proj:hover .proj__title { transform: translateZ(36px); }
+.proj:hover .proj__desc { transform: translateZ(22px); }
+.proj:hover .tags { transform: translateZ(10px); }
+.skill-card h3, .skill-card .chips { transition: transform 0.35s var(--ease); }
+.skill-card:hover h3 { transform: translateZ(30px); }
+.skill-card:hover .chips { transform: translateZ(14px); }
+
+/* ---------- Mouse-following 3D laptop ---------- */
+.laptop__lid { transition: transform 0.4s var(--ease); }
+
+/* ---------- Project detail modal ---------- */
+.pmodal { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: 1.5rem; background: color-mix(in srgb, #000 50%, transparent); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.pmodal[hidden] { display: none; }
+.pmodal__panel { position: relative; width: min(560px, 94vw); background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: clamp(1.6rem, 4vw, 2.6rem); box-shadow: 0 50px 100px -30px rgba(0, 0, 0, 0.55); animation: cmdkIn 0.25s var(--ease); }
+.pmodal__close { position: absolute; top: 1rem; right: 1.1rem; width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border); background: transparent; color: var(--text); font-size: 1.3rem; line-height: 1; cursor: pointer; transition: border-color 0.2s var(--ease), color 0.2s var(--ease); }
+.pmodal__close:hover { border-color: var(--accent); color: var(--accent); }
+.pmodal__no { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); }
+.pmodal__title { font-size: clamp(1.4rem, 3vw, 1.8rem); font-weight: 600; margin: 0.3rem 0 0.8rem; }
+.pmodal__desc { color: var(--text-soft); margin-bottom: 1.3rem; }
+.pmodal #pmTags { margin-bottom: 1.5rem; }
+.proj { cursor: pointer; }
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }

@@ -358,6 +358,20 @@
     hero.addEventListener('mouseleave', function () { orbs.style.transform = ''; });
   }
 
+  /* ---------- Mouse-following 3D laptop ---------- */
+  if (finePointer && !reduceMotion) {
+    var lid = document.querySelector('.laptop__lid');
+    var heroSec = document.getElementById('home');
+    if (lid && heroSec) {
+      heroSec.addEventListener('mousemove', function (e) {
+        var px = e.clientX / window.innerWidth - 0.5, py = e.clientY / window.innerHeight - 0.5;
+        lid.style.transform = 'rotateY(' + (px * 7).toFixed(2) + 'deg) rotateX(' + (-py * 5).toFixed(2) + 'deg)';
+      });
+      heroSec.addEventListener('mouseleave', function () { lid.style.transform = ''; });
+    }
+  }
+
+
   /* ---------- Open Source: self-drawing git graph ---------- */
   (function () {
     var svg = document.getElementById('gitgraph');
@@ -722,4 +736,45 @@
       document.title = document.hidden ? '👋 come back! — Sumit Jha' : original;
     });
   })();
+
+  /* ---------- Project detail modal ---------- */
+  (function () {
+    var modal = document.getElementById('pmodal');
+    if (!modal) return;
+    var pmNo = document.getElementById('pmNo'), pmTitle = document.getElementById('pmTitle'),
+        pmDesc = document.getElementById('pmDesc'), pmTags = document.getElementById('pmTags'),
+        pmLink = document.getElementById('pmLink'), pmClose = document.getElementById('pmodalClose');
+    function open(card) {
+      var noEl = card.querySelector('.proj__no'), titleEl = card.querySelector('.proj__title'),
+          descEl = card.querySelector('.proj__desc'), link = card.querySelector('.proj__title a');
+      pmNo.textContent = noEl ? noEl.textContent : '';
+      pmTitle.textContent = titleEl ? titleEl.textContent.replace('↗', '').trim() : '';
+      pmDesc.textContent = descEl ? descEl.textContent : '';
+      pmTags.innerHTML = '';
+      card.querySelectorAll('.tags li').forEach(function (t) { var li = document.createElement('li'); li.textContent = t.textContent; pmTags.appendChild(li); });
+      if (link) { pmLink.href = link.href; pmLink.hidden = false; } else { pmLink.hidden = true; }
+      modal.hidden = false;
+    }
+    function close() { modal.hidden = true; }
+    document.querySelectorAll('.proj').forEach(function (card) {
+      card.addEventListener('click', function (e) { if (e.target.closest('a')) e.preventDefault(); open(card); });
+    });
+    if (pmClose) pmClose.addEventListener('click', close);
+    modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.hidden) close(); });
+  })();
+
+  /* ---------- Copy email ---------- */
+  (function () {
+    var btn = document.getElementById('copyEmail');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      var email = btn.getAttribute('data-email'), orig = btn.textContent;
+      function done() { btn.textContent = 'Copied ✓'; btn.classList.add('copied'); window.setTimeout(function () { btn.textContent = orig; btn.classList.remove('copied'); }, 1800); }
+      function fallback() { try { var ta = document.createElement('textarea'); ta.value = email; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); ta.remove(); done(); } catch (e) {} }
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(email).then(done, fallback);
+      else fallback();
+    });
+  })();
+
 })();

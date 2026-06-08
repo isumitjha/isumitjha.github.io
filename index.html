@@ -671,6 +671,7 @@
         <p class="contact__lead" data-reveal>I'm always open to interesting problems, collaborations, and conversations. The fastest way to reach me is email.</p>
         <div class="contact__cta" data-reveal>
           <a class="btn btn--solid magnetic" href="mailto:7sumitjha@gmail.com">Email me</a>
+          <button class="btn btn--ghost" id="copyEmail" type="button" data-email="7sumitjha@gmail.com">Copy email</button>
           <a class="btn btn--ghost" href="https://www.linkedin.com/in/7sumitjha/" target="_blank" rel="noopener">Connect on LinkedIn</a>
         </div>
         <ul class="contact__meta" data-reveal>
@@ -699,6 +700,18 @@
       <input class="cmdk__input" id="cmdkInput" type="text" autocomplete="off" spellcheck="false" placeholder="Jump to a section, download CV, toggle theme…" aria-label="Type a command">
       <ul class="cmdk__list" id="cmdkList"></ul>
       <div class="cmdk__foot"><kbd>↑</kbd><kbd>↓</kbd> navigate · <kbd>↵</kbd> select · <kbd>esc</kbd> close</div>
+    </div>
+  </div>
+
+  <!-- project detail modal -->
+  <div class="pmodal" id="pmodal" role="dialog" aria-modal="true" aria-label="Project details" hidden>
+    <div class="pmodal__panel">
+      <button class="pmodal__close" id="pmodalClose" type="button" aria-label="Close">×</button>
+      <span class="pmodal__no" id="pmNo"></span>
+      <h3 class="pmodal__title" id="pmTitle"></h3>
+      <p class="pmodal__desc" id="pmDesc"></p>
+      <ul class="tags" id="pmTags"></ul>
+      <a class="btn btn--solid magnetic" id="pmLink" target="_blank" rel="noopener" hidden>Visit project <span aria-hidden="true">↗</span></a>
     </div>
   </div>
 
