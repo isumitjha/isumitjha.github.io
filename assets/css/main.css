@@ -149,15 +149,18 @@ h1, h2, h3, h4, .nav__brand, .btn, .section__index, .stat__num, .proj__no, .tags
 .nav__actions { display: flex; align-items: center; gap: 0.6rem; }
 
 .theme-toggle {
-  width: 38px; height: 38px; border-radius: 999px;
+  position: relative; width: 38px; height: 38px; border-radius: 999px;
   display: grid; place-items: center;
   background: transparent; border: 1px solid var(--border); color: var(--text);
   cursor: pointer; transition: border-color 0.25s var(--ease), color 0.25s var(--ease), transform 0.25s var(--ease);
 }
 .theme-toggle:hover { border-color: var(--accent); color: var(--accent); transform: rotate(15deg); }
-.theme-toggle .icon-moon { display: none; }
-[data-theme="dark"] .theme-toggle .icon-sun { display: none; }
-[data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+/* sun ↔ moon morph (rotate + scale crossfade) */
+.theme-toggle svg { position: absolute; inset: 0; margin: auto; transition: opacity 0.4s var(--ease), transform 0.5s var(--ease); }
+.theme-toggle .icon-sun { opacity: 1; transform: rotate(0deg) scale(1); }
+.theme-toggle .icon-moon { opacity: 0; transform: rotate(-90deg) scale(0.4); }
+[data-theme="dark"] .theme-toggle .icon-sun { opacity: 0; transform: rotate(90deg) scale(0.4); }
+[data-theme="dark"] .theme-toggle .icon-moon { opacity: 1; transform: rotate(0deg) scale(1); }
 .nav__cv { padding: 0.55rem 1.1rem; font-size: 0.85rem; }
 
 .nav__burger { display: none; width: 40px; height: 40px; background: none; border: 0; cursor: pointer; flex-direction: column; gap: 5px; align-items: center; justify-content: center; }
@@ -933,6 +936,30 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .section__head--center .section__title::after { left: 50%; transform-origin: center; transform: translateX(-50%) scaleX(0); }
 .section__head--center.is-drawn .section__title::after { transform: translateX(-50%) scaleX(1); }
 
+/* ---------- Stat icons (self-drawing monoline) ---------- */
+.stat__ic { width: 26px; height: 26px; display: block; margin: 0 auto 0.55rem; color: var(--accent); }
+.stat__ic :is(path, circle, line, polyline) { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.stats__grid .stat:nth-child(4n+2) .stat__ic { color: var(--blue); }
+.stats__grid .stat:nth-child(4n+3) .stat__ic { color: var(--green); }
+.has-gsap .stat__ic :is(path, circle, line, polyline) { stroke-dasharray: 150; stroke-dashoffset: 150; }
+.has-gsap .stats.is-drawn .stat__ic :is(path, circle, line, polyline) { animation: drawIcon 1.2s ease forwards; }
+@keyframes drawIcon { to { stroke-dashoffset: 0; } }
+
+/* ---------- Keyboard shortcuts overlay ---------- */
+.kbd-help { position: fixed; inset: 0; z-index: 1001; display: grid; place-items: center; padding: 1rem; background: color-mix(in srgb, #000 45%, transparent); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.kbd-help[hidden] { display: none; }
+.kbd-help__panel { width: min(440px, 92vw); background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 50px 100px -30px rgba(0, 0, 0, 0.55); overflow: hidden; animation: cmdkIn 0.24s var(--ease); }
+.kbd-help__head { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.2rem; border-bottom: 1px solid var(--border); }
+.kbd-help__head h3 { font-size: 1rem; }
+.kbd-help__close { background: transparent; border: 0; font-size: 1.5rem; line-height: 1; color: var(--text-faint); cursor: pointer; }
+.kbd-help__close:hover { color: var(--accent); }
+.kbd-help__list { list-style: none; margin: 0; padding: 0.5rem 1.2rem 1rem; }
+.kbd-help__list li { display: flex; align-items: center; gap: 1rem; padding: 0.6rem 0; border-bottom: 1px solid var(--border); font-size: 0.92rem; color: var(--text-soft); }
+.kbd-help__list li:last-child { border-bottom: 0; }
+.kh-keys { display: inline-flex; gap: 0.3rem; flex: none; min-width: 104px; }
+.kh-keys kbd { font-family: var(--font-mono); font-size: 0.72rem; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 5px; padding: 0.1rem 0.45rem; color: var(--text-soft); }
+.kh-note { font-style: italic; color: var(--text-faint); }
+
 /* ---------- Odometer rolling-digit counters ---------- */
 .odometer { display: inline-flex; align-items: flex-start; line-height: 1; }
 .odo-d { display: inline-block; height: 1em; overflow: hidden; }
@@ -954,8 +981,7 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .tl { transform-style: preserve-3d; }
 
 /* ---------- More micro-interactions + 3D ---------- */
-/* theme toggle: hover rotate + 360° spin on switch */
-.theme-toggle svg { transition: transform 0.45s var(--ease); }
+/* theme toggle: 360° spin on switch */
 .theme-toggle.spin { animation: ttSpin 0.55s var(--ease); }
 @keyframes ttSpin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
 /* button 3D press */

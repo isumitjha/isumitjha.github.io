@@ -227,6 +227,10 @@
         rotationX: -80, autoAlpha: 0, transformOrigin: '50% 50% -30px', duration: 0.7, ease: 'power3.out', stagger: 0.1,
         scrollTrigger: { trigger: '.stats', start: 'top 85%', toggleActions: 'play none none reverse' }
       });
+      window.ScrollTrigger.create({
+        trigger: '.stats', start: 'top 85%', once: true,
+        onEnter: function () { var s = document.querySelector('.stats'); if (s) s.classList.add('is-drawn'); }
+      });
     }
     // About portrait wipes in top→bottom with a subtle zoom-out
     var aboutImg = document.querySelector('.about__frame img');
@@ -688,6 +692,7 @@
       { ic: '▸', label: 'Go to Contact', hint: 'contact', run: function () { go('#contact'); } },
       { ic: '⤓', label: 'Download résumé', hint: 'cv / pdf', run: function () { window.open('Sumit_Jha_Resume.pdf', '_blank'); close(); } },
       { ic: '◐', label: 'Toggle theme', hint: 'dark / light', run: function () { if (toggle) toggle.click(); } },
+      { ic: '⌨', label: 'Keyboard shortcuts', hint: '?', run: function () { close(); if (window.__openShortcuts) window.__openShortcuts(); } },
       { ic: '✉', label: 'Email Sumit', hint: 'mailto', run: function () { window.location.href = 'mailto:7sumitjha@gmail.com'; close(); } },
       { ic: '↗', label: 'Open GitHub', hint: 'github', run: function () { window.open('https://github.com/isumitjha', '_blank'); close(); } },
       { ic: '↗', label: 'Open LinkedIn', hint: 'linkedin', run: function () { window.open('https://www.linkedin.com/in/7sumitjha/', '_blank'); close(); } }
@@ -1428,6 +1433,38 @@
     window.addEventListener('scroll', onScroll, { passive: true });
     if (lenis) lenis.on('scroll', onScroll);
     update();
+  })();
+
+  /* ---------- Keyboard shortcuts overlay (press ?) ---------- */
+  (function () {
+    function keyrow(keys, label) {
+      return '<li><span class="kh-keys">' + keys.map(function (x) { return '<kbd>' + x + '</kbd>'; }).join('') + '</span><span>' + label + '</span></li>';
+    }
+    function noterow(text) { return '<li><span class="kh-keys"></span><span class="kh-note">' + text + '</span></li>'; }
+    var overlay = document.createElement('div');
+    overlay.className = 'kbd-help'; overlay.hidden = true;
+    overlay.setAttribute('role', 'dialog'); overlay.setAttribute('aria-modal', 'true'); overlay.setAttribute('aria-label', 'Keyboard shortcuts');
+    overlay.innerHTML = '<div class="kbd-help__panel">' +
+      '<div class="kbd-help__head"><h3>Keyboard &amp; shortcuts</h3><button class="kbd-help__close" type="button" aria-label="Close">×</button></div>' +
+      '<ul class="kbd-help__list">' +
+        keyrow(['⌘', 'K'], 'Open command palette') +
+        keyrow(['Ctrl', 'K'], 'Command palette (Win/Linux)') +
+        keyrow(['?'], 'Show this menu') +
+        keyrow(['Esc'], 'Close any dialog') +
+        noterow('Type “help” in the Poke-around console') +
+        noterow('There’s a hidden code… ↑ ↑ ↓ ↓ ← → ← → B A') +
+      '</ul></div>';
+    document.body.appendChild(overlay);
+    function open() { overlay.hidden = false; }
+    function close() { overlay.hidden = true; }
+    window.__openShortcuts = open;
+    overlay.addEventListener('click', function (e) { if (e.target === overlay || (e.target.closest && e.target.closest('.kbd-help__close'))) close(); });
+    document.addEventListener('keydown', function (e) {
+      var t = e.target, tag = (t && t.tagName || '').toLowerCase();
+      if (tag === 'input' || tag === 'textarea' || (t && t.isContentEditable)) return;
+      if (e.key === '?') { e.preventDefault(); overlay.hidden ? open() : close(); }
+      else if (e.key === 'Escape' && !overlay.hidden) { close(); }
+    });
   })();
 
 })();
