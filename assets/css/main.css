@@ -545,13 +545,19 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .ghtile:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); }
 .ghtile b { display: block; font-family: var(--font-head); font-size: clamp(1.5rem, 3.5vw, 2.1rem); font-weight: 600; color: var(--accent); letter-spacing: -0.02em; }
 .ghtile span { font-size: 0.78rem; color: var(--text-soft); }
-.ghtile:nth-child(2) b { color: var(--blue); } .ghtile:nth-child(3) b { color: var(--green); } .ghtile:nth-child(4) b { color: var(--text); font-size: clamp(1.1rem, 2.4vw, 1.4rem); }
+.ghtile:nth-child(4n+2) b { color: var(--blue); } .ghtile:nth-child(4n+3) b { color: var(--green); }
+.ghtile:last-child b { color: var(--text); font-size: clamp(1.05rem, 2.2vw, 1.35rem); }
 .ghrepos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.7rem; }
 .ghrepos li a { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; padding: 0.8rem 1rem; border: 1px solid var(--border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font-family: var(--font-head); font-size: 0.9rem; transition: transform 0.25s var(--ease), border-color 0.25s var(--ease); }
 .ghrepos li a:hover { transform: translateY(-3px); border-color: var(--accent); }
 .gr-name { font-weight: 500; }
 .gr-meta { font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-faint); white-space: nowrap; }
 .gh-note { color: var(--text-faint); font-size: 0.9rem; grid-column: 1 / -1; }
+.langbar { display: flex; height: 12px; border-radius: 7px; overflow: hidden; margin-bottom: 0.9rem; border: 1px solid var(--border); }
+.langbar i { height: 100%; transition: flex-basis 0.6s var(--ease); }
+.langlegend { display: flex; flex-wrap: wrap; gap: 0.5rem 1.1rem; margin-bottom: 1.5rem; }
+.langlegend span { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-head); font-size: 0.8rem; color: var(--text-soft); }
+.langlegend i { width: 9px; height: 9px; border-radius: 50%; }
 
 /* ---------- Talks: soundwave ---------- */
 .soundwave { display: inline-flex; align-items: flex-end; gap: 3px; height: 22px; margin: 0.4rem 0 1rem; }

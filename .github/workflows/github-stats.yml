@@ -1,0 +1,44 @@
+name: Update GitHub stats
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # daily at 06:00 UTC
+  workflow_dispatch:        # allow manual run
+
+permissions:
+  contents: write
+
+concurrency:
+  group: github-stats
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install cloc
+        run: sudo apt-get update && sudo apt-get install -y cloc
+
+      - name: Build stats.json
+        env:
+          GH_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
+          GH_USER: isumitjha
+        run: node scripts/build-stats.mjs
+
+      - name: Commit if changed
+        run: |
+          git config user.name "stats-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/data/stats.json
+          if git diff --staged --quiet; then
+            echo "No stats changes."
+          else
+            git commit -m "chore: update GitHub stats [skip ci]"
+            git push
+          fi
