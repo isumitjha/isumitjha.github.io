@@ -207,12 +207,23 @@
         scrollTrigger: { trigger: card, start: 'top 82%', once: true }
       });
     });
-    // Project cards reveal from alternating directions
-    document.querySelectorAll('.proj').forEach(function (card, i) {
-      var vars = { autoAlpha: 0, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none reverse' } };
-      if (i % 3 === 0) vars.x = -55; else if (i % 3 === 2) vars.x = 55; else vars.y = 55;
-      window.gsap.from(card, vars);
-    });
+    // Projects: the "browser window" loads — body unrolls top→down + URL types in
+    (function () {
+      var browser = document.querySelector('.browser'), grid = document.querySelector('.projects__grid'), url = document.querySelector('.browser__url');
+      if (!browser || !grid) return;
+      window.gsap.set(grid, { clipPath: 'inset(0 0 100% 0)' });
+      window.gsap.to(grid, {
+        clipPath: 'inset(0 0 0% 0)', duration: 1.0, ease: 'power3.inOut',
+        scrollTrigger: { trigger: browser, start: 'top 78%', once: true }
+      });
+      if (url) {
+        var full = url.textContent; url.textContent = '';
+        window.ScrollTrigger.create({
+          trigger: browser, start: 'top 80%', once: true,
+          onEnter: function () { var i = 0; (function type() { url.textContent = full.slice(0, i++); if (i <= full.length) window.setTimeout(type, 45); })(); }
+        });
+      }
+    })();
   }
 
   /* ---------- Split text + hero intro ---------- */
