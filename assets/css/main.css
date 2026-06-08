@@ -307,7 +307,8 @@ h1, h2, h3, h4, .nav__brand, .btn, .section__index, .stat__num, .proj__no, .tags
 .oss li a:hover { border-color: var(--accent); transform: translateY(-3px); color: var(--accent); }
 
 /* ---------- Talks ---------- */
-.talk { display: flex; gap: 1.4rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; max-width: 760px; }
+#talks .container { perspective: 1100px; }
+.talk { display: flex; gap: 1.4rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.8rem; max-width: 760px; transform-origin: top center; }
 .talk__icon { flex: none; width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; background: color-mix(in srgb, var(--orange) 14%, transparent); color: var(--orange); }
 .talk__top { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; align-items: baseline; margin-bottom: 0.4rem; }
 .talk__top h3 { font-size: 1.15rem; font-weight: 600; }
@@ -333,9 +334,9 @@ h1, h2, h3, h4, .nav__brand, .btn, .section__index, .stat__num, .proj__no, .tags
 .cert__view b { font-weight: 500; }
 
 /* ---------- Education ---------- */
-.edu__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
-/* 3D flip cards */
-.edu { perspective: 1100px; min-height: 132px; }
+.edu__grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; perspective: 1500px; }
+/* 3D flip cards (+ book-page open entrance, hinge on the left) */
+.edu { perspective: 1100px; min-height: 132px; transform-origin: left center; }
 .edu__grid .edu:nth-child(odd) { --accent: var(--orange); }
 .edu__grid .edu:nth-child(even) { --accent: var(--blue); }
 .edu__inner { position: relative; width: 100%; height: 100%; min-height: 132px; transform-style: preserve-3d; transition: transform 0.7s var(--ease); }

@@ -16,6 +16,8 @@
   document.querySelectorAll('.section__head[data-reveal]').forEach(function (h) { h.removeAttribute('data-reveal'); });
   // Project cards get a directional reveal — opt them out of the generic reveal too.
   document.querySelectorAll('.proj[data-reveal]').forEach(function (h) { h.removeAttribute('data-reveal'); });
+  // Cards with bespoke 3D entrances (talks projector, certs fan-out, education book) opt out too.
+  document.querySelectorAll('.talk[data-reveal], .cert[data-reveal], .edu[data-reveal]').forEach(function (h) { h.removeAttribute('data-reveal'); });
 
   /* ---------- Footer year ---------- */
   var yearEl = document.getElementById('year');
@@ -224,6 +226,28 @@
         });
       }
     })();
+
+    // Talks: the card flips down like a projector screen
+    if (document.querySelector('.talk')) {
+      window.gsap.from('.talk', {
+        rotateX: -92, autoAlpha: 0, transformOrigin: 'top center', duration: 0.9, ease: 'power3.out', clearProps: 'transform',
+        scrollTrigger: { trigger: '.talk', start: 'top 82%', once: true }
+      });
+    }
+    // Certificates: deal out like a hand of cards, settling into the grid
+    document.querySelectorAll('.cert').forEach(function (c, i) {
+      window.gsap.from(c, {
+        rotateZ: (i - 2.5) * 7, x: (i - 2.5) * 26, y: 50, autoAlpha: 0, duration: 0.65, ease: 'power3.out', delay: i * 0.07, clearProps: 'transform',
+        scrollTrigger: { trigger: '.certs__grid', start: 'top 80%', once: true }
+      });
+    });
+    // Education: cards swing open like book pages (hinge on the left)
+    document.querySelectorAll('.edu').forEach(function (c, i) {
+      window.gsap.from(c, {
+        rotateY: -105, autoAlpha: 0, transformOrigin: 'left center', duration: 0.8, ease: 'power3.out', delay: i * 0.1, clearProps: 'transform',
+        scrollTrigger: { trigger: '.edu__grid', start: 'top 82%', once: true }
+      });
+    });
   }
 
   /* ---------- Split text + hero intro ---------- */
