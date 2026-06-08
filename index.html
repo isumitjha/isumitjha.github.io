@@ -355,6 +355,17 @@
           <span class="section__index">04</span>
           <h2 class="section__title">Projects</h2>
         </div>
+        <div class="pring" id="pring" aria-hidden="true">
+          <div class="pring__stage" id="pringStage">
+            <div class="pring__card" style="--i:0"><span class="pring__no">01</span>Agentic Cervical Screener</div>
+            <div class="pring__card" style="--i:1"><span class="pring__no">02</span>Python AI Solutions Site</div>
+            <div class="pring__card" style="--i:2"><span class="pring__no">03</span>OpenBharatOCR</div>
+            <div class="pring__card" style="--i:3"><span class="pring__no">04</span>Secure Scheduler</div>
+            <div class="pring__card" style="--i:4"><span class="pring__no">05</span>Calendar App</div>
+            <div class="pring__card" style="--i:5"><span class="pring__no">06</span>COVID-19 Dashboard</div>
+          </div>
+          <p class="pring__hint">drag to spin ·  full list below</p>
+        </div>
         <div class="browser" data-reveal>
           <div class="browser__bar">
             <span class="dot dot--r"></span><span class="dot dot--y"></span><span class="dot dot--g"></span>
@@ -581,6 +592,7 @@
 
     <!-- ============ CONTACT ============ -->
     <section class="section section--alt contact" id="contact">
+      <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
       <div class="container contact__inner">
         <svg class="plane-svg" id="planeSvg" viewBox="0 0 600 120" fill="none" aria-hidden="true">
           <path id="planePath" class="plane-path" d="M20 100 C140 20 260 20 320 60 C380 100 480 100 580 24" />
@@ -612,10 +624,19 @@
   <footer class="footer">
     <div class="container footer__inner">
       <span>© <span id="year">2026</span> Sumit Jha</span>
-      <span class="footer__made">Designed &amp; built with care · <a href="https://github.com/isumitjha/isumitjha.github.io" target="_blank" rel="noopener">Source</a></span>
+      <span class="footer__made">Designed &amp; built with care · press <kbd class="kbd" id="cmdkHint">⌘K</kbd> · <a href="https://github.com/isumitjha/isumitjha.github.io" target="_blank" rel="noopener">Source</a></span>
       <a href="#home" class="footer__top" aria-label="Back to top">Back to top ↑</a>
     </div>
   </footer>
+
+  <!-- Command palette (⌘K / Ctrl-K) -->
+  <div class="cmdk" id="cmdk" role="dialog" aria-modal="true" aria-label="Command palette" hidden>
+    <div class="cmdk__panel">
+      <input class="cmdk__input" id="cmdkInput" type="text" autocomplete="off" spellcheck="false" placeholder="Jump to a section, download CV, toggle theme…" aria-label="Type a command">
+      <ul class="cmdk__list" id="cmdkList"></ul>
+      <div class="cmdk__foot"><kbd>↑</kbd><kbd>↓</kbd> navigate · <kbd>↵</kbd> select · <kbd>esc</kbd> close</div>
+    </div>
+  </div>
 
   <!-- Libraries (deferred; site works without them) -->
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

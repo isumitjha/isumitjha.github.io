@@ -386,6 +386,7 @@ html:not(.has-gsap) [data-reveal].is-in { opacity: 1; transform: none; }
   .about__media { max-width: 340px; margin-inline: auto; }
   .skills__grid, .projects__grid, .certs__grid { grid-template-columns: repeat(2, 1fr); }
   .skill-card--wide { grid-column: span 2; }
+  .pring { display: none; }
 }
 @media (max-width: 620px) {
   body { font-size: 1rem; }
@@ -397,6 +398,7 @@ html:not(.has-gsap) [data-reveal].is-in { opacity: 1; transform: none; }
   .nav__cv { display: none; }
   .orbit { display: none; }
   .cube { display: none; }
+  .pring { display: none; }
   .laptop__deck { width: 112%; margin-left: -6%; }
   .laptop__lid { padding: 8px; }
   .laptop__view { min-height: 0; }
@@ -573,6 +575,45 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .plane-path { stroke: var(--border); stroke-width: 2; stroke-dasharray: 3 7; fill: none; }
 .plane { color: var(--orange); opacity: 0; }
 
+/* ---------- Aurora background (contact) ---------- */
+.contact { position: relative; overflow: hidden; }
+.contact > .container.contact__inner { position: relative; z-index: 1; }
+.aurora { position: absolute; inset: -20% -10%; z-index: 0; filter: blur(80px); opacity: 0.5; pointer-events: none; }
+.aurora span { position: absolute; width: 42%; height: 60%; border-radius: 50%; }
+.aurora span:nth-child(1) { background: var(--orange); top: -12%; left: 4%; animation: auroraA 18s ease-in-out infinite; }
+.aurora span:nth-child(2) { background: var(--blue); bottom: -16%; right: 6%; animation: auroraB 22s ease-in-out infinite; }
+.aurora span:nth-child(3) { background: var(--green); top: 22%; left: 44%; opacity: 0.7; animation: auroraC 26s ease-in-out infinite; }
+[data-theme="dark"] .aurora { opacity: 0.3; }
+@keyframes auroraA { 50% { transform: translate(40px, 30px) scale(1.2); } }
+@keyframes auroraB { 50% { transform: translate(-50px, -20px) scale(1.15); } }
+@keyframes auroraC { 50% { transform: translate(20px, -30px) scale(1.1); } }
+
+/* ---------- Featured project 3D ring ---------- */
+.pring { position: relative; height: 250px; max-width: 900px; margin: 0 auto 3rem; perspective: 1100px; }
+.pring__stage { position: absolute; inset: 0; transform-style: preserve-3d; cursor: grab; touch-action: pan-y; }
+.pring__stage.is-grab { cursor: grabbing; }
+.pring__card { position: absolute; top: 50%; left: 50%; width: 240px; height: 124px; margin: -62px 0 0 -120px; display: flex; flex-direction: column; justify-content: center; gap: 0.5rem; padding: 1.3rem; background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--accent); border-radius: var(--radius); font-family: var(--font-head); font-weight: 600; font-size: 1.05rem; color: var(--text); box-shadow: 0 28px 55px -32px rgba(20, 20, 19, 0.55); backface-visibility: hidden; }
+.pring__no { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; color: var(--accent); }
+.pring__card:nth-child(3n+1) { --accent: var(--orange); }
+.pring__card:nth-child(3n+2) { --accent: var(--blue); }
+.pring__card:nth-child(3n+3) { --accent: var(--green); }
+.pring__hint { position: absolute; bottom: -1.9rem; left: 0; right: 0; text-align: center; font-family: var(--font-head); font-size: 0.8rem; color: var(--text-faint); }
+
+/* ---------- Command palette ---------- */
+.cmdk { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: start center; padding-top: 14vh; background: color-mix(in srgb, #000 45%, transparent); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+.cmdk[hidden] { display: none; }
+.cmdk__panel { width: min(560px, 92vw); background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 50px 100px -30px rgba(0, 0, 0, 0.55); animation: cmdkIn 0.24s var(--ease); }
+@keyframes cmdkIn { from { opacity: 0; transform: translateY(-12px) scale(0.98); } }
+.cmdk__input { width: 100%; border: 0; background: transparent; padding: 1.1rem 1.3rem; font-family: var(--font-body); font-size: 1.05rem; color: var(--text); border-bottom: 1px solid var(--border); outline: none; }
+.cmdk__list { max-height: 330px; overflow: auto; padding: 0.5rem; list-style: none; margin: 0; }
+.cmdk__item { display: flex; align-items: center; gap: 0.85rem; padding: 0.7rem 0.9rem; border-radius: 10px; cursor: pointer; color: var(--text-soft); font-family: var(--font-head); font-size: 0.95rem; }
+.cmdk__item .ci-ic { width: 22px; text-align: center; color: var(--accent); font-size: 1rem; }
+.cmdk__item .ci-hint { margin-left: auto; font-size: 0.72rem; color: var(--text-faint); font-family: var(--font-mono); }
+.cmdk__item.is-active, .cmdk__item:hover { background: var(--bg-alt); color: var(--text); }
+.cmdk__foot { padding: 0.7rem 1rem; border-top: 1px solid var(--border); font-size: 0.72rem; color: var(--text-faint); }
+.cmdk__foot kbd, .kbd { font-family: var(--font-mono); font-size: 0.72rem; background: var(--bg-alt); border: 1px solid var(--border); border-radius: 5px; padding: 0.05rem 0.38rem; color: var(--text-soft); }
+.kbd { cursor: pointer; }
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
@@ -580,5 +621,6 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
   .orb { display: none; }
   .preloader { display: none; }
   .laptop { transform: none; }
+  .pring { display: none; }
   html { scroll-behavior: auto; }
 }

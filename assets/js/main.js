@@ -461,4 +461,97 @@
       new IntersectionObserver(function (es) { es.forEach(function (en) { en.isIntersecting ? start() : stop(); }); }).observe(hero);
     } else { start(); }
   })();
+
+  /* ---------- Featured project 3D ring (drag to spin) ---------- */
+  (function () {
+    var stage = document.getElementById('pringStage');
+    if (!stage || reduceMotion) return;
+    var cards = stage.querySelectorAll('.pring__card');
+    var n = cards.length; if (!n) return;
+    var radius = 250, step = 360 / n;
+    cards.forEach(function (c, i) { c.style.transform = 'rotateY(' + (i * step) + 'deg) translateZ(' + radius + 'px)'; });
+    var rot = 0, vel = 0, dragging = false, lastX = 0;
+    function render() { stage.style.transform = 'translateZ(-' + radius + 'px) rotateY(' + rot + 'deg)'; }
+    function loop() { if (!dragging) { rot += vel; vel *= 0.94; if (Math.abs(vel) < 0.015) vel = 0; rot += 0.12; } render(); requestAnimationFrame(loop); }
+    stage.addEventListener('pointerdown', function (e) { dragging = true; lastX = e.clientX; vel = 0; stage.classList.add('is-grab'); try { stage.setPointerCapture(e.pointerId); } catch (_) {} });
+    stage.addEventListener('pointermove', function (e) { if (!dragging) return; var dx = e.clientX - lastX; lastX = e.clientX; rot += dx * 0.45; vel = dx * 0.45; });
+    function up() { dragging = false; stage.classList.remove('is-grab'); }
+    stage.addEventListener('pointerup', up); stage.addEventListener('pointercancel', up); window.addEventListener('pointerup', up);
+    render(); requestAnimationFrame(loop);
+  })();
+
+  /* ---------- Command palette (⌘K / Ctrl-K) ---------- */
+  (function () {
+    var modal = document.getElementById('cmdk'), input = document.getElementById('cmdkInput'),
+        list = document.getElementById('cmdkList'), hintEl = document.getElementById('cmdkHint');
+    if (!modal || !input || !list) return;
+    function go(sel) { var t = document.querySelector(sel); close(); if (t) scrollToTarget(t); }
+    var cmds = [
+      { ic: '▸', label: 'Go to About', hint: 'about', run: function () { go('#about'); } },
+      { ic: '▸', label: 'Go to Experience', hint: 'experience', run: function () { go('#experience'); } },
+      { ic: '▸', label: 'Go to Skills', hint: 'skills', run: function () { go('#skills'); } },
+      { ic: '▸', label: 'Go to Projects', hint: 'projects', run: function () { go('#projects'); } },
+      { ic: '▸', label: 'Go to Open Source', hint: 'open source', run: function () { go('#opensource'); } },
+      { ic: '▸', label: 'Go to Certificates', hint: 'certs', run: function () { go('#certificates'); } },
+      { ic: '▸', label: 'Go to Contact', hint: 'contact', run: function () { go('#contact'); } },
+      { ic: '⤓', label: 'Download résumé', hint: 'cv / pdf', run: function () { window.open('Sumit_Jha_Resume.pdf', '_blank'); close(); } },
+      { ic: '◐', label: 'Toggle theme', hint: 'dark / light', run: function () { if (toggle) toggle.click(); } },
+      { ic: '✉', label: 'Email Sumit', hint: 'mailto', run: function () { window.location.href = 'mailto:7sumitjha@gmail.com'; close(); } },
+      { ic: '↗', label: 'Open GitHub', hint: 'github', run: function () { window.open('https://github.com/isumitjha', '_blank'); close(); } },
+      { ic: '↗', label: 'Open LinkedIn', hint: 'linkedin', run: function () { window.open('https://www.linkedin.com/in/7sumitjha/', '_blank'); close(); } }
+    ];
+    var filtered = cmds.slice(), active = 0;
+    function render() {
+      list.innerHTML = '';
+      filtered.forEach(function (c, i) {
+        var li = document.createElement('li');
+        li.className = 'cmdk__item' + (i === active ? ' is-active' : '');
+        li.innerHTML = '<span class="ci-ic"></span><span class="ci-lbl"></span><span class="ci-hint"></span>';
+        li.children[0].textContent = c.ic; li.children[1].textContent = c.label; li.children[2].textContent = c.hint;
+        li.addEventListener('click', function () { c.run(); });
+        li.addEventListener('mousemove', function () { if (active !== i) { active = i; paint(); } });
+        list.appendChild(li);
+      });
+    }
+    function paint() { Array.prototype.forEach.call(list.children, function (li, i) { li.classList.toggle('is-active', i === active); }); }
+    function ensureVis() { var el = list.children[active]; if (el && el.scrollIntoView) el.scrollIntoView({ block: 'nearest' }); }
+    function filter() { var q = input.value.toLowerCase().trim(); filtered = cmds.filter(function (c) { return (c.label + ' ' + c.hint).toLowerCase().indexOf(q) >= 0; }); active = 0; render(); }
+    function isOpen() { return !modal.hidden; }
+    function open() { modal.hidden = false; input.value = ''; filtered = cmds.slice(); active = 0; render(); window.setTimeout(function () { input.focus(); }, 30); }
+    function close() { modal.hidden = true; }
+    document.addEventListener('keydown', function (e) {
+      if ((e.metaKey || e.ctrlKey) && (e.key === 'k' || e.key === 'K')) { e.preventDefault(); isOpen() ? close() : open(); return; }
+      if (!isOpen()) return;
+      if (e.key === 'Escape') { close(); }
+      else if (e.key === 'ArrowDown') { e.preventDefault(); active = Math.min(active + 1, filtered.length - 1); paint(); ensureVis(); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); active = Math.max(active - 1, 0); paint(); ensureVis(); }
+      else if (e.key === 'Enter') { e.preventDefault(); if (filtered[active]) filtered[active].run(); }
+    });
+    input.addEventListener('input', filter);
+    modal.addEventListener('click', function (e) { if (e.target === modal) close(); });
+    if (hintEl) hintEl.addEventListener('click', open);
+  })();
+
+  /* ---------- Text scramble / decode on nav links ---------- */
+  if (!reduceMotion) {
+    var GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#$%&*<>/{}[]=';
+    document.querySelectorAll('.nav__links a').forEach(function (link) {
+      var orig = link.textContent, raf2 = 0;
+      link.addEventListener('mouseenter', function () {
+        var len = orig.length, frame = 0;
+        cancelAnimationFrame(raf2);
+        (function run() {
+          var out = '';
+          for (var i = 0; i < len; i++) {
+            if (i < frame / 2) out += orig.charAt(i);
+            else out += GLYPHS.charAt(Math.floor(Math.random() * GLYPHS.length));
+          }
+          link.textContent = out; frame++;
+          if (frame / 2 < len) raf2 = requestAnimationFrame(run);
+          else link.textContent = orig;
+        })();
+      });
+      link.addEventListener('mouseleave', function () { cancelAnimationFrame(raf2); link.textContent = orig; });
+    });
+  }
 })();
