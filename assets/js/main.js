@@ -554,4 +554,72 @@
       link.addEventListener('mouseleave', function () { cancelAnimationFrame(raf2); link.textContent = orig; });
     });
   }
+
+  /* ---------- Live local (IST) clock ---------- */
+  (function () {
+    var el = document.getElementById('localTime');
+    if (!el) return;
+    function tick() {
+      var now = new Date();
+      var ist = new Date(now.getTime() + now.getTimezoneOffset() * 60000 + 5.5 * 3600000);
+      var h = ist.getHours(), m = ist.getMinutes();
+      el.textContent = (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
+    }
+    tick();
+    window.setInterval(tick, 20000);
+  })();
+
+  /* ---------- Contribution heatmap ---------- */
+  (function () {
+    var grid = document.getElementById('contribGrid');
+    if (!grid) return;
+    var cols = 28, total = cols * 7, sq = [];
+    for (var i = 0; i < total; i++) {
+      var r = Math.random();
+      var lvl = r < 0.4 ? 0 : r < 0.62 ? 1 : r < 0.8 ? 2 : r < 0.93 ? 3 : 4;
+      var cell = document.createElement('i');
+      if (lvl) cell.className = 'lvl-' + lvl;
+      grid.appendChild(cell);
+      sq.push(cell);
+    }
+    if (reduceMotion || !hasGSAP) return;
+    window.gsap.from(sq, {
+      scale: 0, autoAlpha: 0, transformOrigin: 'center', duration: 0.4, ease: 'power2.out', stagger: 0.004,
+      scrollTrigger: { trigger: grid, start: 'top 86%', toggleActions: 'play none none reverse' }
+    });
+  })();
+
+  /* ---------- Konami easter egg ---------- */
+  (function () {
+    var seq = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    var pos = 0;
+    function toast(msg) {
+      var t = document.createElement('div'); t.className = 'toast'; t.textContent = msg;
+      document.body.appendChild(t);
+      requestAnimationFrame(function () { t.classList.add('show'); });
+      window.setTimeout(function () { t.classList.remove('show'); window.setTimeout(function () { t.remove(); }, 450); }, 3200);
+    }
+    function party() {
+      toast('🎉 dev mode unlocked — keep building!');
+      if (reduceMotion) return;
+      var glyphs = ['{', '}', ';', '/', '<', '>', '=>', '✦', '☕', '0', '1', '&&', '#', '()'];
+      for (var i = 0; i < 46; i++) {
+        var s = document.createElement('span');
+        s.className = 'glyph-rain';
+        s.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+        s.style.left = (Math.random() * 100) + 'vw';
+        s.style.fontSize = (12 + Math.random() * 22) + 'px';
+        var dur = 2.5 + Math.random() * 2.5;
+        s.style.animation = 'fall ' + dur + 's linear ' + (Math.random() * 0.8).toFixed(2) + 's forwards';
+        s.style.opacity = (0.5 + Math.random() * 0.5).toFixed(2);
+        document.body.appendChild(s);
+        (function (node, d) { window.setTimeout(function () { node.remove(); }, (d + 1.2) * 1000); })(s, dur);
+      }
+    }
+    document.addEventListener('keydown', function (e) {
+      var k = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+      if (k === seq[pos]) { pos++; if (pos === seq.length) { pos = 0; party(); } }
+      else { pos = (k === seq[0]) ? 1 : 0; }
+    });
+  })();
 })();
