@@ -1216,29 +1216,6 @@
     });
   })();
 
-  /* ---------- Scroll-velocity skew (subtle) ---------- */
-  (function () {
-    if (reduceMotion) return;
-    var main = document.querySelector('main');
-    if (!main) return;
-    var cur = 0, target = 0, last = window.pageYOffset || 0, lastT = performance.now();
-    function setV(v) { target = Math.max(-1.4, Math.min(1.4, v)); }
-    if (lenis) {
-      lenis.on('scroll', function () { setV((lenis.velocity || 0) * 0.18); });
-    } else {
-      window.addEventListener('scroll', function () {
-        var now = performance.now(), y = window.pageYOffset || 0, dt = Math.max(16, now - lastT);
-        setV(((y - last) / dt) * 6); last = y; lastT = now;
-      }, { passive: true });
-    }
-    (function loop() {
-      cur += (target - cur) * 0.1; target *= 0.9;
-      if (Math.abs(cur) < 0.01) cur = 0;
-      main.style.transform = cur ? 'skewY(' + cur.toFixed(3) + 'deg)' : '';
-      requestAnimationFrame(loop);
-    })();
-  })();
-
   /* ---------- Footer signature self-draws ---------- */
   (function () {
     var sig = document.getElementById('sig');
@@ -1248,18 +1225,6 @@
       es.forEach(function (en) { if (en.isIntersecting) { sig.classList.add('is-drawn'); io.disconnect(); } });
     }, { threshold: 0.6 });
     io.observe(sig);
-  })();
-
-  /* ---------- Highlights reel: drag to scroll ---------- */
-  (function () {
-    var reel = document.getElementById('reel');
-    if (!reel) return;
-    var down = false, startX = 0, startScroll = 0, moved = false;
-    reel.addEventListener('pointerdown', function (e) { down = true; moved = false; startX = e.clientX; startScroll = reel.scrollLeft; reel.classList.add('is-grab'); try { reel.setPointerCapture(e.pointerId); } catch (_) {} });
-    reel.addEventListener('pointermove', function (e) { if (!down) return; var dx = e.clientX - startX; if (Math.abs(dx) > 4) moved = true; reel.scrollLeft = startScroll - dx; });
-    function up() { down = false; reel.classList.remove('is-grab'); }
-    reel.addEventListener('pointerup', up); reel.addEventListener('pointercancel', up);
-    reel.addEventListener('click', function (e) { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
   })();
 
   /* ---------- Back-to-top mini section map ---------- */

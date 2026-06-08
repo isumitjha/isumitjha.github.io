@@ -871,26 +871,10 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .hero__spot {
   position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0;
   transition: opacity 0.45s var(--ease);
-  background: radial-gradient(440px circle at var(--mx, 50%) var(--my, 42%), color-mix(in srgb, var(--accent) 20%, transparent), transparent 62%);
+  background: radial-gradient(150px circle at var(--mx, 50%) var(--my, 42%), color-mix(in srgb, var(--accent) 26%, transparent), transparent 55%);
 }
 .hero:hover .hero__spot { opacity: 1; }
-[data-theme="dark"] .hero__spot { background: radial-gradient(440px circle at var(--mx, 50%) var(--my, 42%), color-mix(in srgb, var(--accent) 26%, transparent), transparent 62%); }
-
-/* ---------- Career highlights reel ---------- */
-.reel-sec { padding: 3.2rem 0 1rem; border-bottom: 1px solid var(--border); background: var(--bg-alt); }
-.reel__head { display: flex; align-items: center; gap: 0.6rem; font-family: var(--font-head); font-size: 0.85rem; color: var(--text-faint); margin-bottom: 1.3rem; }
-.reel__hint { margin-left: auto; font-size: 0.74rem; opacity: 0.7; }
-.reel { overflow-x: auto; scroll-snap-type: x proximity; -webkit-overflow-scrolling: touch; padding: 0.4rem clamp(1rem, 5vw, 3rem) 1.6rem; cursor: grab; scrollbar-width: none; }
-.reel::-webkit-scrollbar { display: none; }
-.reel.is-grab { cursor: grabbing; }
-.reel__track { display: flex; gap: 1.2rem; width: max-content; }
-.hl { scroll-snap-align: start; flex: 0 0 300px; background: var(--surface); border: 1px solid var(--border); border-top: 3px solid var(--c, var(--orange)); border-radius: var(--radius); padding: 1.4rem 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; transition: transform 0.3s var(--ease), border-color 0.3s var(--ease); }
-.hl:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--c, var(--orange)) 45%, var(--border)); }
-.hl__yr { font-family: var(--font-mono); font-size: 0.72rem; color: var(--c, var(--orange)); letter-spacing: 0.04em; }
-.hl__t { font-size: 1.12rem; font-weight: 600; }
-.hl p { font-size: 0.9rem; color: var(--text-soft); line-height: 1.55; flex: 1; }
-.hl__tag { font-size: 0.7rem; color: var(--text-faint); border-top: 1px solid var(--border); padding-top: 0.6rem; }
-@media (max-width: 560px) { .hl { flex-basis: 80vw; } }
+[data-theme="dark"] .hero__spot { background: radial-gradient(150px circle at var(--mx, 50%) var(--my, 42%), color-mix(in srgb, var(--accent) 32%, transparent), transparent 55%); }
 
 /* ---------- Project filter chips + FLIP ---------- */
 .pfilter { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.4rem; }
