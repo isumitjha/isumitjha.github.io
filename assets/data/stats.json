@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-08T14:33:43.361Z",
+  "generatedAt": "2026-06-08T14:41:25.634Z",
   "commits": 1036,
   "contributions": 1195,
   "prs": 90,
@@ -36,6 +36,17 @@
     }
   ],
   "oss": {
+    "conda-incubator/jupyterlab-conda-store": {
+      "repo": "conda-incubator/jupyterlab-conda-store",
+      "name": "jupyterlab-conda-store",
+      "commits": 2,
+      "prs": 2,
+      "merged": 2,
+      "additions": 12877,
+      "deletions": 9028,
+      "language": "TypeScript",
+      "stars": 16
+    },
     "sympy/sympy.github.com": {
       "repo": "sympy/sympy.github.com",
       "name": "sympy.github.com",
@@ -53,8 +64,8 @@
       "commits": 2,
       "prs": 1,
       "merged": 1,
-      "additions": null,
-      "deletions": null,
+      "additions": 20,
+      "deletions": 9,
       "language": "TypeScript",
       "stars": 14
     },
@@ -108,8 +119,8 @@
       "commits": 10,
       "prs": 6,
       "merged": 5,
-      "additions": null,
-      "deletions": null,
+      "additions": 603,
+      "deletions": 318,
       "language": "Python",
       "stars": 17
     }

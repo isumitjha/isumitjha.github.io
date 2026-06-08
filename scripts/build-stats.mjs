@@ -38,10 +38,18 @@ async function rest(path) {
 }
 const issueCount = (q) => gql(`query($q:String!){search(query:$q,type:ISSUE){issueCount}}`, { q }).then(d => d.search.issueCount);
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
-function searchCount(kind, q) {
-  return fetch(`https://api.github.com/search/${kind}?q=${encodeURIComponent(q)}&per_page=1`, {
-    headers: { ...H, Accept: kind === 'commits' ? 'application/vnd.github.cloak-preview+json' : 'application/vnd.github+json' }
-  }).then(r => { if (!r.ok) throw 0; return r.json(); }).then(j => j.total_count).catch(() => null);
+async function searchCount(kind, q) {
+  const url = `https://api.github.com/search/${kind}?q=${encodeURIComponent(q)}&per_page=1`;
+  const headers = { ...H, Accept: kind === 'commits' ? 'application/vnd.github.cloak-preview+json' : 'application/vnd.github+json' };
+  for (let a = 0; a < 3; a++) {
+    try {
+      const r = await fetch(url, { headers });
+      if (r.status === 403) { await sleep(12000); continue; }      // secondary rate limit — wait
+      if (!r.ok) return null;
+      return (await r.json()).total_count;
+    } catch { await sleep(2500); }
+  }
+  return null;
 }
 
 // --- account info ---
@@ -135,28 +143,28 @@ const OSS_REPOS = [
 ];
 const oss = {};
 for (const full of OSS_REPOS) {
+  let info = {};
+  try { info = await rest(`/repos/${full}`); } catch { try { await sleep(2500); info = await rest(`/repos/${full}`); } catch {} }
+  const commitsR = await searchCount('commits', `repo:${full} author:${USER}`); await sleep(1500);
+  const prsR = await searchCount('issues', `repo:${full} author:${USER} type:pr`); await sleep(1500);
+  const mergedR = await searchCount('issues', `repo:${full} author:${USER} type:pr is:merged`); await sleep(1500);
+  // lines changed by me (best-effort; the endpoint may return 202 while computing)
+  let additions = null, deletions = null;
   try {
-    const info = await rest(`/repos/${full}`);
-    const commitsR = await searchCount('commits', `repo:${full} author:${USER}`); await sleep(1500);
-    const prsR = await searchCount('issues', `repo:${full} author:${USER} type:pr`); await sleep(1500);
-    const mergedR = await searchCount('issues', `repo:${full} author:${USER} type:pr is:merged`); await sleep(1500);
-    // lines changed by me (best-effort; the endpoint may return 202 while computing)
-    let additions = null, deletions = null;
-    try {
-      let stats = null;
-      for (let a = 0; a < 3; a++) {
-        const r = await fetch(`https://api.github.com/repos/${full}/stats/contributors`, { headers: { ...H, Accept: 'application/vnd.github+json' } });
-        if (r.status === 202) { await sleep(3000); continue; }
-        if (r.ok) { stats = await r.json(); }
-        break;
-      }
-      if (Array.isArray(stats)) {
-        const mine = stats.find(s => s.author && s.author.login && s.author.login.toLowerCase() === USER.toLowerCase());
-        if (mine) { additions = 0; deletions = 0; mine.weeks.forEach(w => { additions += w.a; deletions += w.d; }); }
-      }
-    } catch {}
-    oss[full] = { repo: full, name: full.split('/')[1], commits: commitsR, prs: prsR, merged: mergedR, additions, deletions, language: info.language, stars: info.stargazers_count };
+    let stats = null;
+    for (let a = 0; a < 4; a++) {
+      const r = await fetch(`https://api.github.com/repos/${full}/stats/contributors`, { headers: { ...H, Accept: 'application/vnd.github+json' } });
+      if (r.status === 202) { await sleep(4000); continue; }
+      if (r.ok) { stats = await r.json(); }
+      break;
+    }
+    if (Array.isArray(stats)) {
+      const mine = stats.find(s => s.author && s.author.login && s.author.login.toLowerCase() === USER.toLowerCase());
+      if (mine) { additions = 0; deletions = 0; mine.weeks.forEach(w => { additions += w.a; deletions += w.d; }); }
+    }
   } catch {}
+  // Always record the entry (even if one call hiccupped) so the pill gets a card.
+  oss[full] = { repo: full, name: full.split('/')[1], commits: commitsR, prs: prsR, merged: mergedR, additions, deletions, language: info.language || null, stars: info.stargazers_count != null ? info.stargazers_count : null };
 }
 
 const data = {
