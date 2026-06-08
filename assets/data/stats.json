@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-06-08T14:46:21.582Z",
+  "generatedAt": "2026-06-08T14:54:11.956Z",
   "commits": 1036,
   "contributions": 1195,
   "prs": 90,
@@ -33,6 +33,48 @@
     {
       "name": "TypeScript",
       "pct": 2.2
+    }
+  ],
+  "byYear": [
+    {
+      "year": 2017,
+      "contributions": 1
+    },
+    {
+      "year": 2018,
+      "contributions": 0
+    },
+    {
+      "year": 2019,
+      "contributions": 0
+    },
+    {
+      "year": 2020,
+      "contributions": 0
+    },
+    {
+      "year": 2021,
+      "contributions": 0
+    },
+    {
+      "year": 2022,
+      "contributions": 0
+    },
+    {
+      "year": 2023,
+      "contributions": 134
+    },
+    {
+      "year": 2024,
+      "contributions": 458
+    },
+    {
+      "year": 2025,
+      "contributions": 405
+    },
+    {
+      "year": 2026,
+      "contributions": 197
     }
   ],
   "oss": {

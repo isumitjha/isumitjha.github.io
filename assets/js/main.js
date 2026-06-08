@@ -630,26 +630,6 @@
     window.setInterval(tick, 20000);
   })();
 
-  /* ---------- Contribution heatmap ---------- */
-  (function () {
-    var grid = document.getElementById('contribGrid');
-    if (!grid) return;
-    var cols = 28, total = cols * 7, sq = [];
-    for (var i = 0; i < total; i++) {
-      var r = Math.random();
-      var lvl = r < 0.4 ? 0 : r < 0.62 ? 1 : r < 0.8 ? 2 : r < 0.93 ? 3 : 4;
-      var cell = document.createElement('i');
-      if (lvl) cell.className = 'lvl-' + lvl;
-      grid.appendChild(cell);
-      sq.push(cell);
-    }
-    if (reduceMotion || !hasGSAP) return;
-    window.gsap.from(sq, {
-      scale: 0, autoAlpha: 0, transformOrigin: 'center', duration: 0.4, ease: 'power2.out', stagger: 0.004,
-      scrollTrigger: { trigger: grid, start: 'top 86%', toggleActions: 'play none none reverse' }
-    });
-  })();
-
   /* ---------- Live GitHub stats ----------
      Prefers assets/data/stats.json (built in CI from a secret token — includes
      PRIVATE repos, lifetime commits, lines of code & full language breakdown).
@@ -685,11 +665,40 @@
       });
       bar.hidden = false; leg.hidden = false;
     }
+    function agoText(iso) {
+      if (!iso) return '';
+      var s = Math.floor((Date.now() - new Date(iso).getTime()) / 1000);
+      if (s < 3600) return '· updated ' + Math.max(1, Math.floor(s / 60)) + 'm ago';
+      var h = Math.floor(s / 3600); if (h < 24) return '· updated ' + h + 'h ago';
+      return '· updated ' + Math.floor(h / 24) + 'd ago';
+    }
+    function renderYears(byYear) {
+      var el = document.getElementById('yearBars');
+      if (!el || !byYear || !byYear.length) return;
+      byYear = byYear.filter(function (y) { return y.contributions > 0; }); // drop inactive early years
+      if (!byYear.length) return;
+      var max = Math.max.apply(null, byYear.map(function (y) { return y.contributions; })) || 1;
+      el.innerHTML = '';
+      byYear.forEach(function (y) {
+        var col = document.createElement('div'); col.className = 'yb';
+        col.innerHTML = '<span class="yb__count">' + y.contributions.toLocaleString() + '</span>' +
+          '<span class="yb__track"><span class="yb__bar" style="--h:' + Math.max(3, Math.round(y.contributions / max * 100)) + '%"></span></span>' +
+          '<span class="yb__year">’' + String(y.year).slice(2) + '</span>';
+        el.appendChild(col);
+      });
+      var total = document.getElementById('contribTotal');
+      if (total) total.textContent = byYear.reduce(function (a, y) { return a + y.contributions; }, 0).toLocaleString() + ' total';
+      if (hasGSAP && !reduceMotion) {
+        window.gsap.from('#yearBars .yb__bar', { scaleY: 0, transformOrigin: 'bottom', duration: 0.7, ease: 'power3.out', stagger: 0.06, scrollTrigger: { trigger: '#yearBars', start: 'top 88%', once: true } });
+      }
+    }
     function render(d) {
       num('ghContributions', d.contributions); num('ghCommits', d.commits); num('ghPRs', d.prs); num('ghMerged', d.merged);
       num('ghContribRepos', d.reposContributedTo); num('ghIssues', d.issues); num('ghLangs', d.langCount);
       locTile(typeof d.loc === 'number' ? d.loc : null);
       renderLangs(d.langs);
+      renderYears(d.byYear);
+      var up = document.getElementById('ghUpdated'); if (up && d.generatedAt) up.textContent = agoText(d.generatedAt);
       if (d.oss) { window.__ossData = d.oss; initOSSCards(); }
     }
 

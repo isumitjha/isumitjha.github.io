@@ -59,6 +59,7 @@ const thisYear = new Date().getUTCFullYear();
 
 // --- lifetime contributions incl. private (sum per-year contribution windows) ---
 let commits = 0, contributions = 0;
+const byYear = [];
 for (let y = startYear; y <= thisYear; y++) {
   const d = await gql(
     `query($l:String!,$f:DateTime!,$t:DateTime!){user(login:$l){contributionsCollection(from:$f,to:$t){totalCommitContributions restrictedContributionsCount contributionCalendar{totalContributions}}}}`,
@@ -67,6 +68,7 @@ for (let y = startYear; y <= thisYear; y++) {
   const c = d.user.contributionsCollection;
   commits += c.totalCommitContributions + c.restrictedContributionsCount;
   contributions += c.contributionCalendar.totalContributions;
+  byYear.push({ year: y, contributions: c.contributionCalendar.totalContributions });
 }
 
 // --- repos contributed to (incl. others' repos) ---
@@ -175,7 +177,7 @@ for (const full of OSS_REPOS) {
 
 const data = {
   generatedAt: new Date().toISOString(),
-  commits, contributions, prs, merged, issues, loc, reposContributedTo, langCount, topLang, langs, oss
+  commits, contributions, prs, merged, issues, loc, reposContributedTo, langCount, topLang, langs, byYear, oss
 };
 mkdirSync('assets/data', { recursive: true });
 writeFileSync('assets/data/stats.json', JSON.stringify(data, null, 2) + '\n');
