@@ -290,6 +290,7 @@
         .from(chars, { yPercent: 115, opacity: 0, duration: 0.7, ease: 'power3.out', stagger: 0.09 })
         .from('.screen .hero__eyebrow', { y: 16, autoAlpha: 0, duration: 0.5 }, '<')
         .from('.screen .hero__lead', { y: 16, autoAlpha: 0, duration: 0.5 }, '<0.2')
+        .from('.screen .hero__rotator', { y: 16, autoAlpha: 0, duration: 0.5 }, '<0.15')
         .from('.screen .hero__cta', { y: 16, autoAlpha: 0, duration: 0.5 }, '<0.15')
         .from('.screen .hero__social', { y: 16, autoAlpha: 0, duration: 0.5 }, '<0.15')
         .add(function () { lidCloseOnScroll(); });
@@ -431,6 +432,38 @@
       })();
     })();
   }
+
+  /* ---------- Hero typewriter rotator ---------- */
+  (function () {
+    var el = document.getElementById('heroRotator');
+    if (!el) return;
+    var phrases = [
+      'AI-driven applications',
+      'secure enterprise systems',
+      'developer tools',
+      'open-source software',
+      'WebGL data viz',
+      'clean, reliable software'
+    ];
+    if (reduceMotion) { el.textContent = phrases[0]; return; }
+    var pi = 0, ci = 0, deleting = false;
+    el.textContent = '';
+    function tick() {
+      var word = phrases[pi];
+      if (!deleting) {
+        ci++;
+        el.textContent = word.slice(0, ci);
+        if (ci === word.length) { deleting = true; return window.setTimeout(tick, 1500); }
+        window.setTimeout(tick, 55 + Math.random() * 45);
+      } else {
+        ci--;
+        el.textContent = word.slice(0, ci);
+        if (ci === 0) { deleting = false; pi = (pi + 1) % phrases.length; return window.setTimeout(tick, 260); }
+        window.setTimeout(tick, 28);
+      }
+    }
+    window.setTimeout(tick, 900);
+  })();
 
   /* ---------- Scroll-reactive hero (laptop drifts, shrinks & fades away) ---------- */
   if (hasGSAP && !reduceMotion) {
@@ -676,6 +709,7 @@
   (function () {
     var box = document.getElementById('ghStats');
     if (!box) return;
+    box.classList.add('is-loading'); // skeleton shimmer until data arrives
     var USER = 'isumitjha';
     var LANG_COLORS = { Python: '#3572A5', TypeScript: '#3178c6', JavaScript: '#f1e05a', HTML: '#e34c26', CSS: '#563d7c', SCSS: '#c6538c', Shell: '#89e051', Java: '#b07219', 'C++': '#f34b7d', C: '#555555', Go: '#00ADD8', Rust: '#dea584', Ruby: '#701516', PHP: '#4F5D95', Vue: '#41b883', Svelte: '#ff3e00', 'Jupyter Notebook': '#DA5B0B', Dockerfile: '#384d54', Makefile: '#427819', Astro: '#ff5a03', Nix: '#7e7eff' };
     function lcolor(n) { return LANG_COLORS[n] || '#b0aea5'; }
@@ -769,6 +803,7 @@
       grid.addEventListener('mouseleave', function () { tip.classList.remove('show'); });
     }
     function render(d) {
+      box.classList.remove('is-loading');
       num('ghContributions', d.contributions); num('ghCommits', d.commits); num('ghPRs', d.prs); num('ghMerged', d.merged);
       num('ghContribRepos', d.reposContributedTo); num('ghIssues', d.issues); num('ghLangs', d.langCount);
       locTile(typeof d.loc === 'number' ? d.loc : null);

@@ -76,6 +76,7 @@ h1, h2, h3, h4, .nav__brand, .btn, .section__index, .stat__num, .proj__no, .tags
 
 /* ---------- Buttons ---------- */
 .btn {
+  position: relative; overflow: hidden;
   display: inline-flex; align-items: center; justify-content: center;
   gap: 0.5rem;
   padding: 0.8rem 1.5rem;
@@ -91,6 +92,11 @@ h1, h2, h3, h4, .nav__brand, .btn, .section__index, .stat__num, .proj__no, .tags
 .btn--solid:hover { background: var(--orange); color: #fff; }
 .btn--ghost { background: transparent; color: var(--text); border-color: var(--border); }
 .btn--ghost:hover { border-color: var(--accent); color: var(--accent); }
+/* shine sweep on hover */
+.btn::after { content: ""; position: absolute; top: 0; left: -120%; width: 60%; height: 100%; pointer-events: none; transform: skewX(-20deg); background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent); }
+.btn:hover::after { animation: btnShine 0.7s var(--ease); }
+@keyframes btnShine { to { left: 160%; } }
+@media (prefers-reduced-motion: reduce) { .btn:hover::after { animation: none; } .hero__rotator .rot__caret { animation: none; } }
 
 /* ---------- Scroll progress ---------- */
 .scroll-progress {
@@ -171,6 +177,12 @@ h1, h2, h3, h4, .nav__brand, .btn, .section__index, .stat__num, .proj__no, .tags
 .hero__title .line { display: block; overflow: hidden; padding-bottom: 0.06em; }
 .hero__title .accent { color: var(--accent); }
 .hero__lead { max-width: 46ch; margin-top: 1.6rem; font-size: clamp(1.05rem, 2vw, 1.25rem); color: var(--text-soft); }
+/* hero typewriter rotator */
+.hero__rotator { margin-top: 1.1rem; font-family: var(--font-head); font-size: clamp(1rem, 1.8vw, 1.15rem); color: var(--text-soft); display: flex; align-items: center; flex-wrap: wrap; gap: 0.5ch; }
+.hero__rotator .rot__pre { color: var(--text-faint); }
+.hero__rotator .rot__word { color: var(--accent); font-weight: 600; }
+.hero__rotator .rot__caret { display: inline-block; width: 2px; height: 1.05em; background: var(--accent); margin-left: 1px; transform: translateY(2px); animation: caretBlink 1s steps(1) infinite; }
+@keyframes caretBlink { 0%, 50% { opacity: 1; } 50.01%, 100% { opacity: 0; } }
 .hero__cta { display: flex; gap: 0.9rem; margin-top: 2.2rem; flex-wrap: wrap; }
 .hero__social { display: flex; gap: 0.5rem; margin-top: 2.4rem; }
 .hero__social a {
@@ -569,6 +581,10 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .ghtile:hover { transform: translateY(-4px); border-color: color-mix(in srgb, var(--accent) 40%, var(--border)); }
 .ghtile b { display: block; font-family: var(--font-head); font-size: clamp(1.5rem, 3.5vw, 2.1rem); font-weight: 600; color: var(--accent); letter-spacing: -0.02em; }
 .ghtile span { font-size: 0.78rem; color: var(--text-soft); }
+/* skeleton shimmer while stats.json loads */
+.ghstats.is-loading .ghtile b { color: transparent; border-radius: 6px; background: linear-gradient(100deg, var(--bg-alt) 30%, color-mix(in srgb, var(--accent) 14%, var(--bg-alt)) 50%, var(--bg-alt) 70%); background-size: 200% 100%; animation: ghShimmer 1.3s ease-in-out infinite; }
+@keyframes ghShimmer { to { background-position: -200% 0; } }
+@media (prefers-reduced-motion: reduce) { .ghstats.is-loading .ghtile b { animation: none; } }
 .ghtile:nth-child(4n+2) b { color: var(--blue); } .ghtile:nth-child(4n+3) b { color: var(--green); }
 .ghtile:last-child b { color: var(--text); font-size: clamp(1.05rem, 2.2vw, 1.35rem); }
 .ghrepos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.7rem; }
