@@ -181,7 +181,7 @@ h1, h2, h3, h4, .nav__brand, .btn, .section__index, .stat__num, .proj__no, .tags
 .hero__social a:hover { color: #fff; background: var(--accent); border-color: var(--accent); transform: translateY(-3px); }
 
 /* hero orbs */
-.hero__orbs { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+.hero__orbs { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 .orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.5; }
 .orb--orange { width: 42vw; height: 42vw; max-width: 520px; max-height: 520px; background: var(--orange); top: -8%; right: -6%; animation: float1 18s ease-in-out infinite; }
 .orb--blue { width: 34vw; height: 34vw; max-width: 420px; max-height: 420px; background: var(--blue); bottom: -12%; left: -8%; animation: float2 22s ease-in-out infinite; }
@@ -417,6 +417,9 @@ html:not(.has-gsap) [data-reveal].is-in { opacity: 1; transform: none; }
 @keyframes load { to { width: 100%; } }
 @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
+/* ---------- Hero: constellation background ---------- */
+.constellation { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; pointer-events: none; opacity: 0.6; }
+
 /* ---------- Hero: big laptop centerpiece (content on screen) ---------- */
 .hero__inner { display: flex; justify-content: center; perspective: 1700px; }
 .laptop--hero { position: relative; width: 100%; max-width: 1000px; transform-style: preserve-3d; }
@@ -528,6 +531,16 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .soundwave i:nth-child(7) { animation-delay: -0.6s; } .soundwave i:nth-child(8) { animation-delay: -0.1s; }
 .soundwave i:nth-child(9) { animation-delay: -0.8s; }
 @keyframes wave { 0%, 100% { transform: scaleY(0.2); } 50% { transform: scaleY(1); } }
+
+/* ---------- Cursor spotlight glow on cards ---------- */
+.skill-card { position: relative; overflow: hidden; }
+.proj::after, .skill-card::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 0;
+  opacity: 0; transition: opacity 0.35s var(--ease);
+  background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), color-mix(in srgb, var(--accent) 20%, transparent), transparent 62%);
+}
+.proj:hover::after, .skill-card:hover::after { opacity: 1; }
+.proj > *, .skill-card > * { position: relative; z-index: 1; }
 
 /* ---------- About: rotating 3D tech cube ---------- */
 .about__stage { --cube: 56px; }
