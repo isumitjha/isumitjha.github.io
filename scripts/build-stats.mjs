@@ -145,6 +145,12 @@ const oss = {};
 for (const full of OSS_REPOS) {
   let info = {};
   try { info = await rest(`/repos/${full}`); } catch { try { await sleep(2500); info = await rest(`/repos/${full}`); } catch {} }
+  let repoLangs = [];
+  try {
+    const L = await rest(`/repos/${full}/languages`);
+    const tot = Object.values(L).reduce((a, b) => a + b, 0) || 1;
+    repoLangs = Object.entries(L).sort((a, b) => b[1] - a[1]).slice(0, 5).map(([name, bytes]) => ({ name, pct: +(bytes / tot * 100).toFixed(1) }));
+  } catch {}
   const commitsR = await searchCount('commits', `repo:${full} author:${USER}`); await sleep(1500);
   const prsR = await searchCount('issues', `repo:${full} author:${USER} type:pr`); await sleep(1500);
   const mergedR = await searchCount('issues', `repo:${full} author:${USER} type:pr is:merged`); await sleep(1500);
@@ -164,7 +170,7 @@ for (const full of OSS_REPOS) {
     }
   } catch {}
   // Always record the entry (even if one call hiccupped) so the pill gets a card.
-  oss[full] = { repo: full, name: full.split('/')[1], commits: commitsR, prs: prsR, merged: mergedR, additions, deletions, language: info.language || null, stars: info.stargazers_count != null ? info.stargazers_count : null };
+  oss[full] = { repo: full, name: full.split('/')[1], commits: commitsR, prs: prsR, merged: mergedR, additions, deletions, language: info.language || null, stars: info.stargazers_count != null ? info.stargazers_count : null, langs: repoLangs };
 }
 
 const data = {

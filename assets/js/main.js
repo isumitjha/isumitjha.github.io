@@ -713,11 +713,24 @@
           '<div class="ot-hint">click for details</div>';
       }
       function box(v, l) { return '<div class="osb"><b>' + (v != null ? v.toLocaleString() : '—') + '</b><span>' + l + '</span></div>'; }
+      function pie(langs) {
+        if (!langs || !langs.length) return '';
+        var acc = 0, stops = [], legend = '';
+        langs.forEach(function (l) {
+          var end = acc + l.pct;
+          stops.push(lcolor(l.name) + ' ' + acc.toFixed(1) + '% ' + end.toFixed(1) + '%');
+          legend += '<span><i style="background:' + lcolor(l.name) + '"></i>' + esc(l.name) + ' ' + l.pct + '%</span>';
+          acc = end;
+        });
+        if (acc < 100) stops.push('var(--border) ' + acc.toFixed(1) + '% 100%');
+        return '<div class="osspie"><div class="osspie__chart" style="background:conic-gradient(' + stops.join(',') + ')"></div><div class="osspie__legend">' + legend + '</div></div>';
+      }
       function openModal(o, href) {
         panel.innerHTML = '<button class="pmodal__close" id="ossClose" type="button" aria-label="Close">×</button>' +
           '<span class="pmodal__no">open source</span><h3 class="pmodal__title">' + esc(o.name) + '</h3>' +
-          '<p class="pmodal__desc">My contributions to <strong>' + esc(o.repo) + '</strong>' + (o.language ? ' · ' + esc(o.language) : '') + (o.stars != null ? ' · ★ ' + o.stars.toLocaleString() : '') + '</p>' +
+          '<p class="pmodal__desc">My contributions to <strong>' + esc(o.repo) + '</strong>' + (o.stars != null ? ' · ★ ' + o.stars.toLocaleString() : '') + '</p>' +
           '<div class="ossmodal__stats">' + box(o.commits, 'commits') + box(o.prs, 'PRs') + box(o.merged, 'merged') + box(o.additions, 'lines added') + box(o.deletions, 'lines removed') + '</div>' +
+          (o.langs && o.langs.length ? '<div class="ossmodal__langhead">Languages</div>' + pie(o.langs) : '') +
           '<a class="btn btn--solid magnetic" href="' + href + '" target="_blank" rel="noopener">View my PRs ↗</a>';
         modal.hidden = false;
         var c = document.getElementById('ossClose'); if (c) c.addEventListener('click', function () { modal.hidden = true; });
