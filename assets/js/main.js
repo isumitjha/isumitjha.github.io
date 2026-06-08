@@ -189,6 +189,24 @@
     tl.from(words, { rotationX: -90, y: 36, autoAlpha: 0, transformOrigin: '50% 50% -36px', duration: 0.85, ease: 'power3.out', stagger: 0.08 }, lead ? '-=0.25' : 0);
   });
 
+  /* ---------- Stats flip-in + skill-chip stagger ---------- */
+  if (hasGSAP && !reduceMotion) {
+    if (document.querySelector('.stat')) {
+      window.gsap.from('.stat', {
+        rotationX: -80, autoAlpha: 0, transformOrigin: '50% 50% -30px', duration: 0.7, ease: 'power3.out', stagger: 0.1,
+        scrollTrigger: { trigger: '.stats', start: 'top 85%', toggleActions: 'play none none reverse' }
+      });
+    }
+    document.querySelectorAll('.skill-card').forEach(function (card) {
+      var chips = card.querySelectorAll('.chips li');
+      if (!chips.length) return;
+      window.gsap.from(chips, {
+        y: 14, autoAlpha: 0, duration: 0.4, ease: 'power2.out', stagger: 0.03, clearProps: 'transform',
+        scrollTrigger: { trigger: card, start: 'top 82%', once: true }
+      });
+    });
+  }
+
   /* ---------- Split text + hero intro ---------- */
   function splitInto(el) {
     var words = el.textContent.split(' ');
@@ -297,7 +315,7 @@
 
   /* ---------- 3D tilt cards ---------- */
   if (!reduceMotion && finePointer) {
-    document.querySelectorAll('.proj, .skill-card, .edu, .tl__card, .ghtile').forEach(function (card) {
+    document.querySelectorAll('.proj, .skill-card, .tl__card, .ghtile, .talk').forEach(function (card) {
       card.addEventListener('mousemove', function (e) {
         var r = card.getBoundingClientRect();
         var px = (e.clientX - r.left) / r.width - 0.5;
@@ -360,16 +378,10 @@
     window.gsap.to('.laptop--hero', { yPercent: -6, scale: 0.9, autoAlpha: 0.55, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
   }
 
-  /* ---------- Hero orbs follow the cursor (parallax) ---------- */
-  var orbs = document.querySelector('.hero__orbs');
-  if (orbs && finePointer && !reduceMotion) {
-    var hero = document.getElementById('home');
-    hero.addEventListener('mousemove', function (e) {
-      var cx = (e.clientX / window.innerWidth - 0.5);
-      var cy = (e.clientY / window.innerHeight - 0.5);
-      orbs.style.transform = 'translate(' + (cx * 40) + 'px,' + (cy * 40) + 'px)';
-    });
-    hero.addEventListener('mouseleave', function () { orbs.style.transform = ''; });
+  /* ---------- Hero orbs: gentle scroll parallax (depth) ----------
+     Parallax the container (no conflict with the per-orb float keyframes). */
+  if (hasGSAP && !reduceMotion && document.querySelector('.hero__orbs')) {
+    window.gsap.to('.hero__orbs', { yPercent: 26, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
   }
 
   /* ---------- Mouse-following 3D laptop ---------- */
