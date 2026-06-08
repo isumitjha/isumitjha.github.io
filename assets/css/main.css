@@ -252,8 +252,12 @@ h1, h2, h3, h4, .nav__brand, .btn, .section__index, .stat__num, .proj__no, .tags
 .chips li:hover { transform: translateY(-4px) scale(1.05); color: var(--accent); border-color: var(--accent); }
 .chips li { display: inline-flex; align-items: center; gap: 6px; }
 .chip-ic { height: 14px; width: auto; max-width: 26px; flex: none; }
+.chip-dot { display: inline-flex; align-items: center; flex: none; color: var(--accent); }
+.chip-dot svg { width: 8px; height: 8px; opacity: 0.6; }
 .tw { display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
 .tw .chip-ic { height: 16px; }
+.orbiter__chip { display: inline-flex; align-items: center; gap: 5px; }
+.orbiter__chip .chip-ic { height: 13px; }
 
 /* company logo avatar in the experience timeline */
 .tl__org { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
@@ -778,6 +782,17 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .pmodal__desc { color: var(--text-soft); margin-bottom: 1.3rem; }
 .pmodal #pmTags { margin-bottom: 1.5rem; }
 .proj { cursor: pointer; }
+
+/* ---------- Animated underline on inline text links ---------- */
+.about__body a, .timeline a, .talk__body a, .section__lead a, .statuscard a, .contact__lead a {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1.5px; background-position: 0 100%; background-repeat: no-repeat;
+  transition: background-size 0.3s var(--ease), color 0.25s var(--ease);
+}
+.about__body a:hover, .timeline a:hover, .talk__body a:hover, .section__lead a:hover, .statuscard a:hover, .contact__lead a:hover,
+.about__body a:focus-visible, .timeline a:focus-visible, .talk__body a:focus-visible, .section__lead a:focus-visible, .statuscard a:focus-visible, .contact__lead a:focus-visible {
+  background-size: 100% 1.5px;
+}
 
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {

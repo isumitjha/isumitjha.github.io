@@ -14,6 +14,8 @@
   if (hasGSAP && !reduceMotion) root.classList.add('has-gsap');
   // Section headings get a dedicated 3D kinetic title animation — opt them out of the generic reveal.
   document.querySelectorAll('.section__head[data-reveal]').forEach(function (h) { h.removeAttribute('data-reveal'); });
+  // Project cards get a directional reveal — opt them out of the generic reveal too.
+  document.querySelectorAll('.proj[data-reveal]').forEach(function (h) { h.removeAttribute('data-reveal'); });
 
   /* ---------- Footer year ---------- */
   var yearEl = document.getElementById('year');
@@ -204,6 +206,12 @@
         y: 14, autoAlpha: 0, duration: 0.4, ease: 'power2.out', stagger: 0.03, clearProps: 'transform',
         scrollTrigger: { trigger: card, start: 'top 82%', once: true }
       });
+    });
+    // Project cards reveal from alternating directions
+    document.querySelectorAll('.proj').forEach(function (card, i) {
+      var vars = { autoAlpha: 0, duration: 0.7, ease: 'power3.out', scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none reverse' } };
+      if (i % 3 === 0) vars.x = -55; else if (i % 3 === 2) vars.x = 55; else vars.y = 55;
+      window.gsap.from(card, vars);
     });
   }
 
@@ -722,21 +730,30 @@
       'PostgreSQL': 'postgresql', 'MongoDB': 'mongodb', 'SQLite': 'sqlite',
       'Docker': 'docker', 'Docker Compose': 'docker', 'GitHub Actions': 'githubactions', 'GCP': 'googlecloud',
       'Nginx': 'nginx', 'Terraform / OpenTofu': 'terraform', 'Git': 'git', 'Postman': 'postman', 'npm': 'npm',
-      'Yarn': 'yarn', 'Pandas': 'pandas', 'NumPy': 'numpy', 'Linux': 'linux',
+      'Yarn': 'yarn', 'Pandas': 'pandas', 'NumPy': 'numpy', 'Linux': 'linux', 'Postgres': 'postgresql',
       // Devicon (full URLs) for logos not on Simple Icons:
       'AWS': DEV + 'amazonwebservices/amazonwebservices-original-wordmark.svg',
       'Microsoft Entra': DEV + 'azure/azure-original.svg'
     };
+    var SPARK = '<svg viewBox="0 0 100 100"><path d="M50 0C52 28 72 48 100 50C72 52 52 72 50 100C48 72 28 52 0 50C28 48 48 28 50 0Z" fill="currentColor"/></svg>';
     function addIcon(el) {
       var v = SLUG[el.textContent.trim()];
-      if (!v) return;
-      var img = document.createElement('img');
-      img.className = 'chip-ic'; img.alt = ''; img.loading = 'lazy';
-      img.onerror = function () { img.remove(); };
-      img.src = v.indexOf('http') === 0 ? v : 'https://cdn.simpleicons.org/' + v;
-      el.insertBefore(img, el.firstChild);
+      if (v) {
+        var img = document.createElement('img');
+        img.className = 'chip-ic'; img.alt = ''; img.loading = 'lazy';
+        img.onerror = function () { img.remove(); markDot(el); };
+        img.src = v.indexOf('http') === 0 ? v : 'https://cdn.simpleicons.org/' + v;
+        el.insertBefore(img, el.firstChild);
+      } else {
+        markDot(el);
+      }
     }
-    document.querySelectorAll('.chips li, .tw').forEach(addIcon);
+    function markDot(el) {
+      if (el.querySelector('.chip-ic, .chip-dot')) return;
+      var s = document.createElement('span'); s.className = 'chip-dot'; s.setAttribute('aria-hidden', 'true'); s.innerHTML = SPARK;
+      el.insertBefore(s, el.firstChild);
+    }
+    document.querySelectorAll('.chips li, .tw, .orbiter__chip').forEach(addIcon);
   })();
 
   /* ---------- Company logos in the experience timeline (favicons) ---------- */
