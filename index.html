@@ -18,14 +18,43 @@
     })();
   </script>
 
+  <link rel="canonical" href="https://isumit.in/">
+  <meta name="theme-color" content="#faf9f5" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#141413" media="(prefers-color-scheme: dark)">
+
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Sumit Jha — Software Engineer">
-  <meta property="og:description" content="Software Engineer II at OpenTeams. Full-stack developer & open-source contributor.">
-  <meta property="og:url" content="https://isumit.in">
+  <meta property="og:description" content="Software Engineer II at OpenTeams. Full-stack developer & open-source contributor building AI-driven apps, secure enterprise systems, and developer tools.">
+  <meta property="og:url" content="https://isumit.in/">
   <meta property="og:image" content="https://isumit.in/images/profile-pic.png">
+  <meta property="og:site_name" content="Sumit Jha">
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sumit Jha — Software Engineer">
+  <meta name="twitter:description" content="Software Engineer II at OpenTeams. Full-stack developer & open-source contributor.">
+  <meta name="twitter:image" content="https://isumit.in/images/profile-pic.png">
 
   <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon.png">
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Structured data (schema.org Person) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Sumit Jha",
+    "url": "https://isumit.in/",
+    "image": "https://isumit.in/images/profile-pic.png",
+    "jobTitle": "Software Engineer II",
+    "worksFor": { "@type": "Organization", "name": "OpenTeams", "url": "https://openteams.com/" },
+    "address": { "@type": "PostalAddress", "addressLocality": "New Delhi", "addressCountry": "IN" },
+    "email": "mailto:7sumitjha@gmail.com",
+    "knowsAbout": ["Python", "TypeScript", "FastAPI", "Next.js", "React", "Docker", "AWS", "Terraform", "Open Source"],
+    "sameAs": ["https://github.com/isumitjha", "https://www.linkedin.com/in/7sumitjha/"]
+  }
+  </script>
 
   <!-- Fonts: Poppins (Styrene-substitute) + Lora (Tiempos-substitute) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -532,7 +561,7 @@
           </div>
         </div>
         <div class="calendar" data-reveal>
-          <div class="contrib__head"><span>contribution activity · last 12 months</span><span class="contrib__legend">less <i class="lvl-0"></i><i class="lvl-1"></i><i class="lvl-2"></i><i class="lvl-3"></i><i class="lvl-4"></i> more</span></div>
+          <div class="contrib__head"><span id="calStats">contribution activity · last 12 months</span><span class="contrib__legend">less <i class="lvl-0"></i><i class="lvl-1"></i><i class="lvl-2"></i><i class="lvl-3"></i><i class="lvl-4"></i> more</span></div>
           <div class="cal-scroll"><div class="cal-grid" id="calGrid" aria-hidden="true"></div></div>
         </div>
       </div>
@@ -707,13 +736,6 @@
           <button class="btn btn--ghost" id="copyEmail" type="button" data-email="7sumitjha@gmail.com">Copy email</button>
           <a class="btn btn--ghost" href="https://www.linkedin.com/in/7sumitjha/" target="_blank" rel="noopener">Connect on LinkedIn</a>
         </div>
-        <ul class="contact__meta" data-reveal>
-          <li><span>Email</span><a href="mailto:7sumitjha@gmail.com">7sumitjha@gmail.com</a></li>
-          <li><span>Phone</span><a href="tel:+919971774238">+91 99717 74238</a></li>
-          <li><span>GitHub</span><a href="https://github.com/isumitjha" target="_blank" rel="noopener">@isumitjha</a></li>
-          <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/7sumitjha/" target="_blank" rel="noopener">/7sumitjha</a></li>
-          <li><span>Location</span>New Delhi, India</li>
-        </ul>
       </div>
     </section>
   </main>

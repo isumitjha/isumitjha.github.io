@@ -734,6 +734,13 @@
     function renderCalendar(weeks) {
       var grid = document.getElementById('calGrid');
       if (!grid || !weeks || !weeks.length) return;
+      // streak + last-12-months stats from the flat day list
+      var days = []; weeks.forEach(function (w) { w.forEach(function (d) { days.push(d); }); });
+      var total = 0, longest = 0, run = 0, current = 0;
+      days.forEach(function (d) { total += d.c || 0; if (d.c > 0) { run++; longest = Math.max(longest, run); } else { run = 0; } });
+      for (var k = days.length - 1; k >= 0; k--) { if (days[k].c > 0) current++; else break; }
+      var statsEl = document.getElementById('calStats');
+      if (statsEl) statsEl.innerHTML = '🔥 ' + current + '-day streak · longest ' + longest + ' · ' + total.toLocaleString() + ' in the last year';
       grid.innerHTML = '';
       weeks.forEach(function (week) {
         var col = document.createElement('div'); col.className = 'cal-week';
