@@ -907,6 +907,48 @@
     });
   })();
 
+  /* ---------- About: phone powers on (rises + rotates in) ---------- */
+  if (hasGSAP && !reduceMotion && document.querySelector('.about__phone')) {
+    window.gsap.from('.about__phone', {
+      y: 46, rotateY: -24, autoAlpha: 0, transformOrigin: 'center bottom', duration: 0.85, ease: 'power3.out', clearProps: 'transform',
+      scrollTrigger: { trigger: '.about__media', start: 'top 78%', once: true }
+    });
+  }
+
+  /* ---------- Contact: envelope flap opens, letter rises out ---------- */
+  (function () {
+    var env = document.getElementById('env');
+    if (!env || reduceMotion || !hasGSAP) return;
+    var flap = env.querySelector('.env__flap'), letter = env.querySelector('.env__letter');
+    window.gsap.set(letter, { y: 6, autoAlpha: 0 });
+    window.gsap.timeline({ scrollTrigger: { trigger: '.contact', start: 'top 72%', once: true } })
+      .to(flap, { rotateX: -172, duration: 0.6, ease: 'power2.inOut' })
+      .to(letter, { y: -14, autoAlpha: 1, duration: 0.5, ease: 'power3.out' }, '-=0.2');
+  })();
+
+  /* ---------- Skills orbit: JS-driven spin that reacts to scroll velocity ---------- */
+  (function () {
+    if (reduceMotion) return;
+    var ringA = document.querySelector('.orbit__ring--a'), ringB = document.querySelector('.orbit__ring--b');
+    if (!ringA || !ringB) return;
+    var chipsA = ringA.querySelectorAll('.orbiter__chip'), chipsB = ringB.querySelectorAll('.orbiter__chip');
+    [ringA, ringB].forEach(function (r) { r.style.animation = 'none'; });
+    chipsA.forEach(function (c) { c.style.animation = 'none'; });
+    chipsB.forEach(function (c) { c.style.animation = 'none'; });
+    var a = 0, b = 0, vel = 0;
+    if (lenis) lenis.on('scroll', function () { vel = Math.max(-6, Math.min(6, lenis.velocity || 0)); });
+    (function loop() {
+      a += 0.15 + vel * 0.45;
+      b += -0.22 - vel * 0.45;
+      ringA.style.transform = 'rotate(' + a + 'deg)';
+      ringB.style.transform = 'rotate(' + b + 'deg)';
+      chipsA.forEach(function (c) { c.style.transform = 'rotate(' + (-a) + 'deg)'; });
+      chipsB.forEach(function (c) { c.style.transform = 'rotate(' + (-b) + 'deg)'; });
+      vel *= 0.9;
+      requestAnimationFrame(loop);
+    })();
+  })();
+
   /* ---------- Konami easter egg ---------- */
   (function () {
     var seq = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];

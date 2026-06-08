@@ -421,6 +421,7 @@ html:not(.has-gsap) [data-reveal].is-in { opacity: 1; transform: none; }
   .nav__cv { display: none; }
   .orbit { display: none; }
   .cube { display: none; }
+  .about__phone { display: none; }
   .pring { display: none; }
   .laptop__deck { width: 112%; margin-left: -6%; }
   .laptop__lid { padding: 8px; }
@@ -838,6 +839,24 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .about__body a:focus-visible, .timeline a:focus-visible, .talk__body a:focus-visible, .section__lead a:focus-visible, .statuscard a:focus-visible, .contact__lead a:focus-visible {
   background-size: 100% 1.5px;
 }
+
+/* ---------- About phone mockup ---------- */
+.about__media { perspective: 1000px; }
+.about__phone { position: absolute; bottom: -7%; right: -13%; width: 104px; height: 150px; background: #1b1b18; border: 3px solid #2c2c27; border-radius: 18px; padding: 7px; z-index: 4; box-shadow: 0 26px 50px -24px rgba(0, 0, 0, 0.55); }
+.about__phone-scr { width: 100%; height: 100%; background: linear-gradient(160deg, #1f1f1c, #141312); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; padding: 8px; text-align: center; }
+.ph-avatar { width: 42px; height: 42px; border-radius: 50%; background: #333 url("../images/profile-pic.png") center / cover; border: 2px solid var(--orange); }
+.ph-name { font-family: var(--font-head); font-weight: 600; font-size: 0.72rem; color: #faf9f5; }
+.ph-role { font-size: 0.58rem; color: #b0aea5; }
+.ph-status { font-size: 0.56rem; color: #7fae8f; display: inline-flex; align-items: center; gap: 4px; margin-top: 2px; }
+.ph-status i { width: 6px; height: 6px; border-radius: 50%; background: #7fae8f; animation: livePulse 2s ease-out infinite; }
+
+/* ---------- Contact envelope ---------- */
+.section__head--center { perspective: 700px; }
+.env { position: relative; display: block; width: 88px; height: 60px; margin: 0 auto; transform-style: preserve-3d; }
+.env__body { position: absolute; inset: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 7px; box-shadow: inset 0 -10px 18px -12px rgba(0, 0, 0, 0.22); }
+.env__letter { position: absolute; left: 12%; right: 12%; bottom: 13%; height: 64%; background: #fffefb; border: 1px solid var(--border); border-radius: 3px; z-index: 1; }
+[data-theme="dark"] .env__letter { background: #e8e6dc; }
+.env__flap { position: absolute; top: 0; left: 0; right: 0; height: 54%; background: color-mix(in srgb, var(--orange) 88%, transparent); border-radius: 7px 7px 0 0; clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top center; z-index: 2; }
 
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
