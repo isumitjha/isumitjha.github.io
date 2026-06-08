@@ -976,6 +976,25 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .about__media { perspective: 1000px; }
 .about__stage { transform-style: preserve-3d; transition: transform 0.4s var(--ease); will-change: transform; }
 
+/* animated gradient border on hovered cards */
+@property --bd-angle { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+.proj:hover, .skill-card:hover {
+  border-color: transparent;
+  background:
+    linear-gradient(var(--surface), var(--surface)) padding-box,
+    conic-gradient(from var(--bd-angle), var(--orange), var(--blue), var(--green), var(--orange)) border-box;
+  animation: bdSpin 3.5s linear infinite;
+}
+@keyframes bdSpin { to { --bd-angle: 360deg; } }
+
+/* "scrolled past" checks on completed nav sections */
+.nav__links a { position: relative; }
+.nav__links a.is-done::before { content: "✓"; position: absolute; right: -0.72em; top: 50%; color: var(--green); font-size: 0.7em; font-weight: 700; animation: checkPop 0.35s var(--ease) forwards; }
+@keyframes checkPop { from { opacity: 0; transform: translateY(-50%) scale(0.4); } to { opacity: 1; transform: translateY(-50%) scale(1); } }
+.totop-map button.is-done { color: var(--green); }
+.totop-map button.is-done::before { background: var(--green); }
+.totop-map button.is-done::after { content: "✓"; margin-left: auto; color: var(--green); font-size: 0.8em; }
+
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }

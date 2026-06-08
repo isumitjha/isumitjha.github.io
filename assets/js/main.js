@@ -1348,15 +1348,26 @@
     var links = Array.prototype.slice.call(wrap.querySelectorAll('a'));
     if (!links.length) return;
     wrap.classList.add('has-ink');
-    function moveTo(el) {
+    function moveTo(el, cursorX) {
       if (!el) { ink.style.opacity = '0'; return; }
       ink.style.opacity = '1';
-      ink.style.width = el.offsetWidth + 'px';
-      ink.style.transform = 'translateX(' + el.offsetLeft + 'px)';
+      var left = el.offsetLeft, w = el.offsetWidth;
+      if (cursorX != null) {
+        var rel = (cursorX - left) / w - 0.5;          // -0.5..0.5 within the link
+        var stretch = Math.min(16, Math.abs(rel) * 30);
+        w += stretch;
+        if (rel < 0) left -= stretch;                  // lean toward the cursor side
+      }
+      ink.style.width = w + 'px';
+      ink.style.transform = 'translateX(' + left + 'px)';
     }
     function activeLink() { return links.filter(function (a) { return a.classList.contains('is-active'); })[0] || null; }
     function settle() { moveTo(activeLink()); }
     links.forEach(function (a) { a.addEventListener('mouseenter', function () { moveTo(a); }); });
+    wrap.addEventListener('mousemove', function (e) {
+      var t = e.target.closest ? e.target.closest('a') : null;
+      if (t && wrap.contains(t)) moveTo(t, e.clientX - wrap.getBoundingClientRect().left);
+    });
     wrap.addEventListener('mouseleave', settle);
     window.addEventListener('resize', settle);
     // follow the active section (mirrors the .is-active observer)
@@ -1433,6 +1444,27 @@
         .to(line, { autoAlpha: 0, duration: 0.2 }, '-=0.22')
         .add(function () { line.remove(); });
     });
+  })();
+
+  /* ---------- "Scrolled past" checks on completed sections ---------- */
+  (function () {
+    var anchors = Array.prototype.slice.call(document.querySelectorAll('.nav__links a'));
+    if (!anchors.length) return;
+    var sections = anchors.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+    var mapBtns = Array.prototype.slice.call(document.querySelectorAll('.totop-map button'));
+    function update() {
+      sections.forEach(function (sec, i) {
+        if (!sec) return;
+        var done = sec.getBoundingClientRect().bottom < 96;
+        anchors[i].classList.toggle('is-done', done);
+        if (mapBtns[i]) mapBtns[i].classList.toggle('is-done', done);
+      });
+    }
+    var ticking = false;
+    function onScroll() { if (ticking) return; ticking = true; requestAnimationFrame(function () { update(); ticking = false; }); }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    if (lenis) lenis.on('scroll', onScroll);
+    update();
   })();
 
 })();
