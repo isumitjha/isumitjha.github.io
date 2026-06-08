@@ -673,6 +673,27 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .console__prompt { font-family: var(--font-mono); font-size: 0.84rem; color: #7fae8f; flex: none; }
 .console__input input { flex: 1; background: transparent; border: 0; outline: none; color: #e8e6dc; font-family: var(--font-mono); font-size: 0.84rem; caret-color: var(--orange); }
 
+/* ---------- Scroll-spy rail ---------- */
+.spy { position: fixed; right: 22px; top: 50%; transform: translateY(-50%); z-index: 120; display: flex; flex-direction: column; gap: 12px; }
+.spy__dot { position: relative; width: 11px; height: 11px; border: 0; padding: 0; border-radius: 50%; background: var(--border); cursor: pointer; transition: transform 0.25s var(--ease), background 0.25s var(--ease); }
+.spy__dot:hover { background: var(--accent); transform: scale(1.2); }
+.spy__dot.is-active { background: var(--accent); transform: scale(1.35); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent); }
+.spy__dot span { position: absolute; right: 22px; top: 50%; transform: translateY(-50%) translateX(6px); white-space: nowrap; background: var(--ink); color: var(--cream); font-family: var(--font-head); font-size: 0.72rem; padding: 0.25rem 0.6rem; border-radius: 6px; opacity: 0; pointer-events: none; transition: opacity 0.2s var(--ease), transform 0.2s var(--ease); }
+[data-theme="dark"] .spy__dot span { background: var(--cream); color: var(--ink); }
+.spy__dot:hover span { opacity: 1; transform: translateY(-50%) translateX(0); }
+
+/* ---------- Back to top (progress ring) ---------- */
+.totop { position: fixed; right: 22px; bottom: 22px; z-index: 120; width: 44px; height: 44px; border: 0; padding: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 50%; cursor: pointer; display: grid; place-items: center; opacity: 0; transform: translateY(16px) scale(0.9); pointer-events: none; transition: opacity 0.3s var(--ease), transform 0.3s var(--ease), border-color 0.25s var(--ease); }
+.totop.show { opacity: 1; transform: none; pointer-events: auto; }
+.totop:hover { border-color: var(--accent); }
+.totop svg { position: absolute; inset: 0; width: 44px; height: 44px; transform: rotate(-90deg); }
+.totop__track { fill: none; stroke: var(--border); stroke-width: 2; }
+.totop__bar { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 125.6; stroke-dashoffset: 125.6; }
+.totop__arrow { font-family: var(--font-head); font-size: 1rem; color: var(--text); line-height: 1; }
+.totop:hover .totop__arrow { color: var(--accent); }
+@media (max-width: 1100px) { .spy { display: none; } }
+@media (max-width: 620px) { .totop { right: 16px; bottom: 16px; } }
+
 /* ---------- Easter egg (Konami) ---------- */
 .toast { position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%) translateY(20px); background: var(--ink); color: var(--cream); padding: 0.8rem 1.4rem; border-radius: 999px; font-family: var(--font-head); font-size: 0.9rem; z-index: 1001; opacity: 0; transition: opacity 0.35s var(--ease), transform 0.35s var(--ease); box-shadow: 0 22px 44px -20px rgba(0, 0, 0, 0.55); }
 [data-theme="dark"] .toast { background: var(--cream); color: var(--ink); }

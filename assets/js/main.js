@@ -667,4 +667,59 @@
       b.addEventListener('click', function () { echo(b.textContent); line('<span class="cl-acc">✦</span> ' + esc(b.textContent) + ' — part of my daily toolkit.'); input.focus(); });
     });
   })();
+
+  /* ---------- Scroll-spy rail ---------- */
+  (function () {
+    if (!('IntersectionObserver' in window)) return;
+    var anchors = Array.prototype.slice.call(document.querySelectorAll('.nav__links a'));
+    var secs = anchors.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+    if (!secs.filter(Boolean).length) return;
+    var rail = document.createElement('nav');
+    rail.className = 'spy'; rail.setAttribute('aria-label', 'Section navigation');
+    var dots = [];
+    anchors.forEach(function (a, i) {
+      if (!secs[i]) return;
+      var d = document.createElement('button');
+      d.className = 'spy__dot'; d.type = 'button';
+      d.setAttribute('aria-label', a.textContent);
+      var lbl = document.createElement('span'); lbl.textContent = a.textContent; d.appendChild(lbl);
+      d.addEventListener('click', function () { scrollToTarget(secs[i]); });
+      rail.appendChild(d); dots.push({ el: d, sec: secs[i] });
+    });
+    document.body.appendChild(rail);
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) dots.forEach(function (d) { d.el.classList.toggle('is-active', d.sec === en.target); });
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    dots.forEach(function (d) { obs.observe(d.sec); });
+  })();
+
+  /* ---------- Back-to-top with scroll-progress ring ---------- */
+  (function () {
+    var btn = document.getElementById('toTop'), bar = document.getElementById('toTopBar');
+    if (!btn) return;
+    var CIRC = 125.6;
+    function update() {
+      var y = window.pageYOffset || document.documentElement.scrollTop;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var p = max > 0 ? y / max : 0;
+      if (bar) bar.style.strokeDashoffset = (CIRC * (1 - p)).toFixed(1);
+      btn.classList.toggle('show', y > window.innerHeight * 0.6);
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    if (lenis) lenis.on('scroll', update);
+    btn.addEventListener('click', function () {
+      if (lenis) lenis.scrollTo(0); else window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
+    });
+    update();
+  })();
+
+  /* ---------- Playful tab title when you leave ---------- */
+  (function () {
+    var original = document.title;
+    document.addEventListener('visibilitychange', function () {
+      document.title = document.hidden ? '👋 come back! — Sumit Jha' : original;
+    });
+  })();
 })();
