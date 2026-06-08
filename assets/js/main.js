@@ -712,6 +712,45 @@
     }
   })();
 
+  /* ---------- Tech logos on skill chips + tech wall (Simple Icons CDN) ---------- */
+  (function () {
+    var DEV = 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/'; // Devicon fallback for logos Simple Icons lacks
+    var SLUG = {
+      'Python': 'python', 'TypeScript': 'typescript', 'JavaScript': 'javascript', 'React': 'react', 'Next.js': 'nextdotjs',
+      'Tailwind CSS': 'tailwindcss', 'Bootstrap': 'bootstrap', 'jQuery': 'jquery', 'HTML/CSS': 'html5', 'WebGL': 'webgl',
+      'FastAPI': 'fastapi', 'Django': 'django', 'Flask': 'flask', 'SQLAlchemy': 'sqlalchemy', 'Pydantic': 'pydantic',
+      'PostgreSQL': 'postgresql', 'MongoDB': 'mongodb', 'SQLite': 'sqlite',
+      'Docker': 'docker', 'Docker Compose': 'docker', 'GitHub Actions': 'githubactions', 'GCP': 'googlecloud',
+      'Nginx': 'nginx', 'Terraform / OpenTofu': 'terraform', 'Git': 'git', 'Postman': 'postman', 'npm': 'npm',
+      'Yarn': 'yarn', 'Pandas': 'pandas', 'NumPy': 'numpy', 'Linux': 'linux',
+      // Devicon (full URLs) for logos not on Simple Icons:
+      'AWS': DEV + 'amazonwebservices/amazonwebservices-original-wordmark.svg',
+      'Microsoft Entra': DEV + 'azure/azure-original.svg'
+    };
+    function addIcon(el) {
+      var v = SLUG[el.textContent.trim()];
+      if (!v) return;
+      var img = document.createElement('img');
+      img.className = 'chip-ic'; img.alt = ''; img.loading = 'lazy';
+      img.onerror = function () { img.remove(); };
+      img.src = v.indexOf('http') === 0 ? v : 'https://cdn.simpleicons.org/' + v;
+      el.insertBefore(img, el.firstChild);
+    }
+    document.querySelectorAll('.chips li, .tw').forEach(addIcon);
+  })();
+
+  /* ---------- Company logos in the experience timeline (favicons) ---------- */
+  (function () {
+    document.querySelectorAll('.tl__org[data-logo]').forEach(function (org) {
+      var d = org.getAttribute('data-logo'); if (!d) return;
+      var img = document.createElement('img');
+      img.className = 'tl__logo'; img.alt = ''; img.loading = 'lazy';
+      img.onerror = function () { img.remove(); };
+      img.src = 'https://www.google.com/s2/favicons?domain=' + d + '&sz=128';
+      org.insertBefore(img, org.firstChild);
+    });
+  })();
+
   /* ---------- Konami easter egg ---------- */
   (function () {
     var seq = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];

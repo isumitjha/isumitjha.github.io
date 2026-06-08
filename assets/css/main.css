@@ -250,6 +250,14 @@ h1, h2, h3, h4, .nav__brand, .btn, .section__index, .stat__num, .proj__no, .tags
 .chips, .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .chips li { font-size: 0.82rem; padding: 0.35rem 0.8rem; border: 1px solid var(--border); border-radius: 999px; color: var(--text-soft); background: var(--bg); transition: transform 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease); cursor: default; }
 .chips li:hover { transform: translateY(-4px) scale(1.05); color: var(--accent); border-color: var(--accent); }
+.chips li { display: inline-flex; align-items: center; gap: 6px; }
+.chip-ic { height: 14px; width: auto; max-width: 26px; flex: none; }
+.tw { display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
+.tw .chip-ic { height: 16px; }
+
+/* company logo avatar in the experience timeline */
+.tl__org { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+.tl__logo { width: 28px; height: 28px; flex: none; border-radius: 7px; background: #fff; padding: 3px; border: 1px solid var(--border); object-fit: contain; }
 
 /* accent cycling on skill cards */
 .skills__grid .skill-card:nth-child(3n+1) { --accent: var(--orange); }
