@@ -907,14 +907,6 @@
     });
   })();
 
-  /* ---------- About: phone powers on (rises + rotates in) ---------- */
-  if (hasGSAP && !reduceMotion && document.querySelector('.about__phone')) {
-    window.gsap.from('.about__phone', {
-      y: 46, rotateY: -24, autoAlpha: 0, transformOrigin: 'center bottom', duration: 0.85, ease: 'power3.out', clearProps: 'transform',
-      scrollTrigger: { trigger: '.about__media', start: 'top 78%', once: true }
-    });
-  }
-
   /* ---------- Contact: envelope flap opens, letter rises out ---------- */
   (function () {
     var env = document.getElementById('env');

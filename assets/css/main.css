@@ -364,9 +364,13 @@ h1, h2, h3, h4, .nav__brand, .btn, .section__index, .stat__num, .proj__no, .tags
 /* ---------- Footer ---------- */
 .footer { border-top: 1px solid var(--border); padding-block: 2rem; }
 .footer__inner { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; color: var(--text-faint); font-size: 0.9rem; }
-.footer__made a { color: var(--text-soft); }
-.footer__made a:hover, .footer__top:hover { color: var(--accent); }
+.footer__top:hover { color: var(--accent); }
 .footer__top { color: var(--text-soft); font-family: var(--font-head); font-size: 0.85rem; }
+.footer__social { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
+.footer__social a { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 50%; color: var(--text-soft); transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), color 0.25s var(--ease), background 0.25s var(--ease); }
+.footer__social a:hover { color: #fff; background: var(--accent); border-color: var(--accent); transform: translateY(-3px); }
+.footer__loc { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--text-faint); font-family: var(--font-head); font-size: 0.85rem; }
+.footer__loc svg { color: var(--accent); }
 
 /* ---------- Reveal animation ----------
    When GSAP controls reveals (html.has-gsap), CSS does NOT hide/transition them
@@ -421,7 +425,6 @@ html:not(.has-gsap) [data-reveal].is-in { opacity: 1; transform: none; }
   .nav__cv { display: none; }
   .orbit { display: none; }
   .cube { display: none; }
-  .about__phone { display: none; }
   .pring { display: none; }
   .laptop__deck { width: 112%; margin-left: -6%; }
   .laptop__lid { padding: 8px; }
@@ -839,16 +842,6 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .about__body a:focus-visible, .timeline a:focus-visible, .talk__body a:focus-visible, .section__lead a:focus-visible, .statuscard a:focus-visible, .contact__lead a:focus-visible {
   background-size: 100% 1.5px;
 }
-
-/* ---------- About phone mockup ---------- */
-.about__media { perspective: 1000px; }
-.about__phone { position: absolute; bottom: -7%; right: -13%; width: 104px; height: 150px; background: #1b1b18; border: 3px solid #2c2c27; border-radius: 18px; padding: 7px; z-index: 4; box-shadow: 0 26px 50px -24px rgba(0, 0, 0, 0.55); }
-.about__phone-scr { width: 100%; height: 100%; background: linear-gradient(160deg, #1f1f1c, #141312); border-radius: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 5px; padding: 8px; text-align: center; }
-.ph-avatar { width: 42px; height: 42px; border-radius: 50%; background: #333 url("../images/profile-pic.png") center / cover; border: 2px solid var(--orange); }
-.ph-name { font-family: var(--font-head); font-weight: 600; font-size: 0.72rem; color: #faf9f5; }
-.ph-role { font-size: 0.58rem; color: #b0aea5; }
-.ph-status { font-size: 0.56rem; color: #7fae8f; display: inline-flex; align-items: center; gap: 4px; margin-top: 2px; }
-.ph-status i { width: 6px; height: 6px; border-radius: 50%; background: #7fae8f; animation: livePulse 2s ease-out infinite; }
 
 /* ---------- Contact envelope ---------- */
 .section__head--center { perspective: 700px; }
