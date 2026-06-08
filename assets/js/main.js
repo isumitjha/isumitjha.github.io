@@ -236,6 +236,17 @@
       chars = chars.concat(splitInto(line));
     });
     var boot = document.getElementById('boot');
+    var lid = document.querySelector('.laptop__lid');
+
+    // After the lid is open, hand its angle to the scroll position:
+    // scroll down → lid closes, scroll up → lid re-opens.
+    function lidCloseOnScroll() {
+      if (!lid) return;
+      window.gsap.to(lid, {
+        rotateX: -82, ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: 0.4 }
+      });
+    }
 
     function revealScreen() {
       var t = window.gsap.timeline();
@@ -245,21 +256,26 @@
         .from('.screen .hero__eyebrow', { y: 16, autoAlpha: 0, duration: 0.5 }, '<')
         .from('.screen .hero__lead', { y: 16, autoAlpha: 0, duration: 0.5 }, '<0.2')
         .from('.screen .hero__cta', { y: 16, autoAlpha: 0, duration: 0.5 }, '<0.15')
-        .from('.screen .hero__social', { y: 16, autoAlpha: 0, duration: 0.5 }, '<0.15');
+        .from('.screen .hero__social', { y: 16, autoAlpha: 0, duration: 0.5 }, '<0.15')
+        .add(function () { lidCloseOnScroll(); });
       if (window.ScrollTrigger) window.ScrollTrigger.refresh();
     }
 
     if (hasGSAP && !reduceMotion) {
       window.gsap.set('#screenContent', { autoAlpha: 0 });
+      if (lid) window.gsap.set(lid, { rotateX: -90, transformOrigin: 'center bottom' }); // start CLOSED
       if (boot) boot.style.display = 'block';
       window.gsap.timeline({ delay: 0.05 })
-        // Laptop flies in from the right...
+        // Laptop flies in from the right (closed)...
         .from('#laptop', { xPercent: 24, rotateY: -28, autoAlpha: 0, duration: 1.0, ease: 'power3.out', transformOrigin: 'right center' })
+        .add(function () { window.gsap.set('#laptop', { clearProps: 'transform' }); })
+        // ...lid flaps open...
+        .to(lid, { rotateX: 0, duration: 0.9, ease: 'power3.out' })
         // ...screen flickers on like a booting terminal...
-        .to('#laptopFlicker', { opacity: 0.85, duration: 0.05, repeat: 5, yoyo: true }, '-=0.2')
+        .to('#laptopFlicker', { opacity: 0.85, duration: 0.05, repeat: 5, yoyo: true }, '-=0.25')
         .set('#laptopFlicker', { opacity: 0 })
         // ...terminal boots, then the home content renders on the screen.
-        .add(function () { window.gsap.set('#laptop', { clearProps: 'transform' }); bootSequence(revealScreen); });
+        .add(function () { bootSequence(revealScreen); });
     } else {
       if (boot) boot.style.display = 'none';
       // #screenContent is visible by default (no JS / reduced motion)
@@ -383,7 +399,7 @@
 
   /* ---------- Scroll-reactive hero (laptop drifts, shrinks & fades away) ---------- */
   if (hasGSAP && !reduceMotion) {
-    window.gsap.to('.laptop--hero', { yPercent: -6, scale: 0.9, autoAlpha: 0.55, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
+    window.gsap.to('.laptop--hero', { yPercent: -4, scale: 0.96, autoAlpha: 0.85, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
   }
 
   /* ---------- Hero orbs: gentle scroll parallax (depth) ----------
@@ -392,18 +408,6 @@
     window.gsap.to('.hero__orbs', { yPercent: 26, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } });
   }
 
-  /* ---------- Mouse-following 3D laptop ---------- */
-  if (finePointer && !reduceMotion) {
-    var lid = document.querySelector('.laptop__lid');
-    var heroSec = document.getElementById('home');
-    if (lid && heroSec) {
-      heroSec.addEventListener('mousemove', function (e) {
-        var px = e.clientX / window.innerWidth - 0.5, py = e.clientY / window.innerHeight - 0.5;
-        lid.style.transform = 'rotateY(' + (px * 7).toFixed(2) + 'deg) rotateX(' + (-py * 5).toFixed(2) + 'deg)';
-      });
-      heroSec.addEventListener('mouseleave', function () { lid.style.transform = ''; });
-    }
-  }
 
 
   /* ---------- Open Source: self-drawing git graph ---------- */

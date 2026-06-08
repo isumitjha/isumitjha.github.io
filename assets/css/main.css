@@ -456,7 +456,7 @@ html:not(.has-gsap) [data-reveal].is-in { opacity: 1; transform: none; }
 /* ---------- Hero: big laptop centerpiece (content on screen) ---------- */
 .hero__inner { display: flex; justify-content: center; perspective: 1700px; }
 .laptop--hero { position: relative; width: 100%; max-width: 1000px; transform-style: preserve-3d; }
-.laptop__lid { position: relative; background: #1b1b18; border: 2px solid #2c2c27; border-radius: 16px 16px 7px 7px; padding: 12px; box-shadow: 0 50px 90px -46px rgba(0, 0, 0, 0.6), 0 8px 22px -12px rgba(0, 0, 0, 0.45); }
+.laptop__lid { position: relative; background: #1b1b18; border: 2px solid #2c2c27; border-radius: 16px 16px 7px 7px; padding: 12px; box-shadow: 0 50px 90px -46px rgba(0, 0, 0, 0.6), 0 8px 22px -12px rgba(0, 0, 0, 0.45); transform-origin: center bottom; transform-style: preserve-3d; }
 .laptop__screen { position: relative; background: #141312; border-radius: 8px; overflow: hidden; }
 .laptop__cam { position: absolute; top: -7px; left: 50%; transform: translateX(-50%); width: 5px; height: 5px; border-radius: 50%; background: #34332d; z-index: 3; }
 .laptop__bar { display: flex; align-items: center; gap: 0.5rem; padding: 0.7rem 0.95rem; background: #232320; border-bottom: 1px solid #2c2c27; }
@@ -806,8 +806,6 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .skill-card:hover h3 { transform: translateZ(30px); }
 .skill-card:hover .chips { transform: translateZ(14px); }
 
-/* ---------- Mouse-following 3D laptop ---------- */
-.laptop__lid { transition: transform 0.4s var(--ease); }
 
 /* ---------- Status greeting ---------- */
 .statuscard__greet { font-family: var(--font-head); font-weight: 600; font-size: 1.25rem; color: var(--text); letter-spacing: -0.01em; }
