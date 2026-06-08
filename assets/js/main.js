@@ -16,8 +16,8 @@
   document.querySelectorAll('.section__head[data-reveal]').forEach(function (h) { h.removeAttribute('data-reveal'); });
   // Project cards get a directional reveal — opt them out of the generic reveal too.
   document.querySelectorAll('.proj[data-reveal]').forEach(function (h) { h.removeAttribute('data-reveal'); });
-  // Cards with bespoke 3D entrances (talks projector, certs fan-out, education book) opt out too.
-  document.querySelectorAll('.talk[data-reveal], .cert[data-reveal], .edu[data-reveal]').forEach(function (h) { h.removeAttribute('data-reveal'); });
+  // Cards with bespoke 3D entrances (talks projector, certs fan-out, education book, timeline doors) opt out too.
+  document.querySelectorAll('.talk[data-reveal], .cert[data-reveal], .edu[data-reveal], .tl[data-reveal]').forEach(function (h) { h.removeAttribute('data-reveal'); });
 
   /* ---------- Footer year ---------- */
   var yearEl = document.getElementById('year');
@@ -183,6 +183,22 @@
           scrollTrigger: { trigger: tlWrap, start: 'top 70%', end: 'bottom 78%', scrub: true }
         });
       }
+      // Each role card swings open from the timeline spine
+      tlWrap.querySelectorAll('.tl').forEach(function (tl) {
+        var card = tl.querySelector('.tl__card');
+        if (!card) return;
+        window.gsap.from(card, {
+          rotateY: -42, x: 34, autoAlpha: 0, transformOrigin: 'left center', duration: 0.8, ease: 'power3.out', clearProps: 'transform',
+          scrollTrigger: { trigger: tl, start: 'top 84%', once: true }
+        });
+      });
+    }
+    // GitHub stat tiles flip up into place
+    if (document.querySelector('.ghtile')) {
+      window.gsap.from('.ghtile', {
+        rotationX: -70, autoAlpha: 0, transformOrigin: '50% 50% -20px', duration: 0.6, ease: 'power3.out', stagger: 0.06,
+        scrollTrigger: { trigger: '.ghstats', start: 'top 85%', once: true }
+      });
     }
   }
 
@@ -207,7 +223,7 @@
     var words = title ? splitWordsEl(title, 'kw') : [];
     if (!hasGSAP || reduceMotion || !words.length) return; // titles stay visible
     var tl = window.gsap.timeline({ scrollTrigger: { trigger: head, start: 'top 85%', toggleActions: 'play none none reverse' } });
-    if (lead) tl.from(lead, { y: 18, autoAlpha: 0, duration: 0.45, ease: 'power2.out' });
+    if (lead) tl.from(lead, { rotationX: -90, y: 8, autoAlpha: 0, transformOrigin: '50% 50% -6px', duration: 0.55, ease: 'power3.out' });
     tl.from(words, { rotationX: -90, y: 36, autoAlpha: 0, transformOrigin: '50% 50% -36px', duration: 0.85, ease: 'power3.out', stagger: 0.08 }, lead ? '-=0.25' : 0);
   });
 
@@ -410,8 +426,9 @@
         var px = (e.clientX - r.left) / r.width - 0.5;
         var py = (e.clientY - r.top) / r.height - 0.5;
         card.style.transform = 'perspective(800px) rotateX(' + (-py * 5).toFixed(2) + 'deg) rotateY(' + (px * 6).toFixed(2) + 'deg) translateY(-4px)';
+        card.style.boxShadow = (-px * 22).toFixed(1) + 'px ' + (20 - py * 16).toFixed(1) + 'px 44px -22px rgba(20,20,19,0.5)';
       });
-      card.addEventListener('mouseleave', function () { card.style.transform = ''; });
+      card.addEventListener('mouseleave', function () { card.style.transform = ''; card.style.boxShadow = ''; });
     });
   }
 
@@ -710,16 +727,38 @@
     });
   }
 
-  /* ---------- Live local (IST) clock + time-of-day greeting ---------- */
+  /* ---------- Live local (IST) flip clock + time-of-day greeting ---------- */
   (function () {
     var el = document.getElementById('localTime');
     var greet = document.getElementById('greet');
     if (!el && !greet) return;
+    var cells = null;
+    function buildClock(str) {
+      el.classList.add('flipclock'); el.innerHTML = ''; cells = [];
+      for (var i = 0; i < str.length; i++) {
+        var s = document.createElement('span');
+        if (str.charAt(i) === ':') { s.className = 'fc-colon'; s.textContent = ':'; }
+        else { s.className = 'fc-d'; s.textContent = str.charAt(i); cells.push(s); }
+        el.appendChild(s);
+      }
+    }
+    function setTime(str) {
+      var digits = str.replace(':', '');
+      if (!cells || cells.length !== digits.length) { buildClock(str); return; }
+      for (var i = 0; i < digits.length; i++) {
+        if (cells[i].textContent === digits.charAt(i)) continue;
+        (function (cell, val) {
+          if (reduceMotion) { cell.textContent = val; return; }
+          cell.classList.remove('flip'); void cell.offsetWidth; cell.classList.add('flip');
+          window.setTimeout(function () { cell.textContent = val; }, 150);
+        })(cells[i], digits.charAt(i));
+      }
+    }
     function tick() {
       var now = new Date();
       var ist = new Date(now.getTime() + now.getTimezoneOffset() * 60000 + 5.5 * 3600000);
       var h = ist.getHours(), m = ist.getMinutes();
-      if (el) el.textContent = (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m;
+      if (el) setTime((h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m);
       if (greet) {
         greet.textContent = h < 5 ? 'Burning the midnight oil 🌙'
           : h < 12 ? 'Good morning ☀️'
