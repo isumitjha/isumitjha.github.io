@@ -133,7 +133,9 @@ h1, h2, h3, h4, .nav__brand, .btn, .section__index, .stat__num, .proj__no, .tags
   -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
   animation: spin 14s linear infinite;
 }
-.nav__links { display: flex; gap: 1rem; margin-left: auto; flex-wrap: nowrap; }
+.nav__links { display: flex; gap: 1rem; margin-left: auto; flex-wrap: nowrap; position: relative; }
+.nav__ink { position: absolute; bottom: -2px; left: 0; height: 2px; width: 0; background: var(--accent); border-radius: 2px; opacity: 0; transform: translateX(0); transition: transform 0.32s var(--ease), width 0.32s var(--ease), opacity 0.25s var(--ease); pointer-events: none; }
+.nav__links.has-ink a::after { display: none; }
 .nav__links a {
   position: relative; color: var(--text-soft); font-family: var(--font-head);
   font-size: 0.8rem; font-weight: 400; padding: 0.2rem 0; white-space: nowrap;
@@ -918,6 +920,19 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .totop-map button.is-current { color: var(--accent); }
 .totop-map button.is-current::before { background: var(--accent); }
 @media (max-width: 720px) { .totop-map { display: none; } }
+
+/* ---------- Circular theme-toggle reveal (View Transitions) ---------- */
+::view-transition-old(root) { animation: none; }
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-old(root) { z-index: 1; }
+::view-transition-new(root) { z-index: 9999; }
+
+/* ---------- Section-title underline draw ---------- */
+.section__title { position: relative; }
+.section__title::after { content: ""; position: absolute; left: 0; bottom: -0.4rem; height: 3px; width: 46px; background: var(--accent); border-radius: 3px; transform: scaleX(0); transform-origin: left center; transition: transform 0.7s var(--ease); }
+.section__head.is-drawn .section__title::after { transform: scaleX(1); }
+.section__head--center .section__title::after { left: 50%; transform-origin: center; transform: translateX(-50%) scaleX(0); }
+.section__head--center.is-drawn .section__title::after { transform: translateX(-50%) scaleX(1); }
 
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
