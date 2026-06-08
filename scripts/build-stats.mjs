@@ -71,6 +71,13 @@ for (let y = startYear; y <= thisYear; y++) {
   byYear.push({ year: y, contributions: c.contributionCalendar.totalContributions });
 }
 
+// --- contribution calendar (last 12 months, incl. private) ---
+let calendar = [];
+try {
+  const cal = await gql(`query($l:String!){user(login:$l){contributionsCollection{contributionCalendar{weeks{contributionDays{date contributionCount}}}}}}`, { l: USER });
+  calendar = cal.user.contributionsCollection.contributionCalendar.weeks.map(w => w.contributionDays.map(x => ({ d: x.date, c: x.contributionCount })));
+} catch {}
+
 // --- repos contributed to (incl. others' repos) ---
 const reposContributedTo = (await gql(
   `query($l:String!){user(login:$l){repositoriesContributedTo(contributionTypes:[COMMIT,PULL_REQUEST,ISSUE,PULL_REQUEST_REVIEW]){totalCount}}}`,
@@ -177,7 +184,7 @@ for (const full of OSS_REPOS) {
 
 const data = {
   generatedAt: new Date().toISOString(),
-  commits, contributions, prs, merged, issues, loc, reposContributedTo, langCount, topLang, langs, byYear, oss
+  commits, contributions, prs, merged, issues, loc, reposContributedTo, langCount, topLang, langs, byYear, calendar, oss
 };
 mkdirSync('assets/data', { recursive: true });
 writeFileSync('assets/data/stats.json', JSON.stringify(data, null, 2) + '\n');

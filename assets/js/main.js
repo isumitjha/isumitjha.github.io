@@ -692,12 +692,43 @@
         window.gsap.from('#yearBars .yb__bar', { scaleY: 0, transformOrigin: 'bottom', duration: 0.7, ease: 'power3.out', stagger: 0.06, scrollTrigger: { trigger: '#yearBars', start: 'top 88%', once: true } });
       }
     }
+    function renderCalendar(weeks) {
+      var grid = document.getElementById('calGrid');
+      if (!grid || !weeks || !weeks.length) return;
+      grid.innerHTML = '';
+      weeks.forEach(function (week) {
+        var col = document.createElement('div'); col.className = 'cal-week';
+        week.forEach(function (day) {
+          var c = day.c || 0, lvl = c === 0 ? 0 : c < 4 ? 1 : c < 7 ? 2 : c < 10 ? 3 : 4;
+          var cell = document.createElement('i'); cell.className = 'cal-day lvl-' + lvl;
+          cell.setAttribute('data-c', c); cell.setAttribute('data-d', day.d);
+          col.appendChild(cell);
+        });
+        grid.appendChild(col);
+      });
+      var tip = document.getElementById('calTip');
+      if (!tip) { tip = document.createElement('div'); tip.className = 'caltip'; tip.id = 'calTip'; document.body.appendChild(tip); }
+      if (!window.matchMedia('(pointer: fine)').matches) return;
+      grid.addEventListener('mousemove', function (e) {
+        var cell = e.target.closest && e.target.closest('.cal-day');
+        if (!cell) { tip.classList.remove('show'); return; }
+        var c = cell.getAttribute('data-c');
+        var dt = new Date(cell.getAttribute('data-d') + 'T00:00:00');
+        var ds = dt.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+        tip.textContent = (c === '0' ? 'No contributions' : c + ' contribution' + (c === '1' ? '' : 's')) + ' · ' + ds;
+        tip.classList.add('show');
+        tip.style.left = Math.min(e.clientX + 12, window.innerWidth - tip.offsetWidth - 12) + 'px';
+        tip.style.top = (e.clientY - tip.offsetHeight - 12) + 'px';
+      });
+      grid.addEventListener('mouseleave', function () { tip.classList.remove('show'); });
+    }
     function render(d) {
       num('ghContributions', d.contributions); num('ghCommits', d.commits); num('ghPRs', d.prs); num('ghMerged', d.merged);
       num('ghContribRepos', d.reposContributedTo); num('ghIssues', d.issues); num('ghLangs', d.langCount);
       locTile(typeof d.loc === 'number' ? d.loc : null);
       renderLangs(d.langs);
       renderYears(d.byYear);
+      renderCalendar(d.calendar);
       var up = document.getElementById('ghUpdated'); if (up && d.generatedAt) up.textContent = agoText(d.generatedAt);
       if (d.oss) { window.__ossData = d.oss; initOSSCards(); }
     }
