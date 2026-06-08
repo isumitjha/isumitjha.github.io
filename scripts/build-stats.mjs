@@ -91,7 +91,9 @@ const top = repos.filter(r => !r.private && !r.fork)
 
 // --- lines of code via cloc over cloned repos (incl. private, excl. forks) ---
 let loc = null;
-try {
+let hasCloc = false;
+try { execSync('cloc --version', { stdio: 'ignore' }); hasCloc = true; } catch {}
+if (hasCloc) try {
   let total = 0;
   for (const r of repos) {
     if (r.fork) continue;
