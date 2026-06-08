@@ -38,6 +38,7 @@
 <body>
   <!-- preloader -->
   <div class="preloader" id="preloader" aria-hidden="true">
+    <div class="preloader__curtains"><span></span><span></span><span></span><span></span><span></span></div>
     <div class="preloader__inner">
       <span class="preloader__spark"></span>
       <span class="preloader__name">Sumit&nbsp;Jha</span>
@@ -90,6 +91,7 @@
         <span class="orb orb--green"></span>
       </div>
       <canvas class="constellation" id="constellation" aria-hidden="true"></canvas>
+      <canvas class="webgl-hero" id="webglHero" aria-hidden="true"></canvas>
       <div class="container hero__inner">
         <div class="laptop laptop--hero" id="laptop">
           <div class="laptop__lid">
@@ -615,6 +617,43 @@
       </div>
     </section>
 
+    <!-- ============ CONSOLE (interactive terminal + tech wall) ============ -->
+    <section class="section" id="console">
+      <div class="container">
+        <div class="section__head" data-reveal>
+          <span class="spark" aria-hidden="true"></span>
+          <h2 class="section__title">Poke around</h2>
+        </div>
+        <p class="section__lead" data-reveal>This bit's interactive — type a command and hit <kbd class="kbd">↵</kbd>. Start with <code>help</code>.</p>
+        <div class="console__grid">
+          <div class="techwall" data-reveal aria-label="Tech stack">
+            <button class="tw" type="button">Python</button>
+            <button class="tw" type="button">TypeScript</button>
+            <button class="tw" type="button">React</button>
+            <button class="tw" type="button">Next.js</button>
+            <button class="tw" type="button">FastAPI</button>
+            <button class="tw" type="button">Django</button>
+            <button class="tw" type="button">Docker</button>
+            <button class="tw" type="button">AWS</button>
+            <button class="tw" type="button">PostgreSQL</button>
+            <button class="tw" type="button">Terraform</button>
+            <button class="tw" type="button">Git</button>
+            <button class="tw" type="button">Linux</button>
+          </div>
+          <div class="console" data-reveal>
+            <div class="laptop__bar">
+              <span class="dot dot--r"></span><span class="dot dot--y"></span><span class="dot dot--g"></span>
+              <span class="laptop__url">visitor@isumit.in — zsh</span>
+            </div>
+            <div class="console__body" id="consoleBody">
+              <div class="console__line"><span class="cl-dim">Welcome. Type</span> <span class="cl-cmd">help</span> <span class="cl-dim">to get started.</span></div>
+            </div>
+            <label class="console__input"><span class="console__prompt">~$</span><input id="consoleInput" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input"></label>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ============ CONTACT ============ -->
     <section class="section section--alt contact" id="contact">
       <div class="aurora" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -668,5 +707,66 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
   <script defer src="assets/js/main.js"></script>
+
+  <!-- Ambient WebGL hero object (Three.js, ES module; optional) -->
+  <script type="module">
+    (async function () {
+      var canvas = document.getElementById('webglHero');
+      if (!canvas) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      if (window.matchMedia('(max-width: 880px)').matches) return; // skip on small screens
+      var THREE;
+      try { THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/+esm'); }
+      catch (e) { return; }
+
+      var hero = document.getElementById('home');
+      var renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+      camera.position.z = 6;
+
+      var accent = new THREE.Color('#d97757');
+      var geo = new THREE.IcosahedronGeometry(2.1, 1);
+      var mesh = new THREE.LineSegments(
+        new THREE.WireframeGeometry(geo),
+        new THREE.LineBasicMaterial({ color: accent, transparent: true, opacity: 0.5 })
+      );
+      mesh.position.set(2.7, 0.6, 0);
+      scene.add(mesh);
+      var dot = new THREE.Points(geo, new THREE.PointsMaterial({ color: accent, size: 0.06, transparent: true, opacity: 0.85 }));
+      dot.position.copy(mesh.position);
+      scene.add(dot);
+
+      function resize() {
+        var w = hero.offsetWidth, h = hero.offsetHeight;
+        renderer.setSize(w, h, false);
+        camera.aspect = w / h; camera.updateProjectionMatrix();
+      }
+      window.addEventListener('resize', resize); resize();
+
+      var mx = 0, my = 0;
+      hero.addEventListener('mousemove', function (e) {
+        mx = (e.clientX / window.innerWidth - 0.5);
+        my = (e.clientY / window.innerHeight - 0.5);
+      });
+
+      var running = true;
+      (function loop() {
+        if (running) {
+          mesh.rotation.y += 0.0024; mesh.rotation.x += 0.0011;
+          dot.rotation.copy(mesh.rotation);
+          camera.position.x += (mx * 1.5 - camera.position.x) * 0.05;
+          camera.position.y += (-my * 1.5 - camera.position.y) * 0.05;
+          camera.lookAt(0, 0, 0);
+          renderer.render(scene, camera);
+        }
+        requestAnimationFrame(loop);
+      })();
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) { es.forEach(function (en) { running = en.isIntersecting; }); }).observe(hero);
+      }
+    })();
+  </script>
 </body>
 </html>

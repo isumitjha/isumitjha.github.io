@@ -387,7 +387,7 @@ html:not(.has-gsap) [data-reveal].is-in { opacity: 1; transform: none; }
   .skills__grid, .projects__grid, .certs__grid { grid-template-columns: repeat(2, 1fr); }
   .skill-card--wide { grid-column: span 2; }
   .pring { display: none; }
-  .status__grid { grid-template-columns: 1fr; }
+  .status__grid, .console__grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 620px) {
   body { font-size: 1rem; }
@@ -409,10 +409,19 @@ html:not(.has-gsap) [data-reveal].is-in { opacity: 1; transform: none; }
    Motion upgrade — preloader, cursor, marquee, tilt, ripple, etc.
    ================================================================= */
 
-/* ---------- Preloader ---------- */
-.preloader { position: fixed; inset: 0; z-index: 999; background: var(--bg); display: grid; place-items: center; transition: transform 0.9s var(--ease), opacity 0.6s var(--ease); }
-.preloader.is-done { transform: translateY(-100%); pointer-events: none; }
-.preloader__inner { display: flex; flex-direction: column; align-items: center; gap: 1.1rem; }
+/* ---------- Preloader (curtain reveal) ---------- */
+.preloader { position: fixed; inset: 0; z-index: 999; background: transparent; display: grid; place-items: center; }
+.preloader.is-done { pointer-events: none; }
+.preloader__curtains { position: absolute; inset: 0; display: flex; z-index: 0; }
+.preloader__curtains span { flex: 1; background: var(--bg); transform: translateY(0); transition: transform 0.85s var(--ease); }
+.preloader.is-done .preloader__curtains span { transform: translateY(-101%); }
+.preloader.is-done .preloader__curtains span:nth-child(1) { transition-delay: 0s; }
+.preloader.is-done .preloader__curtains span:nth-child(2) { transition-delay: 0.07s; }
+.preloader.is-done .preloader__curtains span:nth-child(3) { transition-delay: 0.14s; }
+.preloader.is-done .preloader__curtains span:nth-child(4) { transition-delay: 0.21s; }
+.preloader.is-done .preloader__curtains span:nth-child(5) { transition-delay: 0.28s; }
+.preloader__inner { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 1.1rem; transition: opacity 0.4s var(--ease); }
+.preloader.is-done .preloader__inner { opacity: 0; }
 .preloader__spark { width: 42px; height: 42px; background: var(--orange); -webkit-mask: var(--spark-mask); mask: var(--spark-mask); -webkit-mask-size: contain; mask-size: contain; -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat; animation: spin 2.6s linear infinite; }
 .preloader__name { font-family: var(--font-head); font-weight: 600; font-size: 1.35rem; letter-spacing: -0.01em; color: var(--text); opacity: 0; animation: fadeUp 0.6s var(--ease) 0.15s forwards; }
 .preloader__bar { width: 150px; height: 3px; background: var(--border); border-radius: 3px; overflow: hidden; }
@@ -642,6 +651,27 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .lvl-2 { background: color-mix(in srgb, var(--orange) 52%, var(--bg-alt)) !important; }
 .lvl-3 { background: color-mix(in srgb, var(--orange) 76%, var(--bg-alt)) !important; }
 .lvl-4 { background: var(--orange) !important; }
+
+/* ---------- Ambient WebGL hero object ---------- */
+.webgl-hero { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.7; }
+
+/* ---------- Console: interactive terminal + tech wall ---------- */
+.console__grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(1.4rem, 3vw, 2.2rem); align-items: stretch; }
+.techwall { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; align-content: start; }
+.tw { font-family: var(--font-mono); font-size: 0.82rem; padding: 0.85rem 0.4rem; border: 1px solid var(--border); border-radius: 10px; background: var(--surface); color: var(--text-soft); cursor: pointer; transition: transform 0.25s var(--ease), border-color 0.25s var(--ease), color 0.25s var(--ease), box-shadow 0.25s var(--ease); }
+.tw:hover { transform: translateY(-4px); color: var(--orange); border-color: var(--orange); box-shadow: 0 12px 26px -16px color-mix(in srgb, var(--orange) 60%, transparent); }
+.tw:nth-child(3n+2):hover { color: var(--blue); border-color: var(--blue); box-shadow: 0 12px 26px -16px color-mix(in srgb, var(--blue) 60%, transparent); }
+.tw:nth-child(3n+3):hover { color: var(--green); border-color: var(--green); box-shadow: 0 12px 26px -16px color-mix(in srgb, var(--green) 60%, transparent); }
+.console { background: #141312; border: 1px solid #2c2c27; border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 40px 80px -50px rgba(0, 0, 0, 0.5); }
+.console .laptop__bar { background: #232320; border-bottom: 1px solid #2c2c27; }
+.console__body { flex: 1; min-height: 230px; max-height: 320px; overflow-y: auto; padding: 1rem 1.1rem; font-family: var(--font-mono); font-size: 0.84rem; line-height: 1.7; color: #e8e6dc; }
+.console__line { white-space: pre-wrap; word-break: break-word; }
+.console__line + .console__line { margin-top: 0.15rem; }
+.cl-dim { color: #8a877e; } .cl-cmd { color: #6a9bcc; } .cl-ok { color: #7fae8f; } .cl-acc { color: var(--orange); } .cl-err { color: #ff7a6b; }
+.cl-prompt { color: #7fae8f; }
+.console__input { display: flex; align-items: center; gap: 0.5rem; padding: 0.7rem 1.1rem; border-top: 1px solid #2c2c27; }
+.console__prompt { font-family: var(--font-mono); font-size: 0.84rem; color: #7fae8f; flex: none; }
+.console__input input { flex: 1; background: transparent; border: 0; outline: none; color: #e8e6dc; font-family: var(--font-mono); font-size: 0.84rem; caret-color: var(--orange); }
 
 /* ---------- Easter egg (Konami) ---------- */
 .toast { position: fixed; left: 50%; bottom: 32px; transform: translateX(-50%) translateY(20px); background: var(--ink); color: var(--cream); padding: 0.8rem 1.4rem; border-radius: 999px; font-family: var(--font-head); font-size: 0.9rem; z-index: 1001; opacity: 0; transition: opacity 0.35s var(--ease), transform 0.35s var(--ease); box-shadow: 0 22px 44px -20px rgba(0, 0, 0, 0.55); }

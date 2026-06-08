@@ -622,4 +622,49 @@
       else { pos = (k === seq[0]) ? 1 : 0; }
     });
   })();
+
+  /* ---------- Interactive terminal ---------- */
+  (function () {
+    var body = document.getElementById('consoleBody'), input = document.getElementById('consoleInput');
+    if (!body || !input) return;
+    function esc(s) { return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+    function ml(s) { return esc(s).replace(/\n/g, '<br>'); }
+    function line(html) { var d = document.createElement('div'); d.className = 'console__line'; d.innerHTML = html; body.appendChild(d); body.scrollTop = body.scrollHeight; }
+    function echo(cmd) { line('<span class="cl-prompt">~$</span> <span class="cl-cmd">' + esc(cmd) + '</span>'); }
+    function go(sel) { var t = document.querySelector(sel); if (t) scrollToTarget(t); }
+    var C = {
+      help: function () { return 'commands:\n  about      whoami      skills      stack\n  projects   experience  opensource  talks\n  certs      contact     social      resume\n  coffee     theme       clear       sudo'; },
+      about: function () { return 'Sumit Jha — Software Engineer II @ OpenTeams.\nFull-stack engineer & open-source contributor in New Delhi, India.\nI build AI-driven apps, secure enterprise systems & developer tools.'; },
+      whoami: function () { return 'visitor — but maybe a future collaborator :)'; },
+      skills: function () { return 'Languages : Python, TypeScript, JavaScript, SQL\nBackend   : FastAPI, Django, Flask, Pydantic\nFrontend  : React, Next.js, Tailwind, WebGL\nDevOps    : Docker, GitHub Actions, AWS, Terraform/OpenTofu'; },
+      stack: function () { return 'Python · TypeScript · React · Next.js · FastAPI · Django · Docker · AWS · PostgreSQL · Terraform · Git · Linux'; },
+      projects: function () { go('#projects'); return 'opening projects…'; },
+      experience: function () { go('#experience'); return 'OpenTeams → PiHex / Python AI Solutions → Essentia → TruAct. opening…'; },
+      opensource: function () { go('#opensource'); return 'NiiVue, SymPy, Panel, Nebari, jupyterlab-conda-store & more. opening…'; },
+      oss: function () { return C.opensource(); },
+      talks: function () { go('#talks'); return 'PyCon India 2024 — lightning talk on Panel. opening…'; },
+      certs: function () { go('#certificates'); return 'Udemy · HackerRank · NPTEL. opening…'; },
+      contact: function () { go('#contact'); return 'reach me at 7sumitjha@gmail.com — opening contact…'; },
+      social: function () { return 'GitHub   : github.com/isumitjha\nLinkedIn : linkedin.com/in/7sumitjha'; },
+      resume: function () { window.open('Sumit_Jha_Resume.pdf', '_blank'); return 'downloading résumé… (Sumit_Jha_Resume.pdf)'; },
+      cv: function () { return C.resume(); },
+      coffee: function () { return '☕ brewing… done. productivity +30%, bugs -2.'; },
+      theme: function () { if (toggle) toggle.click(); return 'toggled theme.'; },
+      clear: function () { body.innerHTML = ''; return ''; },
+      sudo: function () { return 'nice try 😄 — you already have root here.'; },
+      ls: function () { return 'about  experience  skills  projects  opensource  talks  certs  contact'; },
+      echo: function (a) { return a.join(' '); }
+    };
+    function run(raw) {
+      var t = raw.trim(); if (!t) return;
+      var parts = t.split(/\s+/), cmd = parts[0].toLowerCase(), args = parts.slice(1);
+      echo(t);
+      if (C[cmd]) { var out = C[cmd](args); if (out) line(ml(out)); }
+      else { line('<span class="cl-err">command not found: ' + esc(cmd) + '</span> — try <span class="cl-cmd">help</span>'); }
+    }
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') { run(input.value); input.value = ''; } });
+    document.querySelectorAll('.tw').forEach(function (b) {
+      b.addEventListener('click', function () { echo(b.textContent); line('<span class="cl-acc">✦</span> ' + esc(b.textContent) + ' — part of my daily toolkit.'); input.focus(); });
+    });
+  })();
 })();
