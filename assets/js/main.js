@@ -193,13 +193,6 @@
         });
       });
     }
-    // GitHub stat tiles flip up into place
-    if (document.querySelector('.ghtile')) {
-      window.gsap.from('.ghtile', {
-        rotationX: -70, autoAlpha: 0, transformOrigin: '50% 50% -20px', duration: 0.6, ease: 'power3.out', stagger: 0.06,
-        scrollTrigger: { trigger: '.ghstats', start: 'top 85%', once: true }
-      });
-    }
   }
 
   /* ---------- 3D kinetic section titles ---------- */
@@ -393,16 +386,43 @@
       if (p < 1) requestAnimationFrame(step);
     })(performance.now());
   }
+  // Odometer: each digit rolls up on its own reel (one spin + settle)
+  function odometer(el) {
+    var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+    var suffix = el.getAttribute('data-suffix') || '';
+    if (reduceMotion) { el.textContent = target + suffix; return; }
+    var str = String(target);
+    el.classList.add('odometer'); el.textContent = '';
+    var reels = [];
+    for (var i = 0; i < str.length; i++) {
+      var digit = parseInt(str.charAt(i), 10);
+      var cell = document.createElement('span'); cell.className = 'odo-d';
+      var reel = document.createElement('span'); reel.className = 'odo-reel';
+      var seq = '';
+      for (var k = 0; k <= 9; k++) seq += '<span>' + k + '</span>';      // one full spin
+      for (var k2 = 0; k2 <= digit; k2++) seq += '<span>' + k2 + '</span>'; // settle on digit
+      reel.innerHTML = seq;
+      cell.appendChild(reel); el.appendChild(cell);
+      reels.push({ reel: reel, end: 10 + digit });
+    }
+    if (suffix) { var sf = document.createElement('span'); sf.className = 'odo-suffix'; sf.textContent = suffix; el.appendChild(sf); }
+    requestAnimationFrame(function () {
+      reels.forEach(function (r, idx) {
+        r.reel.style.transitionDelay = (idx * 0.12) + 's';
+        r.reel.style.transform = 'translateY(-' + r.end + 'em)';
+      });
+    });
+  }
   var counters = document.querySelectorAll('[data-count]');
   if ('IntersectionObserver' in window && counters.length) {
     var countObs = new IntersectionObserver(function (entries, obs) {
       entries.forEach(function (entry) {
-        if (entry.isIntersecting) { animateCount(entry.target); obs.unobserve(entry.target); }
+        if (entry.isIntersecting) { odometer(entry.target); obs.unobserve(entry.target); }
       });
     }, { threshold: 0.5 });
     counters.forEach(function (c) { countObs.observe(c); });
   } else {
-    counters.forEach(animateCount);
+    counters.forEach(odometer);
   }
 
   /* ---------- Magnetic buttons + social ---------- */
@@ -1377,6 +1397,42 @@
       }, { rootMargin: '-45% 0px -50% 0px' });
       items.forEach(function (it) { obs.observe(it.sec); });
     }
+  })();
+
+  /* ---------- Skill chips: magnetic cursor-repel ---------- */
+  (function () {
+    if (reduceMotion || !finePointer) return;
+    document.querySelectorAll('.skill-card').forEach(function (card) {
+      var chips = Array.prototype.slice.call(card.querySelectorAll('.chips li'));
+      if (!chips.length) return;
+      var R = 95;
+      card.addEventListener('mousemove', function (e) {
+        chips.forEach(function (chip) {
+          var r = chip.getBoundingClientRect();
+          var dx = (r.left + r.width / 2) - e.clientX, dy = (r.top + r.height / 2) - e.clientY;
+          var dist = Math.hypot(dx, dy);
+          if (dist < R && dist > 0.01) {
+            var f = (1 - dist / R) * 18;
+            chip.style.transform = 'translate(' + (dx / dist * f).toFixed(1) + 'px,' + (dy / dist * f).toFixed(1) + 'px)';
+          } else { chip.style.transform = ''; }
+        });
+      });
+      card.addEventListener('mouseleave', function () { chips.forEach(function (chip) { chip.style.transform = ''; }); });
+    });
+  })();
+
+  /* ---------- Section curtain: a light bar sweeps down on first view ---------- */
+  (function () {
+    if (reduceMotion || !hasGSAP) return;
+    document.querySelectorAll('main .section').forEach(function (sec) {
+      if (getComputedStyle(sec).position === 'static') sec.style.position = 'relative';
+      var line = document.createElement('span'); line.className = 'scanline'; sec.appendChild(line);
+      window.gsap.timeline({ scrollTrigger: { trigger: sec, start: 'top 78%', once: true } })
+        .fromTo(line, { top: '0%', autoAlpha: 0 }, { autoAlpha: 1, duration: 0.15 })
+        .to(line, { top: '100%', duration: 0.7, ease: 'power2.inOut' })
+        .to(line, { autoAlpha: 0, duration: 0.2 }, '-=0.22')
+        .add(function () { line.remove(); });
+    });
   })();
 
 })();

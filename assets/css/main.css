@@ -933,6 +933,16 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .section__head--center .section__title::after { left: 50%; transform-origin: center; transform: translateX(-50%) scaleX(0); }
 .section__head--center.is-drawn .section__title::after { transform: translateX(-50%) scaleX(1); }
 
+/* ---------- Odometer rolling-digit counters ---------- */
+.odometer { display: inline-flex; align-items: flex-start; line-height: 1; }
+.odo-d { display: inline-block; height: 1em; overflow: hidden; }
+.odo-reel { display: flex; flex-direction: column; transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
+.odo-reel span { display: block; height: 1em; line-height: 1; text-align: center; }
+.odo-suffix { display: inline-block; }
+
+/* ---------- Section curtain sweep (light bar passes on entry) ---------- */
+.scanline { position: absolute; left: 0; right: 0; top: 0; height: 3px; z-index: 4; pointer-events: none; opacity: 0; background: linear-gradient(90deg, transparent, var(--accent), transparent); box-shadow: 0 0 18px 1px color-mix(in srgb, var(--accent) 70%, transparent); }
+
 /* ---------- Split-flap flip clock (IST time) ---------- */
 .flipclock { display: inline-flex; align-items: center; gap: 1px; perspective: 220px; font-variant-numeric: tabular-nums; }
 .fc-d { display: inline-block; min-width: 0.62em; text-align: center; backface-visibility: hidden; }
@@ -945,7 +955,6 @@ html.theme-anim, html.theme-anim *, html.theme-anim *::before, html.theme-anim *
 .section__index { display: inline-block; transform-style: preserve-3d; }
 .timeline { perspective: 1200px; }
 .tl { transform-style: preserve-3d; }
-.ghstats__tiles { perspective: 800px; }
 
 /* ---------- More micro-interactions + 3D ---------- */
 /* nav link hover lift */
