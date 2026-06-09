@@ -30,7 +30,6 @@ and tasteful scroll animations with a light/dark theme toggle.
 ├── scripts/build-stats.mjs        # CI script that generates stats.json
 ├── .github/workflows/
 │   └── github-stats.yml           # daily Action that runs the script + commits stats.json
-├── .env.example                   # template for a LOCAL stats run (real .env is gitignored)
 ├── images/                        # profile photo + certificate logos
 ├── Sumit_Jha_Resume.pdf           # downloadable CV
 ├── favicon.png · manifest.json · sitemap.xml · robots.txt
@@ -71,8 +70,8 @@ How it works:
 
 - Add a repo secret **`GH_STATS_TOKEN`** (Settings → Secrets and variables → Actions).
 - Use a **read-only, fine-grained PAT** — `Contents: Read` + `Metadata: Read`, all
-  repositories, with an expiry. See `.env.example`. A read-only token can only *read*
-  repos (incl. private code); it can't push, delete, or change settings.
+  repositories, with an expiry. A read-only token can only *read* repos (incl. private
+  code); it can't push, delete, or change settings.
 
 ### Security notes (public repo)
 
@@ -90,9 +89,13 @@ How it works:
 
 ### Run locally
 
+Production uses the GitHub Actions secret — no env file is committed. To regenerate
+`stats.json` on your machine, pass a read-only token inline (or put it in a local,
+gitignored `.env` with `GH_TOKEN=` / `GH_USER=`):
+
 ```bash
-cp .env.example .env   # then put your read-only token in .env (gitignored)
-node scripts/build-stats.mjs   # needs `cloc` installed for the lines-of-code count
+# needs `cloc` installed for the lines-of-code count
+GH_TOKEN=<your-read-only-token> GH_USER=isumitjha node scripts/build-stats.mjs
 ```
 
 ## Deployment
