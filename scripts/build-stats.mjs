@@ -1,6 +1,14 @@
 // Builds assets/data/stats.json with aggregated GitHub stats (public + private).
 // Runs in GitHub Actions with a secret token — the token never reaches the browser.
-// Requires: a classic PAT with `repo` + `read:user` scopes in secret GH_STATS_TOKEN.
+//
+// Token (secret GH_STATS_TOKEN): use a READ-ONLY, fine-grained PAT —
+//   Repository access: All repositories
+//   Repository permissions: Contents -> Read-only, Metadata -> Read-only
+// Set an expiry and rotate it. A read-only token can only READ repos (incl. private
+// code); it cannot push, delete, or change settings — keep the blast radius small.
+// (A classic token with `repo` + `read:user` also works but is read+WRITE to every
+// repo, so it's NOT recommended.)
+//
 // `cloc` must be installed for the lines-of-code count.
 
 import { writeFileSync, mkdirSync, mkdtempSync, rmSync, existsSync, readFileSync } from 'node:fs';
