@@ -848,7 +848,7 @@
   <script defer src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" integrity="sha384-li4UtcFCH6QeUqR4JyV58/VgTprMuz9aauj+oWtew7V4Y7ZVjnvz5px9Y3UCG0Ea" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script defer src="assets/js/main.js"></script>
 
-  <!-- Ambient WebGL hero object (Three.js, ES module; optional) -->
+  <!-- Ambient WebGL hero object (Three.js r160, self-hosted ES module; optional) -->
   <script type="module">
     (async function () {
       var canvas = document.getElementById('webglHero');
@@ -856,7 +856,7 @@
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
       if (window.matchMedia('(max-width: 880px)').matches) return; // skip on small screens
       var THREE;
-      try { THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/+esm'); }
+      try { THREE = await import('./assets/vendor/three.module.min.js'); }
       catch (e) { return; }
 
       var hero = document.getElementById('home');

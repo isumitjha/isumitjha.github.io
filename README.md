@@ -11,7 +11,7 @@ and tasteful scroll animations with a light/dark theme toggle.
 - **Static HTML + CSS + JavaScript** — no framework, no build step
 - **[GSAP](https://gsap.com/) + ScrollTrigger** — scroll-reveal & 3D animations (via CDN)
 - **[Lenis](https://github.com/darkroomengineering/lenis)** — smooth scrolling (via CDN)
-- **[Three.js](https://threejs.org/)** — ambient WebGL accent in the hero (via CDN, optional)
+- **[Three.js](https://threejs.org/)** r160 — ambient WebGL accent in the hero (self-hosted in `assets/vendor/`, optional)
 - **Google Fonts** — Poppins (headings), Lora (body), JetBrains Mono + Caveat (accents)
 - **Live GitHub stats** — a daily GitHub Action writes a static JSON the page reads
   (see below); no runtime backend
