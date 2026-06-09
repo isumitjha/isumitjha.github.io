@@ -105,8 +105,6 @@ for (;;) {
   if (batch.length < 100) break;
   page++;
 }
-const publicRepos = repos.filter(r => !r.private).length;
-const stars = repos.reduce((s, r) => s + (r.stargazers_count || 0), 0);
 
 // --- language breakdown incl. private ---
 const langBytes = {};
@@ -122,11 +120,6 @@ const langCount = Object.keys(langBytes).length;
 const langs = Object.entries(langBytes).sort((a, b) => b[1] - a[1]).slice(0, 6)
   .map(([name, bytes]) => ({ name, pct: +(bytes / totalBytes * 100).toFixed(1) }));
 const topLang = langs[0]?.name || '—';
-
-// --- top public repos by stars ---
-const top = repos.filter(r => !r.private && !r.fork)
-  .sort((a, b) => b.stargazers_count - a.stargazers_count).slice(0, 4)
-  .map(r => ({ name: r.name, html_url: r.html_url, stargazers_count: r.stargazers_count, language: r.language }));
 
 // --- lines of code via cloc over cloned repos (incl. private, excl. forks) ---
 let loc = null;
@@ -194,6 +187,21 @@ const data = {
   generatedAt: new Date().toISOString(),
   commits, contributions, prs, merged, issues, loc, reposContributedTo, langCount, topLang, langs, byYear, calendar, oss
 };
+
+// Safety guard: never overwrite good data with an incomplete or regressed run.
+// commits/contributions are lifetime sums (monotonic) — a null or a big drop means
+// a partial API failure this run, so keep the previously committed file instead.
+let prev = null;
+try { prev = JSON.parse(readFileSync('assets/data/stats.json', 'utf8')); } catch {}
+const regressed =
+  data.commits == null || data.contributions == null ||
+  (prev && prev.commits && data.commits < prev.commits * 0.8) ||
+  (prev && prev.contributions && data.contributions < prev.contributions * 0.8);
+if (regressed) {
+  console.log('New stats look incomplete or regressed — keeping existing stats.json and exiting.');
+  process.exit(0);
+}
+
 mkdirSync('assets/data', { recursive: true });
 writeFileSync('assets/data/stats.json', JSON.stringify(data, null, 2) + '\n');
 console.log('Wrote assets/data/stats.json:', JSON.stringify({ ...data, oss: Object.keys(oss).length + ' repos', langs: data.langs.length + ' langs' }));

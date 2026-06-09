@@ -103,8 +103,9 @@ GH_TOKEN=<your-read-only-token> GH_USER=isumitjha node scripts/build-stats.mjs
 Hosted on **GitHub Pages** from the `main` branch (repo root). Pushing to `main`
 publishes automatically; the custom domain is configured via `CNAME`.
 
-The daily stats workflow also pushes to `main`; its commit message includes `[skip ci]`
-so it doesn't trigger other workflows.
+The daily stats workflow also pushes to `main`. It only triggers on `schedule` /
+`workflow_dispatch` (never on `push`), so its own commit can't re-trigger it — and the
+commit publishes through Pages normally so the live numbers stay current.
 
 ---
 
