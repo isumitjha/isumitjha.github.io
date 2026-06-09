@@ -1,0 +1,50 @@
+name: Update GitHub stats
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # daily at 06:00 UTC
+  workflow_dispatch:        # allow manual run
+
+permissions:
+  contents: write
+
+concurrency:
+  group: github-stats
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      # Actions pinned to commit SHA (tag in comment) to prevent tag-move supply-chain attacks.
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0   # full history so the rebase-before-push below is reliable
+
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 20
+
+      - name: Install cloc
+        run: sudo apt-get update && sudo apt-get install -y cloc
+
+      - name: Build stats.json
+        env:
+          GH_TOKEN: ${{ secrets.GH_STATS_TOKEN }}
+          GH_USER: isumitjha
+        run: node scripts/build-stats.mjs
+
+      - name: Commit if changed
+        run: |
+          git config user.name "stats-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/data/stats.json
+          if git diff --staged --quiet; then
+            echo "No stats changes."
+          else
+            git commit -m "chore: update GitHub stats"
+            # Rebase onto anything that landed during the run, then push (avoids races).
+            git pull --rebase origin "${GITHUB_REF_NAME}"
+            git push
+          fi
